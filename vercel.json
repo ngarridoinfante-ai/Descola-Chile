@@ -1,0 +1,16 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "redirects": [
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "descolachile.com"
+        }
+      ],
+      "destination": "https://www.descolachile.com/$1",
+      "permanent": true
+    }
+  ]
+}
