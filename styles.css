@@ -291,6 +291,19 @@ label {
   border-color: var(--brand);
 }
 
+.nav a.nav-whatsapp {
+  border: 0;
+  padding: 0.5rem 0.82rem;
+  border-radius: 999px;
+  background: linear-gradient(130deg, #1fae62 0%, #168b4e 100%);
+  color: #fff;
+}
+
+.nav a.nav-whatsapp:hover {
+  border-color: transparent;
+  color: #fff;
+}
+
 .btn-top {
   padding: 0.72rem 1rem;
   background: #e7fbf2;
@@ -1066,6 +1079,14 @@ label {
   font-size: 1rem;
 }
 
+.testimonial-stars {
+  color: #ef9f2d;
+  letter-spacing: 0.08em;
+  font-size: 0.92rem;
+  font-weight: 800;
+  margin-bottom: 0.4rem;
+}
+
 .testimonial-grid cite {
   display: inline-flex;
   align-items: center;
@@ -1075,6 +1096,28 @@ label {
   font-style: normal;
   font-size: 0.9rem;
   font-weight: 700;
+}
+
+.avatar-svg {
+  width: 1.9rem;
+  height: 1.9rem;
+  border-radius: 999px;
+  flex: 0 0 auto;
+}
+
+.testimonial-meta {
+  display: grid;
+  line-height: 1.2;
+}
+
+.testimonial-meta strong {
+  font-size: 0.9rem;
+  color: var(--ink);
+}
+
+.testimonial-meta small {
+  color: var(--ink-soft);
+  font-size: 0.78rem;
 }
 
 .testimonial-grid cite span {
@@ -1115,12 +1158,63 @@ label {
   font-size: 0.92rem;
 }
 
+.plan-badge {
+  display: inline-flex;
+  margin-top: 0.45rem;
+  border-radius: 999px;
+  padding: 0.22rem 0.55rem;
+  background: linear-gradient(130deg, #f5a527 0%, #f2b94f 100%);
+  color: #fff;
+  font-weight: 800;
+  font-size: 0.74rem;
+}
+
+.plan-launch {
+  margin-top: 0.45rem;
+  color: var(--brand-strong);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.js-countdown {
+  display: inline-block;
+  margin-left: 0.2rem;
+  color: var(--ink);
+}
+
 .plan-card ul {
   margin: 0.95rem 0 1.2rem;
   padding-left: 1rem;
   display: grid;
   gap: 0.45rem;
   color: var(--ink-soft);
+}
+
+.plan-features {
+  list-style: none;
+  padding-left: 0;
+}
+
+.plan-features li {
+  position: relative;
+  padding-left: 1.35rem;
+}
+
+.plan-features li::before {
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-weight: 800;
+}
+
+.plan-features li.is-included::before {
+  content: "✓";
+  color: var(--ok);
+}
+
+.plan-features li.is-excluded::before {
+  content: "✗";
+  color: var(--danger);
 }
 
 .plan-card.featured {
@@ -1205,9 +1299,37 @@ label {
   background: #fff;
 }
 
+.capture-form select {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  min-height: 46px;
+  padding: 0.75rem 0.86rem;
+  background: #fff;
+}
+
 .capture-form input:focus-visible {
   outline: 2px solid rgba(13, 143, 99, 0.3);
   outline-offset: 1px;
+}
+
+.capture-form select:focus-visible {
+  outline: 2px solid rgba(13, 143, 99, 0.3);
+  outline-offset: 1px;
+}
+
+.form-status {
+  min-height: 1.2rem;
+  margin-top: 0.2rem;
+  font-size: 0.84rem;
+  font-weight: 700;
+}
+
+.form-status.is-success {
+  color: var(--ok);
+}
+
+.form-status.is-error {
+  color: var(--danger);
 }
 
 .microcopy {
@@ -2116,10 +2238,6 @@ label {
 }
 
 @media (max-width: 920px) {
-  .btn-top {
-    display: none;
-  }
-
   .nav-toggle {
     display: inline-flex;
   }
@@ -2143,6 +2261,13 @@ label {
   #mainNav a {
     width: 100%;
     padding: 0.5rem 0;
+  }
+
+  #mainNav a.nav-whatsapp {
+    margin-top: 0.2rem;
+    justify-content: center;
+    text-align: center;
+    padding: 0.65rem 0.8rem;
   }
 
   #mainNav.is-open {
