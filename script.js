@@ -1,6 +1,31 @@
 const WHATSAPP_NUMBER = "56941079792";
 const WHATSAPP_BASE = `https://wa.me/${WHATSAPP_NUMBER}`;
 
+function buildCaptureFallbackMessage(form) {
+  const formData = new FormData(form);
+  const name = String(formData.get("nome") || "").trim();
+  const email = String(formData.get("email") || "").trim();
+  const travelDate = String(formData.get("data-viagem") || "").trim();
+
+  return [
+    "Oi, quero receber o mapa anti-perrengue da Descola Chile.",
+    name ? `Nome: ${name}` : null,
+    email ? `E-mail: ${email}` : null,
+    travelDate ? `Quando viajo: ${travelDate}` : null,
+  ]
+    .filter(Boolean)
+    .join("\n");
+}
+
+function openWhatsAppFallback(message) {
+  const url = `${WHATSAPP_BASE}?text=${encodeURIComponent(message)}`;
+  const newWindow = window.open(url, "_blank", "noopener,noreferrer");
+
+  if (!newWindow) {
+    window.location.href = url;
+  }
+}
+
 function applyWhatsAppLinks() {
   const waLinks = document.querySelectorAll("a.js-wa-link, a[href*='wa.me/']");
   waLinks.forEach((link) => {
@@ -9,10 +34,19 @@ function applyWhatsAppLinks() {
 
     if (isDirect || !message) {
       link.href = WHATSAPP_BASE;
-      return;
+    } else {
+      link.href = `${WHATSAPP_BASE}?text=${encodeURIComponent(message)}`;
     }
 
-    link.href = `${WHATSAPP_BASE}?text=${encodeURIComponent(message)}`;
+    // Keep WhatsApp links safe and accessible even when injected dynamically.
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+    if (!link.getAttribute("aria-label")) {
+      link.setAttribute(
+        "aria-label",
+        "Abrir conversa no WhatsApp com a Descola Chile",
+      );
+    }
   });
 }
 
@@ -133,6 +167,36 @@ function weatherLabelFromCode(code) {
   return map[code] || "Tempo variavel";
 }
 
+async function fetchExchangeRate() {
+  const localSources = ["./exchange-rate.json", "/exchange-rate.json"];
+
+  for (const source of localSources) {
+    try {
+      const response = await fetch(source, { cache: "no-store" });
+      if (!response.ok) continue;
+      const data = await response.json();
+      if (data && typeof data.rate === "number") {
+        return data.rate;
+      }
+    } catch (_error) {
+      // Continue to fallback source.
+    }
+  }
+
+  const fallbackResponse = await fetch(
+    "https://api.exchangerate-api.com/v4/latest/BRL",
+  );
+  const fallbackData = await fallbackResponse.json();
+  const fallbackRate =
+    fallbackData && fallbackData.rates ? fallbackData.rates.CLP : null;
+
+  if (typeof fallbackRate === "number") {
+    return fallbackRate;
+  }
+
+  throw new Error("Exchange rate unavailable");
+}
+
 async function updateHeroWidgets() {
   const exchangeRate = document.getElementById("exchangeRate");
   const weatherElement = document.getElementById("weather");
@@ -140,7 +204,7 @@ async function updateHeroWidgets() {
   if (!exchangeRate && !weatherElement) return;
 
   const [rateRes, weatherRes] = await Promise.allSettled([
-    fetch("https://api.exchangerate-api.com/v4/latest/BRL"),
+    fetchExchangeRate(),
     fetch(
       "https://api.open-meteo.com/v1/forecast?latitude=-33.45&longitude=-70.66&current_weather=true",
     ),
@@ -148,8 +212,7 @@ async function updateHeroWidgets() {
 
   if (exchangeRate && rateRes.status === "fulfilled") {
     try {
-      const data = await rateRes.value.json();
-      const rate = data && data.rates ? data.rates.CLP : null;
+      const rate = rateRes.value;
       if (typeof rate === "number") {
         exchangeRate.textContent = `1 BRL = ${rate.toFixed(0)} CLP`;
       }
@@ -236,16 +299,74 @@ function mountTestimonialAvatars() {
 }
 
 const captureForm = document.querySelector(".capture-form");
+const supportForm = document.getElementById("supportForm");
+
+function initDiscountFilters() {
+  const discountGrid = document.getElementById("discountGrid");
+  const searchInput = document.getElementById("discountSearchInput");
+  const emptyMessage = document.getElementById("discountEmpty");
+  const filterButtons = document.querySelectorAll(".discount-filter");
+
+  if (!discountGrid || !searchInput || !filterButtons.length) return;
+
+  const cards = [...discountGrid.querySelectorAll(".discount-card")];
+  let activeFilter = "todos";
+
+  const applyFilters = () => {
+    const term = searchInput.value.trim().toLowerCase();
+    let visibleCount = 0;
+
+    cards.forEach((card) => {
+      const category = card.dataset.category || "";
+      const searchText = (
+        card.dataset.search ||
+        card.textContent ||
+        ""
+      ).toLowerCase();
+      const matchCategory =
+        activeFilter === "todos" || category === activeFilter;
+      const matchTerm = !term || searchText.includes(term);
+      const shouldShow = matchCategory && matchTerm;
+
+      card.hidden = !shouldShow;
+      if (shouldShow) visibleCount += 1;
+    });
+
+    if (emptyMessage) {
+      emptyMessage.hidden = visibleCount > 0;
+    }
+  };
+
+  filterButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      activeFilter = button.dataset.filter || "todos";
+      filterButtons.forEach((node) => node.classList.remove("is-active"));
+      button.classList.add("is-active");
+      applyFilters();
+    });
+  });
+
+  searchInput.addEventListener("input", applyFilters);
+  applyFilters();
+}
 
 if (captureForm) {
   captureForm.addEventListener("submit", async (event) => {
     event.preventDefault();
 
     const endpoint = captureForm.getAttribute("action");
+    const captureMode = captureForm.dataset.captureMode;
     const button = captureForm.querySelector("button[type='submit']");
     const status = captureForm.querySelector(".form-status");
     const email = captureForm.querySelector("#email");
-    if (!button || !endpoint || !email) return;
+    if (!button || !email || !status) return;
+
+    const initialButtonLabel =
+      button.textContent.trim() || "Quero receber o mapa";
+    const fallbackMode =
+      captureMode === "whatsapp" ||
+      !endpoint ||
+      endpoint.includes("TU_ID_AQUI");
 
     const emailValue = String(email.value || "").trim();
     const emailIsValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailValue);
@@ -258,6 +379,22 @@ if (captureForm) {
 
     button.textContent = "Enviando...";
     button.disabled = true;
+
+    if (fallbackMode) {
+      openWhatsAppFallback(buildCaptureFallbackMessage(captureForm));
+      status.textContent =
+        "Abrimos o WhatsApp para finalizar seu pedido do mapa com a equipe Descola.";
+      status.classList.add("is-success");
+      status.classList.remove("is-error");
+      button.textContent = "Continuar no WhatsApp";
+
+      setTimeout(() => {
+        button.textContent = initialButtonLabel;
+        button.disabled = false;
+      }, 1800);
+
+      return;
+    }
 
     try {
       const response = await fetch(endpoint, {
@@ -283,10 +420,41 @@ if (captureForm) {
       button.textContent = "Tente novamente";
     } finally {
       setTimeout(() => {
-        button.textContent = "Quero receber o mapa";
+        button.textContent = initialButtonLabel;
         button.disabled = false;
       }, 1800);
     }
+  });
+}
+
+if (supportForm) {
+  supportForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    const nameInput = supportForm.querySelector("#supportName");
+    const questionInput = supportForm.querySelector("#supportQuestion");
+    const status = supportForm.querySelector("#supportStatus");
+
+    if (!nameInput || !questionInput || !status) return;
+
+    const name = String(nameInput.value || "").trim();
+    const question = String(questionInput.value || "").trim();
+
+    if (!name || !question) {
+      status.textContent = "Preencha nome e dúvida para continuar.";
+      status.classList.add("is-error");
+      status.classList.remove("is-success");
+      return;
+    }
+
+    const message = `Oi, preciso de ajuda em português. Nome: ${name}. Dúvida: ${question}`;
+    openWhatsAppFallback(message);
+
+    status.textContent =
+      "Abrimos o WhatsApp para você falar com a equipe Descola Chile.";
+    status.classList.add("is-success");
+    status.classList.remove("is-error");
+    supportForm.reset();
   });
 }
 
@@ -326,3 +494,4 @@ applyWhatsAppLinks();
 mountTestimonialAvatars();
 startCountdown(72);
 updateHeroWidgets();
+initDiscountFilters();

@@ -1,4 +1,4 @@
-﻿:root {
+:root {
   --bg: #f8f3eb;
   --surface: #fffdf9;
   --surface-strong: #fff8ed;
@@ -19,6 +19,25 @@
   --radius-s: 12px;
   --radius-m: 20px;
   --radius-l: 30px;
+  --color-primary: var(--brand);
+  --color-white: #fff;
+  --color-brand-500: #12a672;
+  --color-brand-450: #1fae62;
+  --color-brand-550: #168b4e;
+  --color-border-soft: rgba(26, 36, 51, 0.1);
+  --color-border-soft-2: rgba(26, 36, 51, 0.14);
+  --color-surface-glass: rgba(255, 253, 249, 0.88);
+  --color-surface-ghost: rgba(255, 255, 255, 0.78);
+  --color-surface-mint: #e7fbf2;
+  --color-brand-outline-soft: rgba(13, 143, 99, 0.35);
+  --font-sans: "Plus Jakarta Sans", sans-serif;
+  --font-serif: "Fraunces", serif;
+  --space-2xs: 0.25rem;
+  --space-xs: 0.5rem;
+  --space-sm: 0.72rem;
+  --space-md: 0.88rem;
+  --space-lg: 1rem;
+  --space-xl: 1.42rem;
 }
 
 * {
@@ -45,7 +64,7 @@ body {
     ),
     var(--bg);
   color: var(--ink);
-  font-family: "Plus Jakarta Sans", sans-serif;
+  font-family: var(--font-sans);
   line-height: 1.62;
 }
 
@@ -100,7 +119,7 @@ h3,
 h4 {
   margin: 0;
   line-height: 1.08;
-  font-family: "Fraunces", serif;
+  font-family: var(--font-serif);
   letter-spacing: -0.02em;
 }
 
@@ -113,6 +132,12 @@ blockquote {
 a {
   color: inherit;
   text-decoration: none;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 3px;
+  border-radius: 4px;
 }
 
 button,
@@ -177,13 +202,14 @@ label {
   font-size: clamp(2rem, 4.8vw, 3.2rem);
 }
 
-.btn {
+.btn-primary,
+.btn-secondary {
   border: 0;
   border-radius: 999px;
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  gap: 0.5rem;
+  gap: var(--space-xs);
   font-weight: 800;
   transition:
     transform 0.2s ease,
@@ -193,37 +219,39 @@ label {
   cursor: pointer;
 }
 
-.btn:hover {
+.btn-primary:hover,
+.btn-secondary:hover {
   transform: translateY(-2px);
 }
 
 .btn-primary {
-  padding: 0.88rem 1.42rem;
-  background: linear-gradient(140deg, var(--brand) 0%, #12a672 100%);
-  color: #fff;
+  padding: var(--space-md) var(--space-xl);
+  background: linear-gradient(140deg, var(--brand) 0%, var(--color-brand-500) 100%);
+  color: var(--color-white);
   box-shadow: var(--shadow-xs);
 }
 
-.btn-outline {
-  padding: 0.88rem 1.42rem;
+.btn-secondary {
+  padding: var(--space-md) var(--space-xl);
   border: 1px solid var(--line);
-  background: var(--surface);
+  background: var(--color-surface-ghost);
+  box-shadow: var(--shadow-xs);
   color: var(--ink);
 }
 
-.btn-ghost {
-  padding: 0.88rem 1.42rem;
-  background: rgba(255, 255, 255, 0.78);
-  border: 1px solid rgba(26, 36, 51, 0.14);
-  color: var(--ink);
+.topbar .btn-secondary {
+  padding: var(--space-sm) var(--space-lg);
+  background: var(--color-surface-mint);
+  color: var(--brand-strong);
+  font-size: 0.84rem;
 }
 
 .topbar {
   position: sticky;
   top: 0;
   z-index: 30;
-  border-bottom: 1px solid rgba(26, 36, 51, 0.1);
-  background: rgba(255, 253, 249, 0.88);
+  border-bottom: 1px solid var(--color-border-soft);
+  background: var(--color-surface-glass);
   backdrop-filter: blur(12px);
 }
 
@@ -247,10 +275,10 @@ label {
   border-radius: 0.8rem;
   display: grid;
   place-items: center;
-  font-family: "Fraunces", serif;
+  font-family: var(--font-serif);
   font-size: 0.98rem;
   font-weight: 700;
-  color: #fff;
+  color: var(--color-white);
   background: linear-gradient(140deg, var(--brand) 0%, var(--accent) 100%);
 }
 
@@ -261,7 +289,7 @@ label {
 }
 
 .brand-text {
-  font-family: "Fraunces", serif;
+  font-family: var(--font-serif);
   font-size: 1.07rem;
   font-weight: 700;
 }
@@ -283,7 +311,7 @@ label {
 
 .nav a:hover {
   color: var(--ink);
-  border-color: rgba(13, 143, 99, 0.35);
+  border-color: var(--color-brand-outline-soft);
 }
 
 .nav a.is-active {
@@ -295,20 +323,13 @@ label {
   border: 0;
   padding: 0.5rem 0.82rem;
   border-radius: 999px;
-  background: linear-gradient(130deg, #1fae62 0%, #168b4e 100%);
-  color: #fff;
+  background: linear-gradient(130deg, var(--color-brand-450) 0%, var(--color-brand-550) 100%);
+  color: var(--color-white);
 }
 
 .nav a.nav-whatsapp:hover {
   border-color: transparent;
-  color: #fff;
-}
-
-.btn-top {
-  padding: 0.72rem 1rem;
-  background: #e7fbf2;
-  color: var(--brand-strong);
-  font-size: 0.84rem;
+  color: var(--color-white);
 }
 
 .nav-toggle {
@@ -679,7 +700,7 @@ label {
 .step-card span {
   display: inline-flex;
   margin-bottom: 0.45rem;
-  font-family: "Fraunces", serif;
+  font-family: var(--font-serif);
   color: var(--brand);
   font-weight: 700;
 }
@@ -1355,7 +1376,7 @@ label {
   background: transparent;
   border: 0;
   padding: 1rem;
-  font-family: "Fraunces", serif;
+  font-family: var(--font-serif);
   font-weight: 600;
   font-size: 1.06rem;
   cursor: pointer;
@@ -1444,7 +1465,7 @@ label {
 }
 
 .footer-brand {
-  font-family: "Fraunces", serif;
+  font-family: var(--font-serif);
   font-size: 1.16rem;
   font-weight: 700;
 }
@@ -1929,7 +1950,7 @@ label {
 .maillard-craft-item h4,
 .maillard-weekly-card h4 {
   margin: 0;
-  font-family: "Fraunces", serif;
+  font-family: var(--font-serif);
   font-size: 1.05rem;
 }
 
@@ -2073,7 +2094,7 @@ label {
   gap: 0.55rem;
 }
 
-.featured-restaurant-actions .btn {
+.featured-restaurant-actions :is(.btn-primary, .btn-secondary) {
   width: 100%;
 }
 
@@ -2099,7 +2120,7 @@ label {
   gap: 0.5rem;
 }
 
-.reservation-steps .btn {
+.reservation-steps :is(.btn-primary, .btn-secondary) {
   width: 100%;
 }
 
@@ -2447,7 +2468,7 @@ label {
     gap: 0.5rem;
   }
 
-  .article-cta-actions .btn {
+  .article-cta-actions :is(.btn-primary, .btn-secondary) {
     width: 100%;
     justify-content: center;
   }
@@ -2613,7 +2634,7 @@ body.page-restaurants {
 }
 
 .rp-stat strong {
-  font-family: "Fraunces", serif;
+  font-family: var(--font-serif);
   font-size: 1.55rem;
   color: var(--brand-strong);
 }
@@ -2689,7 +2710,7 @@ body.page-restaurants {
 }
 
 .rp-how-num {
-  font-family: "Fraunces", serif;
+  font-family: var(--font-serif);
   font-size: 1.8rem;
   color: var(--brand);
   font-weight: 700;
@@ -3078,7 +3099,7 @@ body.page-restaurants {
     flex-direction: column;
   }
 
-  .rp-featured-actions .btn {
+  .rp-featured-actions :is(.btn-primary, .btn-secondary) {
     width: 100%;
     justify-content: center;
   }

@@ -14,7 +14,19 @@
     }
   ],
   "rewrites": [
-    { "source": "/", "destination": "/index.html" }
+    { "source": "/", "destination": "/index.html" },
+    { "source": "/checkout", "destination": "/checkout.html" },
+    { "source": "/success", "destination": "/success.html" },
+    { "source": "/meus-descontos", "destination": "/meus-descontos.html" },
+    { "source": "/cupom/:id", "destination": "/cupom.html" },
+    { "source": "/apresentar-cupom", "destination": "/apresentar-cupom.html" },
+    { "source": "/ajuda", "destination": "/ajuda.html" },
+    { "source": "/admin", "destination": "/admin/index.html" },
+    { "source": "/admin/clientes", "destination": "/admin/clientes.html" },
+    { "source": "/admin/cupons", "destination": "/admin/cupons.html" },
+    { "source": "/admin/partners", "destination": "/admin/partners.html" },
+    { "source": "/admin/metricas", "destination": "/admin/metricas.html" },
+    { "source": "/admin/configuracoes", "destination": "/admin/configuracoes.html" }
   ],
   "headers": [
     {
