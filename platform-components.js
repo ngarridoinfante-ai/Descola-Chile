@@ -23,6 +23,24 @@
     `;
   }
 
+  function CouponCardLocked(coupon) {
+    return `
+      <article class="dc-card coupon-card coupon-card-locked">
+        <div class="coupon-media coupon-media-blurred" style="background-image:url('${escapeHtml(coupon.image)}')"></div>
+        <div class="coupon-body">
+          <span class="dc-badge">${escapeHtml(coupon.category)}</span>
+          <h3>${escapeHtml(coupon.name)}</h3>
+          <p class="coupon-partner">${escapeHtml(coupon.partner)}</p>
+          <p class="coupon-discount coupon-discount-locked">${escapeHtml(coupon.discount)}</p>
+          <div class="coupon-lock-overlay">
+            <span class="coupon-lock-icon">🔒</span>
+            <span>Desbloqueie comprando acesso</span>
+          </div>
+        </div>
+      </article>
+    `;
+  }
+
   function PartnerCard(partner) {
     return `
       <article class="dc-card partner-card">
@@ -160,6 +178,7 @@
 
   window.DescolaComponents = {
     CouponCard,
+    CouponCardLocked,
     PartnerCard,
     DashboardMetricCard,
     AdminTable,

@@ -90,10 +90,49 @@
     const root = document.getElementById("discountsApp");
     if (!root) return;
 
+    const purchase = data.getPurchase();
     const list = await data.DataProvider.getCoupons();
     const categories = Array.from(new Set(list.map((item) => item.category)));
 
+    // Usuario sem compra: mostra muro com preview
+    if (!purchase) {
+      const preview = list.slice(0, 3);
+      const remaining = list.length - preview.length;
+
+      root.innerHTML = `
+        <section class="paywall-wrap">
+          <div class="paywall-preview">
+            ${preview.map((coupon) => components.CouponCardLocked(coupon)).join("")}
+            ${remaining > 0 ? `<div class="dc-card coupon-card-more"><span class="coupon-more-count">+${remaining}</span><p>cupons disponíveis</p></div>` : ""}
+          </div>
+          <div class="paywall-cta dc-card">
+            <p class="dc-kicker">Acesso exclusivo</p>
+            <h2>Desbloqueie todos os descontos</h2>
+            <p class="paywall-desc">Pague uma vez e use todos os cupons durante sua viagem ao Chile. Restaurantes, neve, vinícolas, eSIM e muito mais.</p>
+            <ul class="paywall-benefits">
+              <li>✓ ${list.length} cupons de desconto ativos</li>
+              <li>✓ QR code único para cada estabelecimento</li>
+              <li>✓ Suporte em português via WhatsApp</li>
+              <li>✓ Acesso por 7 dias completos</li>
+            </ul>
+            <div class="paywall-price">
+              <span class="paywall-price-label">Acesso completo</span>
+              <span class="paywall-price-value">${data.formatMoney(data.defaultProduct.price)}</span>
+            </div>
+            <a class="dc-btn dc-btn-primary paywall-btn" href="/checkout">Comprar acesso agora</a>
+            <a class="paywall-wa" href="https://wa.me/56941079792?text=Oi%2C%20quero%20saber%20mais%20sobre%20os%20cupons%20Descola%20Chile" target="_blank" rel="noopener noreferrer">Dúvidas? Fale no WhatsApp</a>
+          </div>
+        </section>
+      `;
+      return;
+    }
+
+    // Usuario com compra: acesso completo
     root.innerHTML = `
+      <div class="dc-card access-banner">
+        <p>Olá, <strong>${purchase.name.split(" ")[0]}</strong>! Seu acesso está ativo até <strong>${purchase.departure}</strong>.</p>
+        <span class="unique-code-sm">${purchase.code}</span>
+      </div>
       ${components.FilterBar({ categories, searchPlaceholder: "Buscar por parceiro ou beneficio" })}
       <section id="couponGrid" class="coupon-grid"></section>
     `;

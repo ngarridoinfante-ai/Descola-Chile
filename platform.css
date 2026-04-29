@@ -325,6 +325,159 @@ textarea {
   text-align: center;
 }
 
+/* ── Paywall / muro de compra ──────────────────────────────── */
+.paywall-wrap {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr;
+}
+
+.paywall-preview {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+  pointer-events: none;
+}
+
+.coupon-card-locked {
+  position: relative;
+  overflow: hidden;
+  opacity: 0.75;
+}
+
+.coupon-media-blurred {
+  filter: blur(3px);
+  transform: scale(1.04);
+}
+
+.coupon-discount-locked {
+  filter: blur(4px);
+  user-select: none;
+}
+
+.coupon-lock-overlay {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(255, 253, 248, 0.92);
+  border: 1px solid var(--dc-border);
+  border-radius: var(--dc-radius-s);
+  padding: 0.5rem 0.75rem;
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: var(--dc-muted);
+}
+
+.coupon-lock-icon {
+  font-size: 1rem;
+}
+
+.coupon-card-more {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  min-height: 100px;
+  background: #f0ebe3;
+  border: 2px dashed var(--dc-border);
+  text-align: center;
+}
+
+.coupon-more-count {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: var(--dc-primary);
+}
+
+.paywall-cta {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.paywall-desc {
+  color: var(--dc-muted);
+  margin: 0;
+}
+
+.paywall-benefits {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 0.4rem;
+}
+
+.paywall-benefits li {
+  font-size: 0.9rem;
+  color: var(--dc-primary-strong);
+  font-weight: 600;
+}
+
+.paywall-price {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.paywall-price-label {
+  font-size: 0.82rem;
+  color: var(--dc-muted);
+}
+
+.paywall-price-value {
+  font-size: 1.65rem;
+  font-weight: 800;
+  font-family: var(--dc-font-display);
+  color: var(--dc-primary-strong);
+}
+
+.paywall-btn {
+  width: 100%;
+  font-size: 1rem;
+  padding: 0.9rem 1rem;
+}
+
+.paywall-wa {
+  display: block;
+  text-align: center;
+  font-size: 0.82rem;
+  color: var(--dc-muted);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* Banner de acesso ativo */
+.access-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  background: #e6f8f0;
+  border-color: #b3e8d0;
+}
+
+.unique-code-sm {
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--dc-primary-strong);
+}
+
+@media (min-width: 760px) {
+  .paywall-wrap {
+    grid-template-columns: 1fr 380px;
+    align-items: start;
+  }
+
+  .paywall-preview {
+    grid-template-columns: 1fr;
+  }
+}
+
 .admin-login-wrap {
   min-height: 70vh;
   display: grid;
