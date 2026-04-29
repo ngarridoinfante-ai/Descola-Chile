@@ -13,6 +13,59 @@
     currency: "CLP",
   };
 
+  const products = [
+    {
+      id: "basico",
+      name: "Básico",
+      price: 49,
+      currency: "BRL",
+      highlight: false,
+      badge: null,
+      desc: "Para viagens curtas de fim de semana.",
+      days: 3,
+      features: [
+        "Acesso por 3 dias",
+        "Cupons de restaurantes e transfers",
+        "QR code único",
+        "Suporte via WhatsApp",
+      ],
+    },
+    {
+      id: "premium",
+      name: "Premium",
+      price: 150,
+      currency: "BRL",
+      highlight: true,
+      badge: "Mais escolhido",
+      desc: "Ideal para viagens de 1 semana.",
+      days: 7,
+      features: [
+        "Acesso por 7 dias",
+        "Todos os cupons ativos",
+        "Neve, vinícolas, eSIM e restaurantes",
+        "QR code único por estabelecimento",
+        "Suporte prioritário em português",
+      ],
+    },
+    {
+      id: "pro-max",
+      name: "Pro Max",
+      price: 500,
+      currency: "BRL",
+      highlight: false,
+      badge: "Melhor custo-benefício",
+      desc: "Para viagens longas ou múltiplas viagens.",
+      days: 30,
+      features: [
+        "Acesso por 30 dias",
+        "Todos os cupons ativos",
+        "Cupons extras exclusivos",
+        "Concierge dedicado em português",
+        "Planejamento personalizado de roteiro",
+      ],
+    },
+  ];
+
   const coupons = [
     {
       id: "cupom-fogobrasas",
@@ -618,6 +671,7 @@
   window.DescolaData = {
     STORAGE_KEYS,
     defaultProduct,
+    products,
     testimonials: [
       {
         name: "Ana Luiza - Sao Paulo",

@@ -23,6 +23,30 @@
     `;
   }
 
+  function PricingCard(plan) {
+    const priceLabel =
+      plan.currency === "BRL" ? `R$ ${plan.price}` : `${plan.price}`;
+
+    return `
+      <article class="dc-card pricing-card${plan.highlight ? " pricing-card-highlight" : ""}">
+        ${plan.badge ? `<span class="pricing-badge">${escapeHtml(plan.badge)}</span>` : ""}
+        <p class="pricing-name">${escapeHtml(plan.name)}</p>
+        <p class="pricing-desc">${escapeHtml(plan.desc)}</p>
+        <div class="pricing-price">
+          <span class="pricing-currency">R$</span>
+          <span class="pricing-amount">${plan.price}</span>
+        </div>
+        <ul class="pricing-features">
+          ${plan.features.map((f) => `<li>✓ ${escapeHtml(f)}</li>`).join("")}
+        </ul>
+        <a class="dc-btn ${plan.highlight ? "dc-btn-primary" : "dc-btn-secondary"} pricing-btn"
+           href="/checkout?plano=${encodeURIComponent(plan.id)}">
+          Escolher ${escapeHtml(plan.name)}
+        </a>
+      </article>
+    `;
+  }
+
   function CouponCardLocked(coupon) {
     return `
       <article class="dc-card coupon-card coupon-card-locked">
@@ -179,6 +203,7 @@
   window.DescolaComponents = {
     CouponCard,
     CouponCardLocked,
+    PricingCard,
     PartnerCard,
     DashboardMetricCard,
     AdminTable,

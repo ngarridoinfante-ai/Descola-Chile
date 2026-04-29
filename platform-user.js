@@ -16,9 +16,20 @@
     const root = document.getElementById("checkoutApp");
     if (!root) return;
 
+    const planoId = new URLSearchParams(window.location.search).get("plano");
+    const selectedProduct =
+      (planoId && data.products.find((p) => p.id === planoId)) ||
+      data.products.find((p) => p.highlight) ||
+      data.defaultProduct;
+
+    const priceLabel =
+      selectedProduct.currency === "BRL"
+        ? `R$ ${selectedProduct.price}`
+        : data.formatMoney(selectedProduct.price);
+
     root.innerHTML = components.CheckoutForm({
-      product: data.defaultProduct,
-      priceLabel: data.formatMoney(data.defaultProduct.price),
+      product: selectedProduct,
+      priceLabel,
     });
 
     const form = document.getElementById("checkoutForm");
@@ -100,29 +111,22 @@
       const remaining = list.length - preview.length;
 
       root.innerHTML = `
-        <section class="paywall-wrap">
+        <section class="paywall-top">
+          <p class="dc-kicker">Acesso exclusivo</p>
+          <h2 class="paywall-title">Escolha seu plano e desbloqueie os descontos</h2>
+          <p class="paywall-desc">${list.length} cupons ativos em restaurantes, neve, vinícolas, eSIM e muito mais. Pague uma vez, use durante toda a viagem.</p>
+        </section>
+        <section class="paywall-plans">
+          ${data.products.map((plan) => components.PricingCard(plan)).join("")}
+        </section>
+        <section class="paywall-preview-section">
+          <p class="paywall-preview-label">Prévia dos cupons disponíveis</p>
           <div class="paywall-preview">
             ${preview.map((coupon) => components.CouponCardLocked(coupon)).join("")}
             ${remaining > 0 ? `<div class="dc-card coupon-card-more"><span class="coupon-more-count">+${remaining}</span><p>cupons disponíveis</p></div>` : ""}
           </div>
-          <div class="paywall-cta dc-card">
-            <p class="dc-kicker">Acesso exclusivo</p>
-            <h2>Desbloqueie todos os descontos</h2>
-            <p class="paywall-desc">Pague uma vez e use todos os cupons durante sua viagem ao Chile. Restaurantes, neve, vinícolas, eSIM e muito mais.</p>
-            <ul class="paywall-benefits">
-              <li>✓ ${list.length} cupons de desconto ativos</li>
-              <li>✓ QR code único para cada estabelecimento</li>
-              <li>✓ Suporte em português via WhatsApp</li>
-              <li>✓ Acesso por 7 dias completos</li>
-            </ul>
-            <div class="paywall-price">
-              <span class="paywall-price-label">Acesso completo</span>
-              <span class="paywall-price-value">${data.formatMoney(data.defaultProduct.price)}</span>
-            </div>
-            <a class="dc-btn dc-btn-primary paywall-btn" href="/checkout">Comprar acesso agora</a>
-            <a class="paywall-wa" href="https://wa.me/56941079792?text=Oi%2C%20quero%20saber%20mais%20sobre%20os%20cupons%20Descola%20Chile" target="_blank" rel="noopener noreferrer">Dúvidas? Fale no WhatsApp</a>
-          </div>
         </section>
+        <p class="paywall-wa-line"><a href="https://wa.me/56941079792?text=Oi%2C%20quero%20saber%20mais%20sobre%20os%20planos%20Descola%20Chile" target="_blank" rel="noopener noreferrer">Dúvidas? Fale no WhatsApp</a></p>
       `;
       return;
     }

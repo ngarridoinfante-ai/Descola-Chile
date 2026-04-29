@@ -326,6 +326,128 @@ textarea {
 }
 
 /* ── Paywall / muro de compra ──────────────────────────────── */
+.paywall-top {
+  text-align: center;
+  padding: 0.5rem 0 0.8rem;
+}
+
+.paywall-title {
+  font-family: var(--dc-font-display);
+  font-size: clamp(1.3rem, 4vw, 1.9rem);
+  margin: 0.3rem 0 0.5rem;
+}
+
+.paywall-plans {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.9rem;
+  margin-bottom: 1.4rem;
+}
+
+/* ── Pricing cards ──────────────────────────────────────────── */
+.pricing-card {
+  position: relative;
+  display: grid;
+  gap: 0.6rem;
+  padding: 1.1rem;
+}
+
+.pricing-card-highlight {
+  border-color: var(--dc-primary);
+  box-shadow:
+    0 0 0 2px var(--dc-primary),
+    var(--dc-shadow-md);
+}
+
+.pricing-badge {
+  display: inline-flex;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+  background: var(--dc-primary);
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  width: fit-content;
+}
+
+.pricing-name {
+  font-family: var(--dc-font-display);
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.pricing-desc {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--dc-muted);
+}
+
+.pricing-price {
+  display: flex;
+  align-items: baseline;
+  gap: 0.18rem;
+  margin: 0.2rem 0;
+}
+
+.pricing-currency {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--dc-primary-strong);
+}
+
+.pricing-amount {
+  font-family: var(--dc-font-display);
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: var(--dc-primary-strong);
+  line-height: 1;
+}
+
+.pricing-features {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 0.35rem;
+}
+
+.pricing-features li {
+  font-size: 0.87rem;
+  color: var(--dc-ink);
+}
+
+.pricing-btn {
+  width: 100%;
+  text-align: center;
+  margin-top: 0.3rem;
+}
+
+.paywall-preview-section {
+  margin-bottom: 1rem;
+}
+
+.paywall-preview-label {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  font-weight: 700;
+  color: var(--dc-muted);
+  margin-bottom: 0.6rem;
+}
+
+.paywall-wa-line {
+  text-align: center;
+  font-size: 0.83rem;
+  margin: 0.5rem 0 1rem;
+}
+
+.paywall-wa-line a {
+  color: var(--dc-muted);
+  text-decoration: underline;
+}
+
 .paywall-wrap {
   display: grid;
   gap: 1rem;
@@ -468,6 +590,10 @@ textarea {
 }
 
 @media (min-width: 760px) {
+  .paywall-plans {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
   .paywall-wrap {
     grid-template-columns: 1fr 380px;
     align-items: start;
