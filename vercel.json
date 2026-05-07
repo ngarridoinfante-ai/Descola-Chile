@@ -15,9 +15,17 @@
   ],
   "rewrites": [
     { "source": "/", "destination": "/index.html" },
+    { "source": "/descontos", "destination": "/descontos.html" },
+    { "source": "/descontos/restaurantes", "destination": "/descontos.html?categoria=Restaurantes" },
+    { "source": "/descontos/transfers", "destination": "/descontos.html?categoria=Transfers" },
+    { "source": "/descontos/hoteis", "destination": "/descontos.html?categoria=Hoteis" },
+    { "source": "/descontos/vinicolas", "destination": "/descontos.html?categoria=Vinicolas" },
+    { "source": "/descontos/neve", "destination": "/descontos.html?categoria=Neve%20%26%20Ski" },
     { "source": "/checkout", "destination": "/checkout.html" },
     { "source": "/success", "destination": "/success.html" },
     { "source": "/meus-descontos", "destination": "/meus-descontos.html" },
+    { "source": "/como-funciona", "destination": "/ajuda.html" },
+    { "source": "/parceiros", "destination": "/admin/partners.html" },
     { "source": "/cupom/:id", "destination": "/cupom.html" },
     { "source": "/apresentar-cupom", "destination": "/apresentar-cupom.html" },
     { "source": "/ajuda", "destination": "/ajuda.html" },
@@ -26,7 +34,10 @@
     { "source": "/admin/cupons", "destination": "/admin/cupons.html" },
     { "source": "/admin/partners", "destination": "/admin/partners.html" },
     { "source": "/admin/metricas", "destination": "/admin/metricas.html" },
-    { "source": "/admin/configuracoes", "destination": "/admin/configuracoes.html" }
+    { "source": "/admin/configuracoes", "destination": "/admin/configuracoes.html" },
+    { "source": "/parceiro-dashboard", "destination": "/parceiro-dashboard.html" },
+    { "source": "/passeios", "destination": "/passeios.html" },
+    { "source": "/vinas", "destination": "/vinas.html" }
   ],
   "headers": [
     {
