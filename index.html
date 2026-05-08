@@ -1662,6 +1662,24 @@
       .tour-head {
         padding: 13px 14px;
         border-bottom: 1px solid var(--l1);
+        position: relative;
+        background-size: cover;
+        background-position: center;
+      }
+      .tour-head.has-img {
+        padding-top: 90px;
+      }
+      .tour-head.has-img::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to bottom, rgba(6,4,6,0.25) 0%, rgba(6,4,6,0.75) 60%, rgba(6,4,6,0.95) 100%);
+        border-radius: inherit;
+      }
+      .tour-head.has-img .tour-badge,
+      .tour-head.has-img .tour-name {
+        position: relative;
+        z-index: 1;
       }
       .tour-badge {
         font-size: 8px;
@@ -2408,16 +2426,7 @@
                   class="tour-card"
                   style="border-color: rgba(91, 155, 213, 0.2)"
                 >
-                  <div
-                    class="tour-head"
-                    style="
-                      background: linear-gradient(
-                        135deg,
-                        rgba(91, 155, 213, 0.1),
-                        transparent
-                      );
-                    "
-                  >
+                  <div class="tour-head has-img" style="background-image: url('/assets/tours/Parque-Farellones.jpg');">
                     <div class="tour-badge" style="color: var(--blue)">
                       ⭐ MAIS POPULAR
                     </div>
@@ -2453,7 +2462,7 @@
                   </div>
                 </div>
                 <div class="tour-card">
-                  <div class="tour-head" style="background: var(--bg3)">
+                  <div class="tour-head has-img" style="background-image: url('/assets/tours/Valle-Farellones-panoramico.jpg');">
                     <div class="tour-badge" style="color: var(--mint)">
                       MAIS ECONÔMICO
                     </div>
@@ -2484,7 +2493,7 @@
                   </div>
                 </div>
                 <div class="tour-card">
-                  <div class="tour-head" style="background: var(--bg3)">
+                  <div class="tour-head has-img" style="background-image: url('/assets/tours/Valle-Nevado.jpg');">
                     <div class="tour-badge" style="color: var(--t2)">
                       SKI AVANÇADO
                     </div>
@@ -2521,7 +2530,7 @@
                   class="tour-card"
                   style="border-color: rgba(245, 150, 31, 0.2)"
                 >
-                  <div class="tour-head" style="background: var(--amber-dim)">
+                  <div class="tour-head has-img" style="background-image: url('/assets/tours/Portillo-Laguna-del-Inca.jpg');">
                     <div class="tour-badge" style="color: var(--amber)">
                       ⚠️ ALTO RISCO CANCEL.
                     </div>
@@ -2561,16 +2570,7 @@
                   class="tour-card"
                   style="border-color: rgba(45, 212, 160, 0.25)"
                 >
-                  <div
-                    class="tour-head"
-                    style="
-                      background: linear-gradient(
-                        135deg,
-                        rgba(45, 212, 160, 0.1),
-                        transparent
-                      );
-                    "
-                  >
+                  <div class="tour-head has-img" style="background-image: url('/assets/tours/Isla-Negra-Algarrobo-Undurraga.jpg');">
                     <div class="tour-badge" style="color: var(--mint)">
                       🏆 MAIS COMPLETO
                     </div>
@@ -2603,7 +2603,7 @@
                   </div>
                 </div>
                 <div class="tour-card">
-                  <div class="tour-head" style="background: var(--bg3)">
+                  <div class="tour-head has-img" style="background-image: url('/assets/tours/Vina-del-Mar-Valparaiso.jpg');">
                     <div class="tour-badge" style="color: var(--t2)">
                       ARTE + CULTURA
                     </div>
@@ -2634,7 +2634,7 @@
                   </div>
                 </div>
                 <div class="tour-card">
-                  <div class="tour-head" style="background: var(--bg3)">
+                  <div class="tour-head has-img" style="background-image: url('/assets/tours/Vinicola-Concha-y-toro-v2.jpg');">
                     <div class="tour-badge" style="color: var(--pri)">
                       MAIOR AM. LATINA
                     </div>
@@ -2668,7 +2668,7 @@
                   </div>
                 </div>
                 <div class="tour-card">
-                  <div class="tour-head" style="background: var(--bg3)">
+                  <div class="tour-head has-img" style="background-image: url('/assets/tours/Vinicola-Undurraga.jpg');">
                     <div class="tour-badge" style="color: var(--pri)">
                       DAS MAIS ANTIGAS
                     </div>
@@ -2704,7 +2704,7 @@
               </div>
               <div class="tour-grid">
                 <div class="tour-card">
-                  <div class="tour-head" style="background: var(--amber-dim)">
+                  <div class="tour-head has-img" style="background-image: url('/assets/tours/City-Walking-Tour.jpg');">
                     <div class="tour-badge" style="color: var(--amber)">
                       ✅ FAZER NO 1º DIA
                     </div>
@@ -2735,7 +2735,7 @@
                   </div>
                 </div>
                 <div class="tour-card">
-                  <div class="tour-head" style="background: var(--bg3)">
+                  <div class="tour-head has-img" style="background-image: url('/assets/tours/Termas-Embalse-Cajon.jpg');">
                     <div class="tour-badge" style="color: var(--red)">
                       ⚠️ SÓ OUT–ABR
                     </div>
