@@ -1670,13 +1670,20 @@
         padding-top: 90px;
       }
       .tour-head.has-img::before {
-        content: '';
+        content: "";
         position: absolute;
         inset: 0;
-        background: linear-gradient(to bottom, rgba(6,4,6,0.25) 0%, rgba(6,4,6,0.75) 60%, rgba(6,4,6,0.95) 100%);
+        background: linear-gradient(
+          to bottom,
+          rgba(6, 4, 6, 0.25) 0%,
+          rgba(6, 4, 6, 0.75) 60%,
+          rgba(6, 4, 6, 0.95) 100%
+        );
         border-radius: inherit;
       }
       .tour-head.has-img .tour-badge,
+      .tour-head-link { position: absolute; inset: 0; z-index: 2; display: block; }
+      .tour-head { position: relative; }
       .tour-head.has-img .tour-name {
         position: relative;
         z-index: 1;
@@ -1882,28 +1889,16 @@
         </div>
         <nav class="sb-nav">
           <div class="nav-label">Descobrir</div>
-          <a
-            class="nav-item"
-            href="/passeios.html"
-          >
+          <a class="nav-item" href="/passeios.html">
             <span class="nav-icon">🗺</span>Passeios
           </a>
-          <a
-            class="nav-item"
-            href="/restaurantes-providencia-vitacura.html"
-          >
+          <a class="nav-item" href="/restaurantes-providencia-vitacura.html">
             <span class="nav-icon">🍽</span>Restaurantes
           </a>
-          <a
-            class="nav-item"
-            href="/valle-nevado-inverno.html"
-          >
+          <a class="nav-item" href="/valle-nevado-inverno.html">
             <span class="nav-icon">🎿</span>Neve &amp; Ski
           </a>
-          <a
-            class="nav-item"
-            href="/vinas.html"
-          >
+          <a class="nav-item" href="/vinas.html">
             <span class="nav-icon">🍷</span>Viñas
           </a>
           <div class="nav-label" style="margin-top: 8px">Planejar</div>
@@ -2426,7 +2421,13 @@
                   class="tour-card"
                   style="border-color: rgba(91, 155, 213, 0.2)"
                 >
-                  <div class="tour-head has-img" style="background-image: url('/assets/tours/Parque-Farellones.jpg');">
+                  <div
+                    class="tour-head has-img"
+                    style="
+                      background-image: url(&quot;/assets/tours/Parque-Farellones.jpg&quot;);
+                    "
+                  >
+                    <a href="/passeios/parque-farellones" class="tour-head-link" aria-label="Ver detalhes Parque Farellones"></a>
                     <div class="tour-badge" style="color: var(--blue)">
                       ⭐ MAIS POPULAR
                     </div>
@@ -2462,7 +2463,13 @@
                   </div>
                 </div>
                 <div class="tour-card">
-                  <div class="tour-head has-img" style="background-image: url('/assets/tours/Valle-Farellones-panoramico.jpg');">
+                  <div
+                    class="tour-head has-img"
+                    style="
+                      background-image: url(&quot;/assets/tours/Valle-Farellones-panoramico.jpg&quot;);
+                    "
+                  >
+                    <a href="/passeios/panoramico-neve" class="tour-head-link" aria-label="Ver detalhes Panorâmico de Neve"></a>
                     <div class="tour-badge" style="color: var(--mint)">
                       MAIS ECONÔMICO
                     </div>
@@ -2493,7 +2500,13 @@
                   </div>
                 </div>
                 <div class="tour-card">
-                  <div class="tour-head has-img" style="background-image: url('/assets/tours/Valle-Nevado.jpg');">
+                  <div
+                    class="tour-head has-img"
+                    style="
+                      background-image: url(&quot;/assets/tours/Valle-Nevado.jpg&quot;);
+                    "
+                  >
+                    <a href="/passeios/valle-nevado" class="tour-head-link" aria-label="Ver detalhes Valle Nevado"></a>
                     <div class="tour-badge" style="color: var(--t2)">
                       SKI AVANÇADO
                     </div>
@@ -2530,7 +2543,13 @@
                   class="tour-card"
                   style="border-color: rgba(245, 150, 31, 0.2)"
                 >
-                  <div class="tour-head has-img" style="background-image: url('/assets/tours/Portillo-Laguna-del-Inca.jpg');">
+                  <div
+                    class="tour-head has-img"
+                    style="
+                      background-image: url(&quot;/assets/tours/Portillo-Laguna-del-Inca.jpg&quot;);
+                    "
+                  >
+                    <a href="/passeios/portillo-laguna-del-inca" class="tour-head-link" aria-label="Ver detalhes Portillo + Laguna del Inca"></a>
                     <div class="tour-badge" style="color: var(--amber)">
                       ⚠️ ALTO RISCO CANCEL.
                     </div>
@@ -2570,7 +2589,13 @@
                   class="tour-card"
                   style="border-color: rgba(45, 212, 160, 0.25)"
                 >
-                  <div class="tour-head has-img" style="background-image: url('/assets/tours/Isla-Negra-Algarrobo-Undurraga.jpg');">
+                  <div
+                    class="tour-head has-img"
+                    style="
+                      background-image: url(&quot;/assets/tours/Isla-Negra-Algarrobo-Undurraga.jpg&quot;);
+                    "
+                  >
+                    <a href="/passeios/isla-negra-undurraga" class="tour-head-link" aria-label="Ver detalhes Isla Negra + Algarrobo + Undurraga"></a>
                     <div class="tour-badge" style="color: var(--mint)">
                       🏆 MAIS COMPLETO
                     </div>
@@ -2603,7 +2628,13 @@
                   </div>
                 </div>
                 <div class="tour-card">
-                  <div class="tour-head has-img" style="background-image: url('/assets/tours/Vina-del-Mar-Valparaiso.jpg');">
+                  <div
+                    class="tour-head has-img"
+                    style="
+                      background-image: url(&quot;/assets/tours/Vina-del-Mar-Valparaiso.jpg&quot;);
+                    "
+                  >
+                    <a href="/passeios/vina-del-mar-valparaiso" class="tour-head-link" aria-label="Ver detalhes Viña del Mar + Valparaíso"></a>
                     <div class="tour-badge" style="color: var(--t2)">
                       ARTE + CULTURA
                     </div>
@@ -2634,7 +2665,13 @@
                   </div>
                 </div>
                 <div class="tour-card">
-                  <div class="tour-head has-img" style="background-image: url('/assets/tours/Vinicola-Concha-y-toro-v2.jpg');">
+                  <div
+                    class="tour-head has-img"
+                    style="
+                      background-image: url(&quot;/assets/tours/Vinicola-Concha-y-toro-v2.jpg&quot;);
+                    "
+                  >
+                    <a href="/passeios/concha-y-toro" class="tour-head-link" aria-label="Ver detalhes Concha y Toro"></a>
                     <div class="tour-badge" style="color: var(--pri)">
                       MAIOR AM. LATINA
                     </div>
@@ -2668,7 +2705,13 @@
                   </div>
                 </div>
                 <div class="tour-card">
-                  <div class="tour-head has-img" style="background-image: url('/assets/tours/Vinicola-Undurraga.jpg');">
+                  <div
+                    class="tour-head has-img"
+                    style="
+                      background-image: url(&quot;/assets/tours/Vinicola-Undurraga.jpg&quot;);
+                    "
+                  >
+                    <a href="/passeios/undurraga" class="tour-head-link" aria-label="Ver detalhes Undurraga"></a>
                     <div class="tour-badge" style="color: var(--pri)">
                       DAS MAIS ANTIGAS
                     </div>
@@ -2704,7 +2747,13 @@
               </div>
               <div class="tour-grid">
                 <div class="tour-card">
-                  <div class="tour-head has-img" style="background-image: url('/assets/tours/City-Walking-Tour.jpg');">
+                  <div
+                    class="tour-head has-img"
+                    style="
+                      background-image: url(&quot;/assets/tours/City-Walking-Tour.jpg&quot;);
+                    "
+                  >
+                    <a href="/passeios/city-walking-tour" class="tour-head-link" aria-label="Ver detalhes City Walking Tour"></a>
                     <div class="tour-badge" style="color: var(--amber)">
                       ✅ FAZER NO 1º DIA
                     </div>
@@ -2735,7 +2784,13 @@
                   </div>
                 </div>
                 <div class="tour-card">
-                  <div class="tour-head has-img" style="background-image: url('/assets/tours/Termas-Embalse-Cajon.jpg');">
+                  <div
+                    class="tour-head has-img"
+                    style="
+                      background-image: url(&quot;/assets/tours/Termas-Embalse-Cajon.jpg&quot;);
+                    "
+                  >
+                    <a href="/passeios/termas-cajon-del-maipo" class="tour-head-link" aria-label="Ver detalhes Termas + Cajón del Maipo"></a>
                     <div class="tour-badge" style="color: var(--red)">
                       ⚠️ SÓ OUT–ABR
                     </div>
