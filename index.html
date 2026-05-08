@@ -2422,7 +2422,7 @@
               <div class="slbl" style="color: var(--blue)">
                 🎿 Neve · Junho a Setembro
               </div>
-              <div class="tour-grid">
+              <div class="tour-grid" id="passeios-tours-anchor">
                 <div
                   class="tour-card"
                   style="border-color: rgba(91, 155, 213, 0.2)"
@@ -4838,11 +4838,24 @@ ${KB}`;
         renderExps();
         cvt();
         initTourCardLinks();
-        const tabFromUrl = new URLSearchParams(window.location.search).get(
-          "tab",
-        );
+        const params = new URLSearchParams(window.location.search);
+        const tabFromUrl = params.get("tab");
+        const scrollFromUrl = params.get("scroll");
         if (tabFromUrl && document.getElementById("p-" + tabFromUrl)) {
           sw(tabFromUrl);
+        }
+        if (tabFromUrl === "passeios" && scrollFromUrl === "tours") {
+          setTimeout(() => {
+            const toursAnchor = document.getElementById(
+              "passeios-tours-anchor",
+            );
+            if (toursAnchor) {
+              toursAnchor.scrollIntoView({
+                behavior: "smooth",
+                block: "start",
+              });
+            }
+          }, 60);
         }
         const rate = document.getElementById("sideRate");
         if (rate) rate.textContent = "R$1 = $" + RATE + " CLP";
