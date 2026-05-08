@@ -8,6 +8,25 @@ This project can run in two modes:
 ## 1) Create database objects
 
 Run [schema.sql](schema.sql) in Supabase SQL Editor.
+Then run [meu-chile-schema.sql](meu-chile-schema.sql).
+
+## 1.1) Seed Meu Chile demo data (recommended)
+
+Run [meu-chile-seed.sql](meu-chile-seed.sql) to populate:
+
+- demo user + trip
+- itinerary + itinerary items
+- smart alerts
+- partners + benefits
+
+This seed is idempotent (safe to re-run).
+
+## 1.2) Reset Meu Chile demo data (optional)
+
+If you need a clean demo cycle, run [meu-chile-reset.sql](meu-chile-reset.sql)
+and then run [meu-chile-seed.sql](meu-chile-seed.sql) again.
+
+Reset script is scoped to demo IDs only.
 
 ## 2) Add frontend config
 
@@ -70,5 +89,6 @@ Public checkout writes to `purchases` are enabled via RLS insert policy.
 - `saveCoupon`
 - `deleteCoupon`
 - `savePurchase`
+- `getMeuChileSnapshot`
 
 If config/sdk is missing, it falls back to local mocks automatically.

@@ -3,12 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Meus Descontos | Descola Chile</title>
+    <title>Meu Chile | Descola Chile</title>
     <meta
       name="description"
-      content="Area do viajante com cupons ativos, usados, QR unico e validade dos seus descontos no Chile."
+      content="Meu Chile: centro de controle da viagem para brasileiros no Chile com roteiro, alertas e beneficios em uma tela."
     />
-    <link rel="canonical" href="https://www.descolachile.com/meus-descontos" />
+    <link rel="canonical" href="https://www.descolachile.com/meu-chile" />
     <link rel="icon" href="favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -18,23 +18,25 @@
     />
     <link rel="stylesheet" href="platform.css" />
   </head>
-  <body class="dc-body">
+  <body class="dc-body dc-body-meu-chile">
     <div class="dc-shell">
       <header class="dc-topbar">
         <a class="dc-brand" href="/">Descola Chile</a>
         <nav class="dc-topnav">
-          <a href="/meu-chile.html">Meu Chile</a>
-          <a href="/descontos">Descontos</a>
-          <a href="/checkout">Comprar acesso</a>
+          <a href="/meu-chile.html" aria-current="page">Meu Chile</a>
+          <a href="/meus-descontos">Beneficios</a>
           <a href="/ajuda">Ajuda</a>
         </nav>
       </header>
+
       <section class="dc-page-title">
-        <p class="dc-kicker">Area do viajante</p>
-        <h1>Meus descontos</h1>
+        <p class="dc-kicker">Travel Companion by Dicas da Pri</p>
+        <h1>Meu Chile sem perrengue</h1>
       </section>
-      <main id="discountsApp"></main>
+
+      <main id="meuChileApp"></main>
     </div>
+
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="analytics-config.js"></script>
     <script src="analytics.js"></script>

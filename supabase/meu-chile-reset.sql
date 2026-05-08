@@ -1,0 +1,68 @@
+-- Meu Chile demo reset (safe and scoped)
+-- Removes only demo rows inserted by meu-chile-seed.sql.
+-- Run in Supabase SQL Editor before re-running meu-chile-seed.sql.
+
+begin;
+
+-- Delete in dependency order
+
+delete from public.coupon_redemptions
+where trip_id = '22222222-2222-4222-8222-222222222222'
+   or user_id = '11111111-1111-4111-8111-111111111111';
+
+delete from public.alerts
+where id in (
+  '55555555-5555-4555-8555-555555555551',
+  '55555555-5555-4555-8555-555555555552',
+  '55555555-5555-4555-8555-555555555553'
+)
+   or trip_id = '22222222-2222-4222-8222-222222222222';
+
+delete from public.itinerary_items
+where id in (
+  '44444444-4444-4444-8444-444444444411',
+  '44444444-4444-4444-8444-444444444412',
+  '44444444-4444-4444-8444-444444444413',
+  '44444444-4444-4444-8444-444444444414',
+  '44444444-4444-4444-8444-444444444421',
+  '44444444-4444-4444-8444-444444444422',
+  '44444444-4444-4444-8444-444444444423'
+)
+   or itinerary_id in (
+     '33333333-3333-4333-8333-333333333331',
+     '33333333-3333-4333-8333-333333333332'
+   );
+
+delete from public.itineraries
+where id in (
+  '33333333-3333-4333-8333-333333333331',
+  '33333333-3333-4333-8333-333333333332'
+)
+   or trip_id = '22222222-2222-4222-8222-222222222222';
+
+delete from public.benefits
+where id in (
+  '88888888-8888-4888-8888-888888888881',
+  '88888888-8888-4888-8888-888888888882',
+  '88888888-8888-4888-8888-888888888883'
+);
+
+delete from public.partners
+where id in (
+  '77777777-7777-4777-8777-777777777771',
+  '77777777-7777-4777-8777-777777777772'
+);
+
+delete from public.user_preferences
+where id = '66666666-6666-4666-8666-666666666666'
+   or user_id = '11111111-1111-4111-8111-111111111111';
+
+delete from public.trips
+where id = '22222222-2222-4222-8222-222222222222'
+   or user_id = '11111111-1111-4111-8111-111111111111';
+
+delete from public.users
+where id = '11111111-1111-4111-8111-111111111111'
+   or email = 'camila.demo@descolachile.com';
+
+commit;

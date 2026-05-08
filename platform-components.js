@@ -9,15 +9,33 @@
   }
 
   function CouponCard(coupon) {
+    const rating = Number(coupon.rating || 0).toFixed(1);
+    const reviews = Number(coupon.reviewsCount || 0);
+    const badge = coupon.badge || "Parceiro Descola";
+
     return `
       <article class="dc-card coupon-card">
-        <div class="coupon-media" style="background-image:url('${escapeHtml(coupon.image)}')"></div>
+        <div class="coupon-media" style="background-image:url('${escapeHtml(coupon.image)}')">
+          <span class="coupon-badge-top">${escapeHtml(badge)}</span>
+        </div>
         <div class="coupon-body">
           <span class="dc-badge">${escapeHtml(coupon.category)}</span>
           <h3>${escapeHtml(coupon.name)}</h3>
-          <p class="coupon-partner">${escapeHtml(coupon.partner)}</p>
+          <p class="coupon-partner">${escapeHtml(coupon.partner)} | ${escapeHtml(coupon.district || "Santiago")}</p>
           <p class="coupon-discount">${escapeHtml(coupon.discount)}</p>
-          <a class="dc-btn dc-btn-primary" href="/cupom/${encodeURIComponent(coupon.id)}">Ver detalhes</a>
+          <p class="coupon-short">${escapeHtml(coupon.shortText || "Economize com parceiro verificado da Descola.")}</p>
+          <p class="coupon-rating">⭐ ${rating} (${reviews} avaliacoes)</p>
+          <p class="coupon-price-note">${escapeHtml(coupon.priceNote || "Beneficio exclusivo para comunidade Descola")}</p>
+          <div class="coupon-tags-row">
+            ${(coupon.tags || [])
+              .slice(0, 3)
+              .map(
+                (tag) =>
+                  `<span class="coupon-tag-chip">${escapeHtml(tag)}</span>`,
+              )
+              .join("")}
+          </div>
+          <a class="dc-btn dc-btn-primary" href="/cupom/${encodeURIComponent(coupon.id)}">Ver desconto</a>
         </div>
       </article>
     `;
@@ -65,7 +83,7 @@
     `;
   }
 
-  function PartnerCard(partner) {
+  function AdminPartnerCard(partner) {
     return `
       <article class="dc-card partner-card">
         <span class="dc-badge">${escapeHtml(partner.category)}</span>
@@ -73,6 +91,168 @@
         <p>Contato: ${escapeHtml(partner.contact)}</p>
         <p>Comissao: ${escapeHtml(partner.commission)}</p>
         <p>Cupons usados: ${escapeHtml(partner.usedCoupons)}</p>
+      </article>
+    `;
+  }
+
+  function AppShell(config) {
+    return `
+      <section class="mc-app-shell">
+        ${config && config.content ? config.content : ""}
+      </section>
+    `;
+  }
+
+  function HeroDashboard(config) {
+    const user = (config && config.user) || {};
+    const trip = (config && config.trip) || {};
+    const nextSteps = (config && config.nextSteps) || [];
+
+    return `
+      <article class="dc-card mc-hero-dashboard">
+        <div class="mc-hero-copy">
+          <p class="dc-kicker">Meu Chile</p>
+          <h1>Oi, ${escapeHtml(user.firstName || "viajante")} 👋</h1>
+          <p class="mc-hero-subtitle">Sua viagem esta organizada e a Dicas da Pri esta cuidando de voce.</p>
+          <div class="mc-trip-status">
+            <span class="mc-status-chip">${escapeHtml(trip.currentDayLabel || "Dia da viagem")}</span>
+            <span class="mc-status-chip mc-status-chip-soft">${escapeHtml(trip.dateRange || "Datas da viagem")}</span>
+          </div>
+        </div>
+        <div class="mc-next-steps">
+          <h2>Proximos passos</h2>
+          <ul>
+            ${nextSteps.map((step) => `<li>${escapeHtml(step)}</li>`).join("")}
+          </ul>
+        </div>
+      </article>
+    `;
+  }
+
+  function SmartAlertCard(alert) {
+    return `
+      <article class="dc-card mc-alert-card mc-alert-${escapeHtml(alert.level || "low")}">
+        <div class="mc-alert-head">
+          <span class="mc-alert-icon" aria-hidden="true">${escapeHtml(alert.icon || "info")}</span>
+          <p>${escapeHtml(alert.title || "Alerta")}</p>
+        </div>
+        <p class="mc-alert-message">${escapeHtml(alert.message || "")}</p>
+      </article>
+    `;
+  }
+
+  function TimelineItem(item) {
+    return `
+      <article class="dc-card mc-timeline-item">
+        <div class="mc-timeline-head">
+          <h4>${escapeHtml(item.name || "Item do roteiro")}</h4>
+          <span>${escapeHtml(item.suggestedTime || "--:--")}</span>
+        </div>
+        <p class="mc-timeline-meta">${escapeHtml(item.distance || "")}${item.eta ? ` • ${escapeHtml(item.eta)}` : ""}</p>
+        <p class="mc-timeline-tip">${escapeHtml(item.humanTip || "")}</p>
+        <div class="mc-timeline-foot">
+          <a class="dc-btn dc-btn-secondary" href="${escapeHtml(item.ctaUrl || "#")}">${escapeHtml(item.ctaLabel || "Abrir")}</a>
+          <span class="mc-discount-pill">${escapeHtml(item.discount || "Sem desconto")}</span>
+        </div>
+      </article>
+    `;
+  }
+
+  function TimelineDay(day) {
+    const periodMap = {
+      manha: "Manha",
+      almoco: "Almoco",
+      tarde: "Tarde",
+      noite: "Noite",
+    };
+    return `
+      <section class="mc-timeline-day">
+        <header class="mc-timeline-day-head">
+          <h3>${escapeHtml(day.dayLabel || "Dia")}</h3>
+          <span>${escapeHtml(day.date || "")}</span>
+        </header>
+        ${(day.blocks || [])
+          .map(
+            (block) => `
+                <div class="mc-period-block">
+                  <p class="mc-period-title">${escapeHtml(periodMap[block.period] || block.period || "Periodo")}</p>
+                  <div class="mc-period-items">
+                    ${(block.items || []).map((item) => TimelineItem(item)).join("")}
+                  </div>
+                </div>
+              `,
+          )
+          .join("")}
+      </section>
+    `;
+  }
+
+  function BenefitCard(benefit) {
+    return `
+      <article class="dc-card mc-benefit-card">
+        <p class="mc-benefit-category">${escapeHtml(benefit.category || "beneficio")}</p>
+        <h4>${escapeHtml(benefit.title || "Beneficio")}</h4>
+        <p>${escapeHtml(benefit.benefit || "")}</p>
+        <div class="mc-benefit-foot">
+          <span class="mc-status-pill mc-status-${escapeHtml(benefit.status || "ativo")}">${escapeHtml(benefit.status || "ativo")}</span>
+          <a class="dc-btn dc-btn-primary" href="/meus-descontos">${escapeHtml(benefit.ctaLabel || "usar beneficio")}</a>
+        </div>
+      </article>
+    `;
+  }
+
+  function MoodSelector(config) {
+    const moods = (config && config.moods) || [];
+    const selectedMood = (config && config.selectedMood) || "";
+
+    return `
+      <section class="dc-card mc-mood-selector">
+        <h3>Me surpreenda hoje</h3>
+        <p>Escolha o mood do dia para montar um plano rapido.</p>
+        <div class="mc-mood-grid" role="group" aria-label="Selecao de mood">
+          ${moods
+            .map(
+              (mood) =>
+                `<button class="dc-btn dc-btn-ghost mc-mood-btn ${selectedMood === mood ? "mc-mood-btn-active" : ""}" type="button" data-mood="${escapeHtml(mood)}">${escapeHtml(mood)}</button>`,
+            )
+            .join("")}
+        </div>
+        <button id="surpriseTodayBtn" class="dc-btn dc-btn-primary mc-surprise-btn" type="button">Me surpreenda hoje</button>
+      </section>
+    `;
+  }
+
+  function SurpriseCard(config) {
+    const plan =
+      (config && config.plan) || "Seu plano surpresa vai aparecer aqui.";
+    return `
+      <article class="dc-card mc-surprise-card" id="surpriseCard">
+        <p class="dc-kicker">Plano do dia</p>
+        <h3>${escapeHtml(plan)}</h3>
+      </article>
+    `;
+  }
+
+  function DicasPriBlock(config) {
+    const text = (config && config.text) || "Essa dica e bem Dicas da Pri.";
+    return `
+      <article class="dc-card mc-pri-block">
+        <p class="dc-kicker">Dicas da Pri</p>
+        <p>${escapeHtml(text)}</p>
+      </article>
+    `;
+  }
+
+  function PartnerCard(partner) {
+    return `
+      <article class="dc-card mc-partner-card">
+        <p class="mc-benefit-category">${escapeHtml(partner.category || "parceiro")}</p>
+        <h4>${escapeHtml(partner.company || "Parceiro Descola")}</h4>
+        <p>${escapeHtml(partner.benefit || "Beneficio especial para comunidade Descola")}</p>
+        <div class="mc-partner-foot">
+          <span>${escapeHtml(partner.district || "Santiago")}</span>
+          <span class="mc-status-pill mc-status-${escapeHtml(partner.status || "ativo")}">${escapeHtml(partner.status || "ativo")}</span>
+        </div>
       </article>
     `;
   }
@@ -183,6 +363,7 @@
   function FilterBar(config) {
     const categories = config.categories || [];
     const selected = config.selected || "Todos";
+    const chips = config.chips || [];
 
     return `
       <div class="filter-bar dc-card">
@@ -196,19 +377,70 @@
             )
             .join("")}
         </select>
+        <div id="couponChips" class="coupon-chips" role="group" aria-label="Filtros rapidos">
+          ${chips
+            .map(
+              (chip) =>
+                `<button class="dc-btn dc-btn-ghost chip-btn" type="button" data-chip="${escapeHtml(chip)}">${escapeHtml(chip)}</button>`,
+            )
+            .join("")}
+        </div>
       </div>
     `;
   }
 
+  function UserCouponCard(item) {
+    const statusLabel =
+      item.accessStatus === "used"
+        ? "Usado"
+        : item.accessStatus === "active"
+          ? "Ativo"
+          : "Disponivel";
+
+    const statusClass =
+      item.accessStatus === "used"
+        ? "status-used"
+        : item.accessStatus === "active"
+          ? "status-active"
+          : "status-available";
+
+    return `
+      <article class="dc-card user-coupon-card">
+        <div class="user-coupon-head">
+          <p class="user-coupon-name">${escapeHtml(item.name)}</p>
+          <span class="user-coupon-status ${statusClass}">${statusLabel}</span>
+        </div>
+        <p class="coupon-partner">${escapeHtml(item.partner)} | ${escapeHtml(item.district || "Santiago")}</p>
+        <p class="coupon-discount">${escapeHtml(item.discount)}</p>
+        <p class="user-coupon-expiry">Expira em: ${escapeHtml(item.activation && item.activation.expiresAt ? item.activation.expiresAt : item.validUntil)}</p>
+        <div class="button-row">
+          <a class="dc-btn dc-btn-secondary" href="/cupom/${encodeURIComponent(item.id)}">Detalhes</a>
+          <a class="dc-btn dc-btn-primary" href="/apresentar-cupom?id=${encodeURIComponent(item.id)}">Abrir QR</a>
+        </div>
+      </article>
+    `;
+  }
+
   window.DescolaComponents = {
+    AppShell,
+    HeroDashboard,
+    SmartAlertCard,
+    TimelineDay,
+    TimelineItem,
+    BenefitCard,
+    MoodSelector,
+    SurpriseCard,
+    DicasPriBlock,
     CouponCard,
     CouponCardLocked,
     PricingCard,
     PartnerCard,
+    AdminPartnerCard,
     DashboardMetricCard,
     AdminTable,
     QRDisplay,
     CheckoutForm,
     FilterBar,
+    UserCouponCard,
   };
 })();

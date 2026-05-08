@@ -93,6 +93,7 @@
     const cards = [
       { label: "Ventas totales", value: metrics.salesTotal },
       { label: "Cupones vendidos", value: metrics.couponsSold },
+      { label: "Cupones activados", value: metrics.couponsActivated || 0 },
       { label: "Clientes activos", value: metrics.activeCustomers },
       { label: "Clientes en Chile hoy", value: metrics.inChileToday },
       {
@@ -105,6 +106,10 @@
       },
       { label: "Cupones usados", value: metrics.usedCoupons },
       { label: "Partners activos", value: metrics.activePartners },
+      {
+        label: "Tasa de conversion",
+        value: `${Math.round(Number(metrics.conversionRate || 0) * 100)}%`,
+      },
     ];
 
     root.innerHTML = `
@@ -138,6 +143,11 @@
               <h3>Top 5 partners por ventas</h3>
               <ol>${metrics.topPartners.map((item) => `<li>${item}</li>`).join("")}</ol>
             </article>
+          </section>
+          <section class="dc-card">
+            <h3>Alertas de conversion baja</h3>
+            <p>Revisar beneficios con baja activacion y ajustar copy, horario o condiciones.</p>
+            <ul>${(metrics.lowConversionCoupons || []).map((item) => `<li>${item}</li>`).join("")}</ul>
           </section>
         </main>
       </section>
@@ -322,11 +332,14 @@
           <a class="dc-btn dc-btn-secondary" href="/admin">Volver al dashboard</a>
         </header>
         <section class="partner-grid">
-          ${list.map((partner) => components.PartnerCard(partner)).join("")}
+          ${list.map((partner) => components.AdminPartnerCard(partner)).join("")}
         </section>
         <section class="dc-card">
           <h2>Campos gestionables (MVP)</h2>
           <p>Nombre empresa, categoria, contacto, email, WhatsApp, direccion, comision, descuento ofrecido, estado, ventas generadas, cupones usados y monto estimado aportado.</p>
+          <div class="button-row">
+            <a class="dc-btn dc-btn-primary" href="/parceiro-dashboard?partner=${encodeURIComponent((list[0] && list[0].id) || "partner-fogobrasas")}">Ver dashboard do partner</a>
+          </div>
         </section>
       </section>
     `;
@@ -364,13 +377,17 @@
       <section class="admin-page-wrap">
         <header class="admin-subheader">
           <h1>Metricas y reportes</h1>
-          <a class="dc-btn dc-btn-secondary" href="/admin">Volver al dashboard</a>
+          <div class="button-row">
+            <button id="exportMetricsBtn" class="dc-btn dc-btn-secondary" type="button">Exportar CSV</button>
+            <a class="dc-btn dc-btn-secondary" href="/admin">Volver al dashboard</a>
+          </div>
         </header>
         <section class="charts-grid">
           ${chart("Uso por categoria", metrics.usageByCategory)}
           ${chart("Partners con mas conversiones", metrics.partnerConversions)}
           ${chart("Clientes por fuente", metrics.clientsBySource)}
           ${chart("Ingresos por tipo de producto", metrics.incomeByProduct)}
+          ${chart("Usuarios por semana de chegada", metrics.usersByArrivalWeek || [])}
         </section>
         <section class="dc-card">
           <h2>Tracking de uso</h2>
@@ -392,6 +409,84 @@
             })),
             actions: [{ id: "validate", label: "Validar" }],
           })}
+        </section>
+      </section>
+    `;
+
+    const exportMetricsBtn = document.getElementById("exportMetricsBtn");
+    if (exportMetricsBtn) {
+      exportMetricsBtn.addEventListener("click", () => {
+        const csvRows = [
+          [
+            "cliente",
+            "cupom",
+            "partner",
+            "data",
+            "valor",
+            "desconto",
+            "comissao",
+            "status",
+          ],
+          ...usage.map((item) => [
+            item.client,
+            item.coupon,
+            item.partner,
+            item.datetime,
+            String(item.estimatedValue),
+            item.discountApplied,
+            String(item.estimatedCommission),
+            item.status,
+          ]),
+        ];
+        const csvText = csvRows
+          .map((row) =>
+            row.map((v) => `"${String(v).replace(/"/g, '""')}"`).join(","),
+          )
+          .join("\n");
+        const blob = new Blob([csvText], { type: "text/csv;charset=utf-8;" });
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = "descola-metricas.csv";
+        link.click();
+      });
+    }
+  }
+
+  async function mountPartnerDashboard() {
+    const root = document.getElementById("partnerDashboardApp");
+    if (!root) return;
+
+    const partnerId = new URLSearchParams(window.location.search).get(
+      "partner",
+    );
+    const insight = data.getPartnerInsights(partnerId || "partner-fogobrasas");
+    const metrics = insight.metrics;
+
+    root.innerHTML = `
+      <section class="admin-page-wrap">
+        <header class="admin-subheader">
+          <h1>Painel do parceiro: ${insight.partner.company}</h1>
+          <a class="dc-btn dc-btn-secondary" href="/admin/partners">Voltar</a>
+        </header>
+        <section class="metric-grid">
+          ${components.DashboardMetricCard({ label: "Clientes vindos da Descola", value: metrics.customersFromDescola })}
+          ${components.DashboardMetricCard({ label: "Cupons usados", value: metrics.usedCoupons })}
+          ${components.DashboardMetricCard({ label: "Valor estimado vendido", value: data.formatMoney(metrics.estimatedSold) })}
+          ${components.DashboardMetricCard({ label: "Desconto total entregue", value: data.formatMoney(metrics.totalDiscountDelivered) })}
+        </section>
+        <section class="admin-two-columns">
+          <article class="dc-card">
+            <h3>Dias e horarios com mais uso</h3>
+            <ul>${metrics.bestHours.map((item) => `<li>${item}</li>`).join("")}</ul>
+          </article>
+          <article class="dc-card">
+            <h3>Feedback dos clientes</h3>
+            <ul>${insight.feedback.map((item) => `<li>${item}</li>`).join("")}</ul>
+          </article>
+        </section>
+        <section class="dc-card">
+          <h3>Recomendacoes para melhorar conversao</h3>
+          <ul>${insight.recommendations.map((item) => `<li>${item}</li>`).join("")}</ul>
         </section>
       </section>
     `;
@@ -449,4 +544,5 @@
   mountPartnersPage();
   mountMetricsPage();
   mountConfigPage();
+  mountPartnerDashboard();
 })();

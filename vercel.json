@@ -37,7 +37,8 @@
     { "source": "/admin/configuracoes", "destination": "/admin/configuracoes.html" },
     { "source": "/parceiro-dashboard", "destination": "/parceiro-dashboard.html" },
     { "source": "/passeios", "destination": "/passeios.html" },
-    { "source": "/vinas", "destination": "/vinas.html" }
+    { "source": "/vinas", "destination": "/vinas.html" },
+    { "source": "/meu-chile", "destination": "/meu-chile.html" }
   ],
   "headers": [
     {

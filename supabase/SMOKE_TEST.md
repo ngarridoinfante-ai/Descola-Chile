@@ -5,12 +5,21 @@ Objetivo: validar que el sitio usa Supabase correctamente en publico y admin, co
 ## 0) Precondiciones
 
 1. Ejecutaste `supabase/schema.sql` en SQL Editor.
-2. Completaste `supabase-config.js` con:
+2. Ejecutaste `supabase/meu-chile-schema.sql` en SQL Editor.
+3. (Recomendado) Ejecutaste `supabase/meu-chile-seed.sql` para datos demo de Meu Chile.
+4. Completaste `supabase-config.js` con:
    - `enabled: true`
    - `url`
    - `anonKey`
-3. Creaste al menos 1 usuario admin en Supabase Auth.
-4. Insertaste su `auth.users.id` en `public.admin_users` con rol `admin`.
+5. Creaste al menos 1 usuario admin en Supabase Auth.
+6. Insertaste su `auth.users.id` en `public.admin_users` con rol `admin`.
+
+Flujo recomendado para pruebas repetibles:
+
+1. Ejecuta `supabase/meu-chile-reset.sql`.
+2. Ejecuta `supabase/meu-chile-seed.sql`.
+
+Nota: `meu-chile-seed.sql` usa sintaxis PostgreSQL/Supabase (`ON CONFLICT`, `::jsonb`).
 
 SQL sugerido:
 
@@ -79,7 +88,27 @@ select count(*) from public.coupons;
 select count(*) from public.purchases;
 select id, membership_price from public.settings where id = 'main';
 select user_id, role from public.admin_users;
+select count(*) from public.trips;
+select count(*) from public.itineraries;
+select count(*) from public.itinerary_items;
+select count(*) from public.alerts;
+select count(*) from public.benefits where status = 'active';
 ```
+
+## 6.1) Prueba Meu Chile (snapshot real)
+
+1. Abre `/meu-chile.html`.
+2. Resultado esperado:
+   - Hero con viaje activo.
+   - Timeline con items por periodo (manha/almoco/tarde/noite).
+   - Alertas inteligentes visibles.
+   - Seccion de beneficios poblada desde `public.benefits`.
+
+Si no carga datos reales:
+
+1. Revisa `supabase-config.js` (`enabled: true`, URL/key validos).
+2. Verifica que existan filas en `trips`, `itineraries`, `itinerary_items`, `alerts`, `benefits`.
+3. Si no hay sesion de usuario, el frontend toma el viaje mas reciente como fallback.
 
 ## 7) Criterio de aprobado
 
@@ -91,6 +120,7 @@ Checklist final:
 - [ ] Configuracion guarda en `settings`.
 - [ ] Checkout publico inserta en `purchases`.
 - [ ] Catalogo publico carga cupones activos.
+- [ ] Meu Chile carga snapshot real (trips + itinerary + alerts + benefits).
 
 ## 8) Fallas tipicas y solucion rapida
 
@@ -103,3 +133,5 @@ Checklist final:
    - Hard refresh del navegador para limpiar cache de scripts.
 4. Checkout no inserta en `purchases`:
    - Verificar politica `purchases_public_insert` en RLS.
+5. Quiero volver al estado demo inicial:
+   - Ejecutar `meu-chile-reset.sql` y luego `meu-chile-seed.sql`.

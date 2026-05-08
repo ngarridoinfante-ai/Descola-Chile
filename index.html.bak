@@ -1,0 +1,4731 @@
+﻿<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"
+    />
+    <title>Descola Chile — Powered by Dicas da Pri</title>
+    <meta
+      name="description"
+      content="Descola Chile powered by Dicas da Pri: passeios, descontos, seguro viagem e assistente IA 24h para brasileiros no Chile."
+    />
+    <meta
+      name="keywords"
+      content="dicas da pri chile, passeios santiago, brasileiros chile, desconto seguro viagem, transfer aeroporto santiago"
+    />
+    <link rel="canonical" href="https://www.descolachile.com/" />
+    <meta
+      property="og:title"
+      content="Descola Chile — Powered by Dicas da Pri"
+    />
+    <meta
+      property="og:description"
+      content="Passeios, descontos e assistente IA 24h para brasileiros no Chile."
+    />
+    <meta property="og:url" content="https://www.descolachile.com/" />
+    <meta property="og:type" content="website" />
+    <link rel="icon" href="favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;0,600;0,900;1,300;1,400;1,600&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        height: 100%;
+        font-family: "DM Sans", sans-serif;
+        background: #060406;
+        color: #ede0e8;
+        -webkit-font-smoothing: antialiased;
+        overflow: hidden;
+      }
+      button,
+      input,
+      textarea,
+      select {
+        font: inherit;
+        border: none;
+        outline: none;
+        background: none;
+      }
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+      :root {
+        --pri: #e8157a;
+        --pri-dim: rgba(232, 21, 122, 0.12);
+        --pri-glow: rgba(232, 21, 122, 0.05);
+        --pri-dark: #c4115f;
+        --bg0: #060406;
+        --bg1: #0d080c;
+        --bg2: #160d14;
+        --bg3: #1f1220;
+        --bg4: #2a1830;
+        --w: #ffffff;
+        --t1: #ede0e8;
+        --t2: #8a6880;
+        --t3: #4a3048;
+        --l1: rgba(232, 21, 122, 0.08);
+        --l2: rgba(232, 21, 122, 0.14);
+        --l3: rgba(232, 21, 122, 0.22);
+        --gold: #d4a853;
+        --gold-dim: rgba(212, 168, 83, 0.12);
+        --mint: #2dd4a0;
+        --mint-dim: rgba(45, 212, 160, 0.1);
+        --amber: #f5961f;
+        --amber-dim: rgba(245, 150, 31, 0.1);
+        --red: #f04f4f;
+        --red-dim: rgba(240, 79, 79, 0.1);
+        --blue: #5b9bd5;
+        --blue-dim: rgba(91, 155, 213, 0.1);
+        --r1: 6px;
+        --r2: 12px;
+        --r3: 18px;
+        --r4: 24px;
+        --rfull: 9999px;
+      }
+      .shell {
+        display: grid;
+        grid-template-columns: 270px 1fr;
+        height: 100vh;
+        overflow: hidden;
+      }
+      .sidebar {
+        background: var(--bg1);
+        border-right: 1px solid var(--l1);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+      .sb-logo {
+        padding: 20px 18px 16px;
+        border-bottom: 1px solid var(--l1);
+        flex-shrink: 0;
+      }
+      .logo-img {
+        width: 148px;
+        height: auto;
+        display: block;
+        margin-bottom: 10px;
+      }
+      .sb-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        background: var(--pri-dim);
+        border: 1px solid var(--l2);
+        border-radius: var(--rfull);
+        padding: 3px 10px;
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--pri);
+      }
+      .sb-dot {
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: var(--pri);
+        animation: blink 2s infinite;
+        display: inline-block;
+      }
+      .sb-nav {
+        flex: 1;
+        overflow-y: auto;
+        padding: 10px;
+        scrollbar-width: none;
+      }
+      .sb-nav::-webkit-scrollbar {
+        display: none;
+      }
+      .nav-label {
+        font-size: 8.5px;
+        font-weight: 700;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--t3);
+        padding: 4px 8px 6px;
+      }
+      .nav-item {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        padding: 9px 10px;
+        border-radius: var(--r2);
+        cursor: pointer;
+        transition: all 0.15s;
+        color: var(--t2);
+        font-size: 12.5px;
+        font-weight: 500;
+        margin-bottom: 1px;
+        border: 1px solid transparent;
+        text-decoration: none;
+      }
+      .nav-item:hover {
+        background: var(--bg2);
+        color: var(--t1);
+      }
+      .nav-item.active {
+        background: var(--pri-dim);
+        border-color: var(--l2);
+        color: var(--pri);
+      }
+      .nav-icon {
+        font-size: 15px;
+        width: 20px;
+        text-align: center;
+        flex-shrink: 0;
+      }
+      .sb-footer {
+        padding: 12px 14px;
+        border-top: 1px solid var(--l1);
+        flex-shrink: 0;
+      }
+      .rate-widget {
+        background: var(--pri-dim);
+        border: 1px solid var(--l2);
+        border-radius: var(--r2);
+        padding: 11px 13px;
+      }
+      .rate-lbl {
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--t3);
+        margin-bottom: 4px;
+      }
+      .rate-val {
+        font-family: "Fraunces", serif;
+        font-size: 18px;
+        color: var(--pri);
+      }
+      .rate-sub {
+        font-size: 9.5px;
+        color: var(--t3);
+        margin-top: 2px;
+      }
+      .main {
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        background: var(--bg0);
+      }
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 20px;
+        height: 54px;
+        background: var(--bg1);
+        border-bottom: 1px solid var(--l1);
+        flex-shrink: 0;
+        z-index: 50;
+      }
+      .tabs {
+        display: flex;
+        align-items: center;
+        gap: 2px;
+        height: 100%;
+        overflow-x: auto;
+        scrollbar-width: none;
+      }
+      .tabs::-webkit-scrollbar {
+        display: none;
+      }
+      .tab {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        padding: 0 14px;
+        height: 100%;
+        font-size: 11.5px;
+        font-weight: 600;
+        color: var(--t2);
+        cursor: pointer;
+        border-bottom: 2px solid transparent;
+        transition: all 0.15s;
+        white-space: nowrap;
+      }
+      .tab:hover {
+        color: var(--t1);
+      }
+      .tab.active {
+        color: var(--pri);
+        border-bottom-color: var(--pri);
+      }
+      .tbadge {
+        font-size: 7.5px;
+        font-weight: 700;
+        background: var(--pri);
+        color: #fff;
+        padding: 2px 5px;
+        border-radius: var(--rfull);
+      }
+      .topbar-right {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-shrink: 0;
+        margin-left: 12px;
+      }
+      .btn-xs {
+        font-size: 11px;
+        font-weight: 600;
+        padding: 6px 13px;
+        border-radius: var(--r2);
+        cursor: pointer;
+        transition: all 0.15s;
+      }
+      .btn-ghost {
+        border: 1px solid var(--l2);
+        color: var(--t2);
+      }
+      .btn-ghost:hover {
+        border-color: var(--l3);
+        color: var(--t1);
+      }
+      .btn-pri {
+        background: var(--pri-dark);
+        color: #fff;
+        box-shadow: 0 2px 12px rgba(196, 17, 95, 0.25);
+      }
+      .btn-pri:hover {
+        background: var(--pri);
+      }
+      .page {
+        display: none;
+        flex: 1;
+        overflow: hidden;
+        flex-direction: column;
+      }
+      .page.active {
+        display: flex;
+      }
+      .scroll {
+        flex: 1;
+        overflow-y: auto;
+        scrollbar-width: thin;
+        scrollbar-color: var(--bg3) transparent;
+      }
+      .scroll::-webkit-scrollbar {
+        width: 4px;
+      }
+      .scroll::-webkit-scrollbar-thumb {
+        background: var(--bg3);
+        border-radius: 2px;
+      }
+      .inner {
+        padding: 20px 24px;
+      }
+      .hero-strip {
+        background: linear-gradient(135deg, var(--bg2), var(--bg3));
+        border-bottom: 1px solid var(--l1);
+        padding: 28px 24px 24px;
+      }
+      .hero-eyebrow {
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--pri);
+        margin-bottom: 10px;
+      }
+      .hero-h1 {
+        font-family: "Fraunces", serif;
+        font-size: 30px;
+        font-weight: 600;
+        color: var(--w);
+        letter-spacing: -0.02em;
+        line-height: 1.15;
+        margin-bottom: 12px;
+      }
+      .hero-h1 em {
+        font-style: italic;
+        color: var(--pri);
+      }
+      .hero-sub {
+        font-size: 13px;
+        color: var(--t2);
+        line-height: 1.6;
+        margin-bottom: 20px;
+        max-width: 500px;
+      }
+      .hero-search {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        background: var(--bg0);
+        border: 1.5px solid var(--l2);
+        border-radius: var(--r3);
+        padding: 12px 16px;
+        max-width: 560px;
+        transition: border-color 0.18s;
+      }
+      .hero-search:focus-within {
+        border-color: var(--pri);
+      }
+      .search-icon {
+        font-size: 17px;
+        flex-shrink: 0;
+        color: var(--t2);
+      }
+      .search-in {
+        flex: 1;
+        font-size: 13.5px;
+        color: var(--t1);
+        background: transparent;
+      }
+      .search-in::placeholder {
+        color: var(--t3);
+      }
+      .search-btn {
+        background: var(--pri-dark);
+        color: #fff;
+        border-radius: var(--r2);
+        padding: 8px 16px;
+        font-size: 12px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.15s;
+      }
+      .search-btn:hover {
+        background: var(--pri);
+      }
+      .cat-row {
+        display: flex;
+        gap: 8px;
+        padding: 16px 24px;
+        overflow-x: auto;
+        scrollbar-width: none;
+        border-bottom: 1px solid var(--l1);
+        flex-shrink: 0;
+      }
+      .cat-row::-webkit-scrollbar {
+        display: none;
+      }
+      .cat-pill {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        background: var(--bg2);
+        border: 1px solid var(--l1);
+        border-radius: var(--rfull);
+        padding: 7px 14px;
+        font-size: 11.5px;
+        font-weight: 600;
+        color: var(--t2);
+        cursor: pointer;
+        transition: all 0.15s;
+        white-space: nowrap;
+      }
+      .cat-pill:hover {
+        border-color: var(--l2);
+        color: var(--t1);
+      }
+      .cat-pill.on {
+        background: var(--pri-dim);
+        border-color: var(--l2);
+        color: var(--pri);
+      }
+      .sec-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 14px;
+      }
+      .sec-title {
+        font-family: "Fraunces", serif;
+        font-size: 18px;
+        font-weight: 600;
+        color: var(--w);
+        letter-spacing: -0.01em;
+      }
+      .sec-link {
+        font-size: 11.5px;
+        color: var(--pri);
+        cursor: pointer;
+        font-weight: 600;
+      }
+      .sec-link:hover {
+        text-decoration: underline;
+      }
+      .exp-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 14px;
+        margin-bottom: 28px;
+      }
+      .exp-card {
+        background: var(--bg2);
+        border: 1px solid var(--l1);
+        border-radius: var(--r3);
+        overflow: hidden;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+      .exp-card:hover {
+        border-color: var(--l2);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 28px rgba(0, 0, 0, 0.4);
+      }
+      .exp-thumb {
+        height: 150px;
+        background: var(--bg3);
+        position: relative;
+        overflow: hidden;
+      }
+      .exp-badge {
+        position: absolute;
+        top: 8px;
+        left: 8px;
+        font-size: 8.5px;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        padding: 3px 9px;
+        border-radius: var(--rfull);
+      }
+      .exp-badge.pri {
+        background: var(--pri);
+        color: #fff;
+      }
+      .exp-badge.hot {
+        background: var(--amber);
+        color: #fff;
+      }
+      .exp-badge.new {
+        background: var(--mint);
+        color: #000;
+      }
+      .exp-wishlist {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 13px;
+        cursor: pointer;
+        transition: all 0.15s;
+      }
+      .exp-wishlist:hover {
+        background: rgba(232, 21, 122, 0.8);
+      }
+      .exp-body {
+        padding: 12px 13px;
+      }
+      .exp-cat {
+        font-size: 9.5px;
+        color: var(--pri);
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        margin-bottom: 4px;
+      }
+      .exp-name {
+        font-size: 13.5px;
+        font-weight: 700;
+        color: var(--w);
+        margin-bottom: 5px;
+        line-height: 1.3;
+      }
+      .exp-meta {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 8px;
+      }
+      .exp-rating {
+        font-size: 11px;
+        color: var(--gold);
+        font-weight: 600;
+      }
+      .exp-reviews {
+        font-size: 10px;
+        color: var(--t2);
+      }
+      .exp-duration {
+        font-size: 10.5px;
+        color: var(--t2);
+        display: flex;
+        align-items: center;
+        gap: 3px;
+      }
+      .exp-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .exp-price-label {
+        font-size: 9.5px;
+        color: var(--t2);
+      }
+      .exp-price {
+        font-family: "Fraunces", serif;
+        font-size: 18px;
+        font-weight: 600;
+        color: var(--w);
+      }
+      .exp-cta {
+        background: var(--pri-dark);
+        color: #fff;
+        border-radius: var(--r1);
+        padding: 6px 12px;
+        font-size: 11px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.15s;
+      }
+      .exp-cta:hover {
+        background: var(--pri);
+      }
+      .disc-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        margin-bottom: 28px;
+      }
+      .disc-card {
+        border-radius: var(--r3);
+        padding: 18px;
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        min-height: 140px;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+      .disc-card:hover {
+        transform: translateY(-2px);
+      }
+      .disc-card.seguro {
+        background: linear-gradient(
+          135deg,
+          rgba(45, 212, 160, 0.12),
+          rgba(45, 212, 160, 0.04)
+        );
+        border: 1px solid rgba(45, 212, 160, 0.2);
+      }
+      .disc-card.esim {
+        background: linear-gradient(
+          135deg,
+          rgba(91, 155, 213, 0.12),
+          rgba(91, 155, 213, 0.04)
+        );
+        border: 1px solid rgba(91, 155, 213, 0.2);
+      }
+      .disc-card.cambio {
+        background: linear-gradient(
+          135deg,
+          rgba(212, 168, 83, 0.12),
+          rgba(212, 168, 83, 0.04)
+        );
+        border: 1px solid rgba(212, 168, 83, 0.2);
+      }
+      .disc-card.transfer {
+        background: linear-gradient(
+          135deg,
+          rgba(232, 21, 122, 0.1),
+          rgba(232, 21, 122, 0.03)
+        );
+        border: 1px solid var(--l2);
+      }
+      .disc-off {
+        font-family: "Fraunces", serif;
+        font-size: 32px;
+        font-weight: 900;
+        line-height: 1;
+        margin-bottom: 4px;
+      }
+      .disc-label {
+        font-size: 12px;
+        font-weight: 700;
+        margin-bottom: 6px;
+      }
+      .disc-sub {
+        font-size: 10.5px;
+        color: var(--t2);
+        line-height: 1.5;
+        margin-bottom: 12px;
+      }
+      .disc-code {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 12px;
+        font-weight: 600;
+        background: rgba(0, 0, 0, 0.3);
+        border-radius: var(--r1);
+        padding: 4px 10px;
+        display: inline-block;
+        letter-spacing: 0.06em;
+      }
+      .disc-arrow {
+        position: absolute;
+        top: 16px;
+        right: 16px;
+        font-size: 18px;
+        opacity: 0.5;
+      }
+      .stats-row {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 24px;
+        flex-wrap: wrap;
+      }
+      .stat {
+        background: var(--bg2);
+        border: 1px solid var(--l1);
+        border-radius: var(--r2);
+        padding: 12px 16px;
+        flex: 1;
+        min-width: 120px;
+      }
+      .stat-val {
+        font-family: "Fraunces", serif;
+        font-size: 22px;
+        font-weight: 600;
+        color: var(--pri);
+        line-height: 1;
+        margin-bottom: 3px;
+      }
+      .stat-lbl {
+        font-size: 9.5px;
+        color: var(--t2);
+        letter-spacing: 0.04em;
+      }
+      .chat-hdr {
+        padding: 14px 20px;
+        background: var(--bg1);
+        border-bottom: 1px solid var(--l1);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-shrink: 0;
+      }
+      .ai-agent {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+      }
+      .ai-av {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--bg3), var(--bg4));
+        border: 1.5px solid var(--l2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+      }
+      .ai-name {
+        font-size: 13.5px;
+        font-weight: 700;
+        color: var(--w);
+      }
+      .ai-sub {
+        font-size: 10px;
+        color: var(--t2);
+        margin-top: 1px;
+      }
+      .hdr-chips {
+        display: flex;
+        gap: 6px;
+      }
+      .chip {
+        font-size: 9px;
+        font-weight: 700;
+        padding: 3px 9px;
+        border-radius: var(--rfull);
+        border: 1px solid;
+      }
+      .chip-g {
+        background: var(--mint-dim);
+        border-color: rgba(45, 212, 160, 0.25);
+        color: var(--mint);
+      }
+      .chip-a {
+        background: var(--amber-dim);
+        border-color: rgba(245, 150, 31, 0.2);
+        color: var(--amber);
+      }
+      .messages {
+        flex: 1;
+        overflow-y: auto;
+        padding: 18px 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        scrollbar-width: thin;
+        scrollbar-color: var(--bg3) transparent;
+      }
+      .messages::-webkit-scrollbar {
+        width: 4px;
+      }
+      .messages::-webkit-scrollbar-thumb {
+        background: var(--bg3);
+        border-radius: 2px;
+      }
+      .welcome-state {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 28px 20px;
+        text-align: center;
+        gap: 14px;
+      }
+      .w-icon {
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+        background: var(--pri-dim);
+        border: 1.5px solid var(--l2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 26px;
+        animation: float 5s ease-in-out infinite;
+        box-shadow: 0 0 36px var(--pri-glow);
+      }
+      .w-title {
+        font-family: "Fraunces", serif;
+        font-size: 24px;
+        font-style: italic;
+        color: var(--w);
+        line-height: 1.2;
+      }
+      .w-sub {
+        font-size: 12.5px;
+        color: var(--t2);
+        max-width: 380px;
+        line-height: 1.65;
+      }
+      .w-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 9px;
+        max-width: 460px;
+        width: 100%;
+        margin-top: 4px;
+      }
+      .wcard {
+        background: var(--bg2);
+        border: 1px solid var(--l1);
+        border-radius: var(--r2);
+        padding: 13px;
+        cursor: pointer;
+        transition: all 0.18s;
+        text-align: left;
+      }
+      .wcard:hover {
+        border-color: var(--l2);
+        transform: translateY(-1px);
+      }
+      .wcard-ic {
+        font-size: 19px;
+        margin-bottom: 6px;
+      }
+      .wcard-t {
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--t1);
+        margin-bottom: 2px;
+      }
+      .wcard-s {
+        font-size: 10px;
+        color: var(--t2);
+        line-height: 1.45;
+      }
+      .msg {
+        display: flex;
+        gap: 9px;
+        animation: popIn 0.25s ease both;
+      }
+      .msg.user {
+        flex-direction: row-reverse;
+      }
+      .msg-av {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 13px;
+        margin-top: 2px;
+      }
+      .msg-av.ai {
+        background: linear-gradient(135deg, var(--bg3), var(--bg4));
+        border: 1px solid var(--l2);
+      }
+      .msg-av.usr {
+        background: var(--bg3);
+        border: 1px solid var(--l1);
+      }
+      .bubble {
+        max-width: 74%;
+        padding: 11px 14px;
+        border-radius: 16px;
+        font-size: 13px;
+        line-height: 1.65;
+      }
+      .bubble.ai {
+        background: var(--bg2);
+        border: 1px solid var(--l1);
+        color: var(--t1);
+        border-bottom-left-radius: 4px;
+      }
+      .bubble.user {
+        background: linear-gradient(
+          135deg,
+          rgba(196, 17, 95, 0.25),
+          rgba(232, 21, 122, 0.18)
+        );
+        border: 1px solid var(--l2);
+        color: rgba(255, 255, 255, 0.92);
+        border-bottom-right-radius: 4px;
+      }
+      .bubble.ai strong {
+        color: var(--pri);
+      }
+      .bubble.ai em {
+        color: var(--gold);
+        font-style: normal;
+        font-weight: 600;
+      }
+      .src {
+        display: inline-flex;
+        align-items: center;
+        gap: 3px;
+        font-size: 9.5px;
+        background: var(--pri-dim);
+        border: 1px solid var(--l1);
+        color: var(--pri);
+        padding: 2px 8px;
+        border-radius: var(--rfull);
+        margin-top: 7px;
+      }
+      .suggs {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+        margin-top: 8px;
+      }
+      .sug {
+        background: var(--bg3);
+        border: 1px solid var(--l1);
+        color: var(--t2);
+        font-size: 10.5px;
+        font-weight: 500;
+        padding: 5px 11px;
+        border-radius: var(--rfull);
+        cursor: pointer;
+        transition: all 0.15s;
+      }
+      .sug:hover {
+        border-color: var(--pri);
+        color: var(--pri);
+        background: var(--pri-dim);
+      }
+      .typing {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        padding: 11px 14px;
+        background: var(--bg2);
+        border: 1px solid var(--l1);
+        border-radius: 16px;
+        border-bottom-left-radius: 4px;
+        width: fit-content;
+        animation: popIn 0.25s ease;
+      }
+      .typing span {
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: var(--pri);
+        opacity: 0.5;
+        animation: bounce 1.2s infinite;
+      }
+      .typing span:nth-child(2) {
+        animation-delay: 0.2s;
+      }
+      .typing span:nth-child(3) {
+        animation-delay: 0.4s;
+      }
+      .input-bar {
+        padding: 12px 20px 16px;
+        border-top: 1px solid var(--l1);
+        background: var(--bg1);
+        flex-shrink: 0;
+      }
+      .input-row {
+        display: flex;
+        gap: 9px;
+        align-items: flex-end;
+      }
+      .input-box {
+        flex: 1;
+        background: var(--bg2);
+        border: 1.5px solid var(--l2);
+        border-radius: var(--r2);
+        padding: 11px 14px;
+        font-size: 13px;
+        color: var(--t1);
+        resize: none;
+        min-height: 44px;
+        max-height: 110px;
+        line-height: 1.5;
+        transition: border-color 0.15s;
+        scrollbar-width: none;
+      }
+      .input-box::-webkit-scrollbar {
+        display: none;
+      }
+      .input-box:focus {
+        border-color: var(--pri);
+      }
+      .input-box::placeholder {
+        color: var(--t3);
+      }
+      .send-btn {
+        width: 44px;
+        height: 44px;
+        border-radius: var(--r2);
+        background: var(--pri-dark);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        transition: all 0.15s;
+        flex-shrink: 0;
+        box-shadow: 0 3px 12px rgba(196, 17, 95, 0.3);
+      }
+      .send-btn:hover {
+        background: var(--pri);
+        transform: scale(1.05);
+      }
+      .send-btn:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+        transform: none;
+      }
+      .input-hint {
+        font-size: 9.5px;
+        color: var(--t3);
+        margin-top: 7px;
+        text-align: center;
+        letter-spacing: 0.02em;
+      }
+      .page-hero {
+        border-radius: var(--r4);
+        padding: 24px 26px;
+        margin-bottom: 18px;
+        position: relative;
+        overflow: hidden;
+      }
+      .hero-tag {
+        font-size: 8.5px;
+        font-weight: 700;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        margin-bottom: 9px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .hero-tag::before {
+        content: "";
+        width: 16px;
+        height: 1px;
+        display: inline-block;
+      }
+      .hero-ht {
+        font-family: "Fraunces", serif;
+        font-size: 24px;
+        font-weight: 600;
+        font-style: italic;
+        color: var(--w);
+        line-height: 1.2;
+        letter-spacing: -0.01em;
+        margin-bottom: 9px;
+      }
+      .hero-hs {
+        font-size: 12.5px;
+        color: var(--t2);
+        line-height: 1.6;
+        margin-bottom: 16px;
+      }
+      .hero-hs strong {
+        color: var(--t1);
+      }
+      .slbl {
+        font-size: 8.5px;
+        font-weight: 700;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--t3);
+        margin-bottom: 11px;
+        display: flex;
+        align-items: center;
+        gap: 7px;
+      }
+      .slbl::before {
+        content: "";
+        flex: 0 0 14px;
+        height: 1px;
+        background: var(--t3);
+        display: inline-block;
+      }
+      .alert-box {
+        border-radius: var(--r2);
+        padding: 13px 15px;
+        margin-bottom: 16px;
+        display: flex;
+        gap: 10px;
+        align-items: flex-start;
+      }
+      .al-ico {
+        font-size: 19px;
+        flex-shrink: 0;
+      }
+      .al-t {
+        font-size: 12.5px;
+        font-weight: 700;
+        margin-bottom: 2px;
+      }
+      .al-b {
+        font-size: 11px;
+        line-height: 1.6;
+      }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        padding: 10px 18px;
+        border-radius: var(--r2);
+        font-size: 12px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.15s;
+        white-space: nowrap;
+      }
+      .btn-main {
+        background: var(--pri-dark);
+        color: #fff;
+        box-shadow: 0 3px 14px rgba(196, 17, 95, 0.25);
+      }
+      .btn-main:hover {
+        background: var(--pri);
+        transform: translateY(-1px);
+      }
+      .btn-wa {
+        background: #25d366;
+        color: #fff;
+        box-shadow: 0 3px 12px rgba(37, 211, 102, 0.2);
+      }
+      .btn-wa:hover {
+        background: #1da851;
+        transform: translateY(-1px);
+      }
+      .btn-outline {
+        background: var(--bg3);
+        border: 1px solid var(--l2);
+        color: var(--t1);
+      }
+      .btn-outline:hover {
+        border-color: var(--l3);
+        background: var(--bg4);
+      }
+      .coupon-box {
+        background: var(--bg2);
+        border: 1.5px dashed var(--l2);
+        border-radius: var(--r2);
+        padding: 13px 16px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-bottom: 16px;
+      }
+      .coup-lbl {
+        font-size: 9px;
+        color: var(--t3);
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        margin-bottom: 3px;
+      }
+      .coup-code {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 19px;
+        font-weight: 600;
+        color: var(--pri);
+        letter-spacing: 0.06em;
+      }
+      .coup-desc {
+        font-size: 10px;
+        color: var(--t2);
+        margin-top: 2px;
+      }
+      .plan-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 9px;
+        margin-bottom: 18px;
+      }
+      .plan-card {
+        background: var(--bg2);
+        border: 1px solid var(--l1);
+        border-radius: var(--r2);
+        padding: 14px;
+        transition: all 0.18s;
+        text-decoration: none;
+        display: block;
+      }
+      .plan-card:hover {
+        transform: translateY(-1px);
+        border-color: var(--l2);
+      }
+      .plan-card.feat {
+        background: var(--pri-dim);
+        border-color: var(--l2);
+      }
+      .plan-tag {
+        font-size: 8px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        display: inline-block;
+        padding: 2px 7px;
+        border-radius: 4px;
+        margin-bottom: 7px;
+      }
+      .plan-name {
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--t1);
+        margin-bottom: 3px;
+      }
+      .plan-desc {
+        font-size: 10px;
+        color: var(--t2);
+        line-height: 1.5;
+        margin-bottom: 10px;
+      }
+      .plan-feats {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+      .pf {
+        font-size: 10px;
+        color: var(--t2);
+        display: flex;
+        align-items: flex-start;
+        gap: 4px;
+        line-height: 1.4;
+      }
+      .pf::before {
+        content: "✓";
+        color: var(--pri);
+        font-size: 9.5px;
+        flex-shrink: 0;
+        margin-top: 1px;
+      }
+      .cl-card {
+        background: var(--bg2);
+        border: 1px solid var(--l1);
+        border-radius: var(--r2);
+        overflow: hidden;
+        margin-bottom: 14px;
+      }
+      .cl-row {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 11px 14px;
+        border-bottom: 1px solid var(--l1);
+        cursor: pointer;
+        transition: background 0.12s;
+      }
+      .cl-row:last-child {
+        border-bottom: none;
+      }
+      .cl-row:hover {
+        background: var(--bg3);
+      }
+      .cl-ck {
+        font-size: 16px;
+        flex-shrink: 0;
+        margin-top: -1px;
+      }
+      .cl-t {
+        font-size: 12px;
+        color: var(--t1);
+        line-height: 1.45;
+      }
+      .cl-s {
+        font-size: 10px;
+        color: var(--t2);
+        margin-top: 2px;
+        line-height: 1.35;
+      }
+      .svc-card {
+        background: var(--bg2);
+        border: 1px solid var(--l1);
+        border-radius: var(--r3);
+        overflow: hidden;
+        margin-bottom: 11px;
+      }
+      .svc-head {
+        padding: 14px 16px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 9px;
+      }
+      .svc-info {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+      }
+      .svc-logo {
+        width: 42px;
+        height: 42px;
+        border-radius: var(--r2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        flex-shrink: 0;
+      }
+      .svc-name {
+        font-size: 14px;
+        font-weight: 700;
+        color: var(--w);
+      }
+      .svc-badge {
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        margin-top: 1px;
+      }
+      .svc-body {
+        padding: 13px 16px;
+        border-top: 1px solid var(--l1);
+      }
+      .svc-desc {
+        font-size: 11.5px;
+        color: var(--t2);
+        line-height: 1.65;
+        margin-bottom: 11px;
+      }
+      .tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+        margin-bottom: 11px;
+      }
+      .tag {
+        font-size: 9.5px;
+        font-weight: 600;
+        padding: 3px 9px;
+        border-radius: var(--rfull);
+        background: var(--bg3);
+        border: 1px solid var(--l1);
+        color: var(--t2);
+      }
+      .tag.ok {
+        background: var(--mint-dim);
+        border-color: rgba(45, 212, 160, 0.2);
+        color: var(--mint);
+      }
+      .tag.warn {
+        background: var(--amber-dim);
+        border-color: rgba(245, 150, 31, 0.2);
+        color: var(--amber);
+      }
+      .compare {
+        background: var(--bg2);
+        border: 1px solid var(--l1);
+        border-radius: var(--r2);
+        overflow: hidden;
+        margin-bottom: 18px;
+      }
+      .cmp-h,
+      .cmp-r {
+        display: grid;
+      }
+      .cmp-h {
+        background: var(--bg3);
+        border-bottom: 1px solid var(--l1);
+      }
+      .cmp-r {
+        border-bottom: 1px solid var(--l1);
+      }
+      .cmp-r:last-child {
+        border-bottom: none;
+      }
+      .cmp-c {
+        padding: 8px 11px;
+        font-size: 10.5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .cmp-c.left {
+        justify-content: flex-start;
+        font-weight: 600;
+        color: var(--t1);
+      }
+      .cmp-c.head {
+        font-size: 8.5px;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--t3);
+      }
+      .conv-card {
+        background: var(--bg2);
+        border: 1px solid var(--l1);
+        border-radius: var(--r3);
+        padding: 18px;
+        margin-bottom: 16px;
+      }
+      .conv-row {
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
+        gap: 11px;
+        align-items: center;
+      }
+      .conv-f {
+        background: var(--bg3);
+        border: 1.5px solid var(--l1);
+        border-radius: var(--r2);
+        padding: 12px 14px;
+        transition: border-color 0.15s;
+      }
+      .conv-f:focus-within {
+        border-color: var(--pri);
+      }
+      .conv-lbl {
+        font-size: 8.5px;
+        color: var(--t3);
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        margin-bottom: 4px;
+      }
+      .conv-in {
+        width: 100%;
+        background: transparent;
+        font-size: 24px;
+        font-weight: 700;
+        color: var(--t1);
+      }
+      .conv-rf {
+        background: var(--pri-dim);
+        border: 1.5px solid var(--l2);
+        border-radius: var(--r2);
+        padding: 12px 14px;
+      }
+      .conv-rl {
+        font-size: 8.5px;
+        color: var(--pri);
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        margin-bottom: 4px;
+      }
+      .conv-rv {
+        font-size: 24px;
+        font-weight: 700;
+        color: var(--pri);
+      }
+      .conv-arr {
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        background: var(--bg3);
+        border: 1px solid var(--l1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 15px;
+        flex-shrink: 0;
+      }
+      .conv-ft {
+        padding-top: 11px;
+        margin-top: 11px;
+        border-top: 1px solid var(--l1);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 7px;
+      }
+      .conv-rate {
+        font-size: 10px;
+        color: var(--t2);
+      }
+      .conv-tip {
+        font-size: 9.5px;
+        color: var(--t2);
+        background: var(--bg3);
+        border: 1px solid var(--l1);
+        border-radius: var(--rfull);
+        padding: 3px 10px;
+      }
+      .sos-nums {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 9px;
+        margin-bottom: 18px;
+      }
+      .sos-n {
+        border-radius: var(--r3);
+        padding: 18px 12px;
+        text-align: center;
+        text-decoration: none;
+        display: block;
+        transition: all 0.18s;
+      }
+      .sos-n:hover {
+        transform: translateY(-2px);
+      }
+      .sos-em {
+        font-size: 24px;
+        margin-bottom: 7px;
+      }
+      .sos-v {
+        font-family: "Fraunces", serif;
+        font-size: 28px;
+        font-weight: 600;
+        line-height: 1;
+        margin-bottom: 4px;
+      }
+      .sos-nm {
+        font-size: 10.5px;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        margin-bottom: 1px;
+      }
+      .sos-tp {
+        font-size: 9.5px;
+        opacity: 0.7;
+      }
+      .script-card {
+        background: var(--bg2);
+        border: 1px solid var(--l1);
+        border-radius: var(--r2);
+        padding: 13px 14px;
+        cursor: pointer;
+        transition: all 0.15s;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 11px;
+        margin-bottom: 7px;
+      }
+      .script-card:hover {
+        border-color: rgba(240, 79, 79, 0.3);
+        background: var(--bg3);
+      }
+      .sc-ctx {
+        font-size: 10px;
+        color: var(--t3);
+        margin-bottom: 3px;
+      }
+      .sc-ph {
+        font-family: "Fraunces", serif;
+        font-size: 14.5px;
+        font-style: italic;
+        color: var(--w);
+      }
+      .sc-ico {
+        font-size: 14px;
+        color: var(--t2);
+        flex-shrink: 0;
+      }
+      .mala-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 9px;
+        margin-bottom: 18px;
+      }
+      .mala-card {
+        background: var(--bg2);
+        border: 1px solid var(--l1);
+        border-radius: var(--r2);
+        padding: 14px;
+      }
+      .mala-t {
+        font-size: 10.5px;
+        font-weight: 700;
+        margin-bottom: 9px;
+      }
+      .mala-i {
+        font-size: 10.5px;
+        color: var(--t2);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        margin-bottom: 5px;
+        cursor: pointer;
+      }
+      .mala-i .ck {
+        font-size: 13px;
+        flex-shrink: 0;
+      }
+      .mala-n {
+        font-size: 9.5px;
+        margin-top: 7px;
+        padding-top: 7px;
+        border-top: 1px solid var(--l1);
+      }
+      .budget-row {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 9px;
+        margin-bottom: 18px;
+      }
+      .budget-card {
+        background: var(--bg2);
+        border: 1px solid var(--l1);
+        border-radius: var(--r2);
+        padding: 14px;
+        text-align: center;
+      }
+      .bg-ic {
+        font-size: 18px;
+        margin-bottom: 7px;
+      }
+      .bg-tag {
+        font-size: 8px;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        margin-bottom: 5px;
+      }
+      .bg-v {
+        font-family: "Fraunces", serif;
+        font-size: 22px;
+        font-style: italic;
+        line-height: 1;
+        margin-bottom: 3px;
+      }
+      .bg-d {
+        font-size: 9.5px;
+        color: var(--t2);
+        line-height: 1.45;
+      }
+      .tour-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 11px;
+        margin-bottom: 20px;
+      }
+      .tour-card {
+        background: var(--bg2);
+        border: 1px solid var(--l1);
+        border-radius: var(--r3);
+        overflow: hidden;
+        transition: all 0.18s;
+      }
+      .tour-card:hover {
+        border-color: var(--l2);
+        transform: translateY(-2px);
+      }
+      .tour-head {
+        padding: 13px 14px;
+        border-bottom: 1px solid var(--l1);
+      }
+      .tour-badge {
+        font-size: 8px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        margin-bottom: 4px;
+      }
+      .tour-name {
+        font-size: 13.5px;
+        font-weight: 700;
+        color: var(--w);
+      }
+      .tour-body {
+        padding: 13px 14px;
+      }
+      .tour-desc {
+        font-size: 11px;
+        color: var(--t2);
+        line-height: 1.6;
+        margin-bottom: 11px;
+      }
+      .tour-meta {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        margin-bottom: 11px;
+      }
+      .tour-mr {
+        font-size: 10px;
+        color: var(--t2);
+        display: flex;
+        gap: 5px;
+        align-items: flex-start;
+      }
+      #toast {
+        position: fixed;
+        bottom: 22px;
+        right: 22px;
+        z-index: 9999;
+        background: var(--bg2);
+        border: 1px solid var(--l2);
+        border-radius: var(--r2);
+        padding: 9px 16px;
+        font-size: 11.5px;
+        font-weight: 600;
+        color: var(--pri);
+        display: none;
+        animation: popIn 0.25s ease;
+      }
+      @media (max-width: 768px) {
+        .shell {
+          grid-template-columns: 1fr;
+          grid-template-rows: auto 1fr;
+        }
+        .sidebar {
+          flex-direction: row;
+          border-right: none;
+          border-bottom: 1px solid var(--l1);
+          height: auto;
+          overflow-x: auto;
+          flex-shrink: 0;
+        }
+        .sb-logo {
+          border-bottom: none;
+          border-right: 1px solid var(--l1);
+          padding: 10px 12px;
+        }
+        .logo-img {
+          width: 110px;
+        }
+        .sb-badge {
+          display: none;
+        }
+        .sb-nav,
+        .sb-footer {
+          display: none;
+        }
+        .topbar {
+          padding: 0 12px;
+          height: 48px;
+        }
+        .tab {
+          padding: 0 10px;
+          font-size: 10.5px;
+        }
+        .inner {
+          padding: 14px;
+        }
+        .exp-grid {
+          grid-template-columns: 1fr;
+        }
+        .disc-grid,
+        .tour-grid,
+        .mala-grid {
+          grid-template-columns: 1fr;
+        }
+        .plan-row,
+        .budget-row {
+          grid-template-columns: 1fr;
+        }
+        .bubble {
+          max-width: 88%;
+          font-size: 12.5px;
+        }
+        .sos-nums {
+          grid-template-columns: repeat(3, 1fr);
+        }
+        .stats-row {
+          flex-wrap: wrap;
+        }
+        .hero-h1 {
+          font-size: 22px;
+        }
+      }
+      @keyframes blink {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.3;
+        }
+      }
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-7px);
+        }
+      }
+      @keyframes bounce {
+        0%,
+        60%,
+        100% {
+          transform: translateY(0);
+          opacity: 0.5;
+        }
+        30% {
+          transform: translateY(-4px);
+          opacity: 1;
+        }
+      }
+      @keyframes popIn {
+        from {
+          opacity: 0;
+          transform: translateY(8px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <aside class="sidebar">
+        <div class="sb-logo">
+          <div
+            style="
+              background: #fff;
+              border-radius: 10px;
+              padding: 10px 12px;
+              display: inline-block;
+              margin-bottom: 10px;
+            "
+          >
+            <img
+              class="logo-img"
+              style="width: 140px; height: auto; display: block"
+              src="https://dicasdaprichile.com.br/wp-content/uploads/2023/02/Logo-Header.svg"
+              onerror="
+                this.style.display = 'none';
+                this.nextElementSibling.style.display = 'flex';
+              "
+              alt="Dicas da Pri Turismo Chile"
+            />
+            <div
+              style="display: none; align-items: center; gap: 8px; width: 140px"
+            >
+              <div
+                style="
+                  font-family: &quot;Fraunces&quot;, serif;
+                  font-size: 16px;
+                  color: #000;
+                  font-weight: 700;
+                  line-height: 1.1;
+                "
+              >
+                DICAS DA <span style="color: #e8157a">PRI</span>
+              </div>
+            </div>
+          </div>
+          <div class="sb-badge">
+            <span class="sb-dot"></span>Concierge IA 24h
+          </div>
+        </div>
+        <nav class="sb-nav">
+          <div class="nav-label">Descobrir</div>
+          <a
+            class="nav-item"
+            href="/passeios.html"
+          >
+            <span class="nav-icon">🗺</span>Passeios
+          </a>
+          <a
+            class="nav-item"
+            href="/restaurantes-providencia-vitacura.html"
+          >
+            <span class="nav-icon">🍽</span>Restaurantes
+          </a>
+          <a
+            class="nav-item"
+            href="/valle-nevado-inverno.html"
+          >
+            <span class="nav-icon">🎿</span>Neve &amp; Ski
+          </a>
+          <a
+            class="nav-item"
+            href="/vinas.html"
+          >
+            <span class="nav-icon">🍷</span>Viñas
+          </a>
+          <div class="nav-label" style="margin-top: 8px">Planejar</div>
+          <div
+            class="nav-item"
+            onclick="
+              navTopic('Qual é o itinerário ideal de 7 dias em Santiago?')
+            "
+          >
+            <span class="nav-icon">🗓</span>Roteiro 7 dias
+          </div>
+          <div
+            class="nav-item"
+            onclick="
+              navTopic('Quanto dinheiro levar para uma semana no Chile?')
+            "
+          >
+            <span class="nav-icon">💰</span>Orçamento
+          </div>
+          <div
+            class="nav-item"
+            onclick="navTopic('Quais documentos preciso para entrar no Chile?')"
+          >
+            <span class="nav-icon">📋</span>Documentos
+          </div>
+          <div class="nav-label" style="margin-top: 8px">Essenciais</div>
+          <div
+            class="nav-item"
+            onclick="
+              navTopic('Como converter pesos chilenos para reais rapidamente?')
+            "
+          >
+            <span class="nav-icon">💱</span>Câmbio
+          </div>
+          <div
+            class="nav-item"
+            onclick="
+              navTopic('Como sair do aeroporto de Santiago? O Uber é ilegal?')
+            "
+          >
+            <span class="nav-icon">🚌</span>Transporte
+          </div>
+          <div
+            class="nav-item"
+            onclick="
+              navTopic(
+                'Quais são os 10 alertas críticos para brasileiros no Chile?',
+              )
+            "
+          >
+            <span class="nav-icon">⚠️</span>Alertas
+          </div>
+          <div
+            class="nav-item"
+            onclick="
+              navTopic(
+                'O que são chilenismos? Palavras que preciso saber no Chile.',
+              )
+            "
+          >
+            <span class="nav-icon">🗣</span>Chilenismos
+          </div>
+          <div
+            class="nav-item"
+            onclick="
+              navTopic('Onde se hospedar em Santiago? Qual o melhor bairro?')
+            "
+          >
+            <span class="nav-icon">🏨</span>Hospedagem
+          </div>
+        </nav>
+        <div class="sb-footer">
+          <div class="rate-widget">
+            <div class="rate-lbl">
+              <span class="sb-dot" style="margin-right: 5px"></span>Câmbio ref.
+              2026
+            </div>
+            <div class="rate-val" id="sideRate">R$1 = $173 CLP</div>
+            <div class="rate-sub">More Exchange · Santiago</div>
+          </div>
+        </div>
+      </aside>
+      <main class="main">
+        <div class="topbar">
+          <div class="tabs">
+            <div class="tab active" id="t-home" onclick="sw('home')">
+              🏠 Início
+            </div>
+            <div class="tab" id="t-chat" onclick="sw('chat')">💬 Chat IA</div>
+            <div class="tab" id="t-passeios" onclick="sw('passeios')">
+              🗺 Passeios
+            </div>
+            <div class="tab" id="t-antes" onclick="sw('antes')">
+              📋 Antes de Viajar
+            </div>
+            <div class="tab" id="t-seguro" onclick="sw('seguro')">
+              🛡 Seguro <span class="tbadge">30% OFF</span>
+            </div>
+            <div class="tab" id="t-transfer" onclick="sw('transfer')">
+              🚌 Transfers
+            </div>
+            <div class="tab" id="t-cambio" onclick="sw('cambio')">
+              💱 Câmbio
+            </div>
+            <div class="tab" id="t-sos" onclick="sw('sos')">🆘 SOS</div>
+          </div>
+          <div class="topbar-right">
+            <button class="btn-xs btn-ghost" onclick="sw('chat')">
+              💬 Perguntar
+            </button>
+            <a
+              href="https://api.whatsapp.com/send/?phone=56964155891"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="btn-xs btn-pri"
+              >📱 Reservar</a
+            >
+          </div>
+        </div>
+
+        <!-- HOME PAGE -->
+        <div class="page active" id="p-home">
+          <div class="scroll">
+            <div class="hero-strip">
+              <div class="hero-eyebrow">
+                Powered by Dicas da Pri · Santiago 🇨🇱
+              </div>
+              <h1 class="hero-h1">
+                Sua viagem ao Chile<br /><em>começa aqui</em>
+              </h1>
+              <p class="hero-sub">
+                Passeios, descontos exclusivos e um assistente inteligente 24h.
+                Tudo que você precisa para viver Santiago como a Pri vive.
+              </p>
+              <div class="hero-search">
+                <span class="search-icon">🔍</span>
+                <input
+                  class="search-in"
+                  id="heroSearch"
+                  placeholder="Buscar passeio, restaurante, dica..."
+                  onkeydown="
+                    if (event.key === 'Enter') {
+                      navTopic(this.value || 'O que fazer em Santiago?');
+                    }
+                  "
+                />
+                <button
+                  class="search-btn"
+                  onclick="
+                    navTopic(
+                      document.getElementById('heroSearch').value ||
+                        'O que fazer em Santiago?',
+                    )
+                  "
+                >
+                  Buscar
+                </button>
+              </div>
+            </div>
+            <div class="cat-row">
+              <div class="cat-pill on" onclick="filterCat(this, 'all')">
+                ✨ Todos
+              </div>
+              <div class="cat-pill" onclick="filterCat(this, 'neve')">
+                🎿 Neve &amp; Ski
+              </div>
+              <div class="cat-pill" onclick="filterCat(this, 'litoral')">
+                🌊 Litoral
+              </div>
+              <div class="cat-pill" onclick="filterCat(this, 'vinhas')">
+                🍷 Viñas
+              </div>
+              <div class="cat-pill" onclick="filterCat(this, 'cidade')">
+                🏙 Cidade
+              </div>
+              <div class="cat-pill" onclick="filterCat(this, 'gastronomia')">
+                🍽 Gastronomia
+              </div>
+            </div>
+            <div class="inner">
+              <div class="stats-row">
+                <div class="stat">
+                  <div class="stat-val">+60K</div>
+                  <div class="stat-lbl">Brasileiros atendidos</div>
+                </div>
+                <div class="stat">
+                  <div class="stat-val">11</div>
+                  <div class="stat-lbl">Passeios oficiais</div>
+                </div>
+                <div class="stat">
+                  <div class="stat-val">30%</div>
+                  <div class="stat-lbl">Desconto seguro viagem</div>
+                </div>
+                <div class="stat">
+                  <div class="stat-val">24h</div>
+                  <div class="stat-lbl">Assistente IA ativo</div>
+                </div>
+              </div>
+              <div class="sec-head">
+                <div class="sec-title">Passeios mais reservados</div>
+                <div class="sec-link" onclick="sw('passeios')">Ver todos →</div>
+              </div>
+              <div class="exp-grid" id="expGrid"></div>
+              <div class="sec-head">
+                <div class="sec-title">Descontos exclusivos</div>
+              </div>
+              <div class="disc-grid">
+                <div class="disc-card seguro" onclick="sw('seguro')">
+                  <div class="disc-arrow">→</div>
+                  <div class="disc-off" style="color: var(--mint)">30%</div>
+                  <div class="disc-label" style="color: var(--mint)">
+                    OFF no Seguro Viagem
+                  </div>
+                  <div class="disc-sub">
+                    Chile não tem saúde gratuita. Seguro obrigatório.
+                  </div>
+                  <div class="disc-code" style="color: var(--mint)">
+                    DICASDAPRI5
+                  </div>
+                </div>
+                <div class="disc-card transfer" onclick="sw('transfer')">
+                  <div class="disc-arrow">→</div>
+                  <div class="disc-off" style="color: var(--pri)">~R$60</div>
+                  <div class="disc-label" style="color: var(--pri)">
+                    Transfer Aeroporto
+                  </div>
+                  <div class="disc-sub">
+                    Trans VIP — recomendado pela Pri. Seguro e pontual.
+                  </div>
+                  <div class="disc-code" style="color: var(--pri)">
+                    TRANS VIP ✓
+                  </div>
+                </div>
+                <div class="disc-card cambio" onclick="sw('cambio')">
+                  <div class="disc-arrow">→</div>
+                  <div class="disc-off" style="color: var(--gold)">Best</div>
+                  <div class="disc-label" style="color: var(--gold)">
+                    Taxa de Câmbio
+                  </div>
+                  <div class="disc-sub">
+                    More Exchange — melhor taxa para brasileiros.
+                  </div>
+                  <div class="disc-code" style="color: var(--gold)">
+                    MORE EXCHANGE
+                  </div>
+                </div>
+                <div class="disc-card esim" style="cursor: default">
+                  <div class="disc-arrow">🔜</div>
+                  <div class="disc-off" style="color: var(--blue)">eSIM</div>
+                  <div class="disc-label" style="color: var(--blue)">
+                    Chip Virtual Chile
+                  </div>
+                  <div class="disc-sub">
+                    Holafly — em breve com desconto exclusivo Dicas da Pri.
+                  </div>
+                  <div class="disc-code" style="color: var(--blue)">
+                    EM BREVE
+                  </div>
+                </div>
+              </div>
+              <div
+                style="
+                  background: var(--pri-dim);
+                  border: 1px solid var(--l2);
+                  border-radius: var(--r4);
+                  padding: 22px 24px;
+                  display: flex;
+                  align-items: center;
+                  justify-content: space-between;
+                  flex-wrap: wrap;
+                  gap: 16px;
+                "
+              >
+                <div>
+                  <div
+                    style="
+                      font-size: 9px;
+                      font-weight: 700;
+                      letter-spacing: 0.14em;
+                      text-transform: uppercase;
+                      color: var(--pri);
+                      margin-bottom: 8px;
+                    "
+                  >
+                    Agência oficial em Santiago desde 2017
+                  </div>
+                  <div
+                    style="
+                      font-family: &quot;Fraunces&quot;, serif;
+                      font-size: 20px;
+                      color: var(--w);
+                      margin-bottom: 5px;
+                    "
+                  >
+                    Dicas da <em style="color: var(--pri)">Pri</em> · Turismo
+                    Chile
+                  </div>
+                  <div
+                    style="
+                      font-size: 11.5px;
+                      color: var(--t2);
+                      line-height: 1.6;
+                      max-width: 420px;
+                    "
+                  >
+                    Mais de 60.000 brasileiros atendidos. Guias brasileiros em
+                    Santiago, passeios verificados e suporte em português 24h.
+                  </div>
+                </div>
+                <div style="display: flex; gap: 8px; flex-wrap: wrap">
+                  <a
+                    href="https://api.whatsapp.com/send/?phone=56964155891"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="btn btn-wa"
+                    >📱 WhatsApp</a
+                  >
+                  <a
+                    href="https://dicasdaprichile.com.br"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="btn btn-outline"
+                    >🌐 Site oficial</a
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CHAT PAGE -->
+        <div class="page" id="p-chat">
+          <div class="chat-hdr">
+            <div class="ai-agent">
+              <div class="ai-av">🤖</div>
+              <div>
+                <div class="ai-name">Assistente Descola Chile</div>
+                <div class="ai-sub">
+                  Powered by Dicas da Pri · +800 fatos verificados
+                </div>
+              </div>
+            </div>
+            <div class="hdr-chips">
+              <span class="chip chip-g">✓ Verificado</span>
+              <span class="chip chip-a">🇧🇷→🇨🇱</span>
+            </div>
+          </div>
+          <div class="messages" id="messages">
+            <div class="welcome-state" id="welcome">
+              <div class="w-icon">🗺</div>
+              <div class="w-title">Olá! Sou a IA da<br />Descola Chile</div>
+              <div class="w-sub">
+                Treinada com o conteúdo verificado da Dicas da Pri. Pergunta
+                qualquer coisa sobre Santiago.
+              </div>
+              <div class="w-grid">
+                <div
+                  class="wcard"
+                  onclick="
+                    doAsk(
+                      'Quais restaurantes a Pri recomenda em Santiago com preços?',
+                    )
+                  "
+                >
+                  <div class="wcard-ic">🍽</div>
+                  <div class="wcard-t">Restaurantes</div>
+                  <div class="wcard-s">19 locais com preços em BRL</div>
+                </div>
+                <div
+                  class="wcard"
+                  onclick="
+                    doAsk(
+                      'Farellones ou El Colorado — qual escolher para a neve?',
+                    )
+                  "
+                >
+                  <div class="wcard-ic">🎿</div>
+                  <div class="wcard-t">Neve &amp; Ski</div>
+                  <div class="wcard-s">Guia completo jun–set</div>
+                </div>
+                <div
+                  class="wcard"
+                  onclick="
+                    doAsk('Qual o itinerário ideal de 7 dias em Santiago?')
+                  "
+                >
+                  <div class="wcard-ic">🗓</div>
+                  <div class="wcard-t">Roteiro 7 dias</div>
+                  <div class="wcard-s">Dia a dia com orçamento</div>
+                </div>
+                <div
+                  class="wcard"
+                  onclick="sw('seguro')"
+                  style="border-color: var(--l2); background: var(--pri-dim)"
+                >
+                  <div class="wcard-ic">🛡</div>
+                  <div class="wcard-t" style="color: var(--pri)">
+                    Seguro 30% OFF
+                  </div>
+                  <div class="wcard-s">Cupom DICASDAPRI5</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="input-bar">
+            <div class="input-row">
+              <textarea
+                class="input-box"
+                id="inputBox"
+                placeholder="Pergunta sobre Santiago, neve, câmbio, restaurantes..."
+                rows="1"
+                onkeydown="
+                  if (event.key === 'Enter' && !event.shiftKey) {
+                    event.preventDefault();
+                    sendMsg();
+                  }
+                "
+                oninput="
+                  this.style.height = 'auto';
+                  this.style.height = Math.min(this.scrollHeight, 110) + 'px';
+                "
+              ></textarea>
+              <button class="send-btn" id="sendBtn" onclick="sendMsg()">
+                ➤
+              </button>
+            </div>
+            <div class="input-hint">
+              Powered by Dicas da Pri · Respostas com fonte citada
+            </div>
+          </div>
+        </div>
+
+        <!-- PASSEIOS PAGE -->
+        <div class="page" id="p-passeios">
+          <div class="scroll">
+            <div class="inner">
+              <div
+                class="page-hero"
+                style="
+                  background: linear-gradient(
+                    135deg,
+                    rgba(45, 212, 160, 0.1),
+                    rgba(45, 212, 160, 0.02)
+                  );
+                  border: 1px solid rgba(45, 212, 160, 0.18);
+                "
+              >
+                <div
+                  style="
+                    position: absolute;
+                    top: -40px;
+                    right: -40px;
+                    width: 160px;
+                    height: 160px;
+                    border-radius: 50%;
+                    background: radial-gradient(
+                      circle,
+                      rgba(45, 212, 160, 0.07),
+                      transparent
+                    );
+                    pointer-events: none;
+                  "
+                ></div>
+                <div class="hero-tag" style="color: var(--mint)">
+                  <span style="background: var(--mint)"></span>Agência oficial ·
+                  +60.000 clientes · Desde 2017
+                </div>
+                <div class="hero-ht">
+                  Passeios
+                  <span style="color: var(--mint); font-style: normal"
+                    >Dicas da Pri</span
+                  >
+                </div>
+                <div class="hero-hs">
+                  Guias brasileiros, transporte incluído e suporte em português.
+                  Reserve todos com a mesma agência para flexibilidade
+                  climática.
+                </div>
+                <div style="display: flex; gap: 9px; flex-wrap: wrap">
+                  <a
+                    href="https://api.whatsapp.com/send/?phone=56964155891"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="btn btn-wa"
+                    >📱 +56 9 6415 5891</a
+                  >
+                  <a
+                    href="https://dicasdaprichile.com.br"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="btn btn-outline"
+                    >🌐 Site oficial</a
+                  >
+                </div>
+              </div>
+              <div
+                class="alert-box"
+                style="
+                  background: var(--amber-dim);
+                  border: 1px solid rgba(245, 150, 31, 0.2);
+                "
+              >
+                <div class="al-ico">⏰</div>
+                <div>
+                  <div class="al-t" style="color: var(--amber)">
+                    Reserve com antecedência
+                  </div>
+                  <div class="al-b" style="color: rgba(245, 150, 31, 0.8)">
+                    No inverno, vagas para neve esgotam em
+                    <strong style="color: var(--amber)">abril para julho</strong
+                    >. Reserve todos os passeios com a mesma agência.
+                  </div>
+                </div>
+              </div>
+              <div class="slbl" style="color: var(--blue)">
+                🎿 Neve · Junho a Setembro
+              </div>
+              <div class="tour-grid">
+                <div
+                  class="tour-card"
+                  style="border-color: rgba(91, 155, 213, 0.2)"
+                >
+                  <div
+                    class="tour-head"
+                    style="
+                      background: linear-gradient(
+                        135deg,
+                        rgba(91, 155, 213, 0.1),
+                        transparent
+                      );
+                    "
+                  >
+                    <div class="tour-badge" style="color: var(--blue)">
+                      ⭐ MAIS POPULAR
+                    </div>
+                    <div class="tour-name">🏔 Parque Farellones</div>
+                  </div>
+                  <div class="tour-body">
+                    <div class="tour-desc">
+                      O único parque de diversões na neve. Tubing, tirolesa,
+                      silla panorâmica e trenó. Para quem não quer esquiar mas
+                      quer aproveitar ao máximo.
+                    </div>
+                    <div class="tour-meta">
+                      <div class="tour-mr">
+                        <span>🕐</span>Dia completo — Saída 5:30h / Retorno ~18h
+                      </div>
+                      <div class="tour-mr">
+                        <span style="color: var(--mint)">✓</span>Transporte +
+                        parada p/ aluguel de roupa
+                      </div>
+                      <div class="tour-mr">
+                        <span style="color: var(--red)">⚠️</span>Descida 15h
+                        pontualmente
+                      </div>
+                    </div>
+                    <a
+                      href="https://api.whatsapp.com/send/?phone=56964155891&text=Olá Pri! Quero reservar Parque Farellones"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="btn btn-wa"
+                      style="width: 100%; justify-content: center"
+                      >📱 Reservar</a
+                    >
+                  </div>
+                </div>
+                <div class="tour-card">
+                  <div class="tour-head" style="background: var(--bg3)">
+                    <div class="tour-badge" style="color: var(--mint)">
+                      MAIS ECONÔMICO
+                    </div>
+                    <div class="tour-name">📸 Panorâmico de Neve</div>
+                  </div>
+                  <div class="tour-body">
+                    <div class="tour-desc">
+                      Conhecer a neve sem pagar ingresso nos parques. Fotos,
+                      bonecos de neve e vilarejo de Farellones sem gastar muito.
+                    </div>
+                    <div class="tour-meta">
+                      <div class="tour-mr">
+                        <span>🕐</span>Dia completo — Saída 5:30h
+                      </div>
+                      <div class="tour-mr">
+                        <span style="color: var(--mint)">✓</span>Sem cobrança de
+                        ingresso
+                      </div>
+                    </div>
+                    <a
+                      href="https://api.whatsapp.com/send/?phone=56964155891&text=Olá Pri! Quero reservar Panorâmico de Neve"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="btn btn-wa"
+                      style="width: 100%; justify-content: center"
+                      >📱 Reservar</a
+                    >
+                  </div>
+                </div>
+                <div class="tour-card">
+                  <div class="tour-head" style="background: var(--bg3)">
+                    <div class="tour-badge" style="color: var(--t2)">
+                      SKI AVANÇADO
+                    </div>
+                    <div class="tour-name">⛷️ Valle Nevado</div>
+                  </div>
+                  <div class="tour-body">
+                    <div class="tour-desc">
+                      Resort de luxo para esquiadores experientes.
+                      <strong style="color: var(--red)"
+                        >A Pri não recomenda</strong
+                      >
+                      para iniciantes — foco nos hóspedes do hotel.
+                    </div>
+                    <div class="tour-meta">
+                      <div class="tour-mr">
+                        <span>🕐</span>Dia completo — Saída 5:30h
+                      </div>
+                      <div class="tour-mr">
+                        <span style="color: var(--mint)">✓</span>Transporte
+                        incluído
+                      </div>
+                    </div>
+                    <a
+                      href="https://api.whatsapp.com/send/?phone=56964155891&text=Olá Pri! Quero reservar Valle Nevado"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="btn btn-wa"
+                      style="width: 100%; justify-content: center"
+                      >📱 Reservar</a
+                    >
+                  </div>
+                </div>
+                <div
+                  class="tour-card"
+                  style="border-color: rgba(245, 150, 31, 0.2)"
+                >
+                  <div class="tour-head" style="background: var(--amber-dim)">
+                    <div class="tour-badge" style="color: var(--amber)">
+                      ⚠️ ALTO RISCO CANCEL.
+                    </div>
+                    <div class="tour-name">🏔 Portillo + Laguna del Inca</div>
+                  </div>
+                  <div class="tour-body">
+                    <div class="tour-desc">
+                      Visualmente deslumbrante mas carretera Caracoles fecha
+                      frequentemente. Cancelamento
+                      <strong style="color: var(--red)">sem reembolso</strong>.
+                    </div>
+                    <div class="tour-meta">
+                      <div class="tour-mr">
+                        <span>🕐</span>Dia completo — O ano todo
+                      </div>
+                      <div class="tour-mr">
+                        <span style="color: var(--red)">⚠️</span>Não recomendado
+                        para crianças
+                      </div>
+                    </div>
+                    <a
+                      href="https://api.whatsapp.com/send/?phone=56964155891&text=Olá Pri! Quero saber sobre Portillo + Laguna del Inca"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="btn btn-wa"
+                      style="width: 100%; justify-content: center"
+                      >📱 Consultar</a
+                    >
+                  </div>
+                </div>
+              </div>
+              <div class="slbl" style="color: var(--mint)">
+                🌊 Litoral e Viñas · O ano todo
+              </div>
+              <div class="tour-grid">
+                <div
+                  class="tour-card"
+                  style="border-color: rgba(45, 212, 160, 0.25)"
+                >
+                  <div
+                    class="tour-head"
+                    style="
+                      background: linear-gradient(
+                        135deg,
+                        rgba(45, 212, 160, 0.1),
+                        transparent
+                      );
+                    "
+                  >
+                    <div class="tour-badge" style="color: var(--mint)">
+                      🏆 MAIS COMPLETO
+                    </div>
+                    <div class="tour-name">
+                      🌊 Isla Negra + Algarrobo + Undurraga
+                    </div>
+                  </div>
+                  <div class="tour-body">
+                    <div class="tour-desc">
+                      O favorito da Pri. Museu Neruda + piscina mais linda do
+                      mundo + degustação na Viña Undurraga.
+                    </div>
+                    <div class="tour-meta">
+                      <div class="tour-mr">
+                        <span>🕐</span>Dia completo — Saída 6-7h / Retorno ~18h
+                      </div>
+                      <div class="tour-mr">
+                        <span style="color: var(--mint)">✓</span>Transporte +
+                        entrada + degustação
+                      </div>
+                    </div>
+                    <a
+                      href="https://api.whatsapp.com/send/?phone=56964155891&text=Olá Pri! Quero reservar Isla Negra + Algarrobo + Undurraga"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="btn btn-wa"
+                      style="width: 100%; justify-content: center"
+                      >📱 Reservar</a
+                    >
+                  </div>
+                </div>
+                <div class="tour-card">
+                  <div class="tour-head" style="background: var(--bg3)">
+                    <div class="tour-badge" style="color: var(--t2)">
+                      ARTE + CULTURA
+                    </div>
+                    <div class="tour-name">🎨 Viña del Mar + Valparaíso</div>
+                  </div>
+                  <div class="tour-body">
+                    <div class="tour-desc">
+                      Morros coloridos de Valparaíso + Viña del Mar moderna.
+                      Levar calçado confortável.
+                    </div>
+                    <div class="tour-meta">
+                      <div class="tour-mr">
+                        <span>🕐</span>Dia completo — Saída 6-7h / Retorno ~18h
+                      </div>
+                      <div class="tour-mr">
+                        <span style="color: var(--mint)">✓</span>Transporte
+                        incluído
+                      </div>
+                    </div>
+                    <a
+                      href="https://api.whatsapp.com/send/?phone=56964155891&text=Olá Pri! Quero reservar Viña del Mar + Valparaíso"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="btn btn-wa"
+                      style="width: 100%; justify-content: center"
+                      >📱 Reservar</a
+                    >
+                  </div>
+                </div>
+                <div class="tour-card">
+                  <div class="tour-head" style="background: var(--bg3)">
+                    <div class="tour-badge" style="color: var(--pri)">
+                      MAIOR AM. LATINA
+                    </div>
+                    <div class="tour-name">🍷 Vinícola Concha y Toro</div>
+                  </div>
+                  <div class="tour-body">
+                    <div class="tour-desc">
+                      Maior vinícola da América Latina.
+                      <strong style="color: var(--mint)"
+                        >Plano B perfeito</strong
+                      >
+                      se neve cancelar por mau tempo.
+                    </div>
+                    <div class="tour-meta">
+                      <div class="tour-mr">
+                        <span>🕐</span>Meio período — Saída 7h / Retorno ~13:30h
+                      </div>
+                      <div class="tour-mr">
+                        <span style="color: var(--mint)">✓</span>Transfer + 3
+                        degustações + taça
+                      </div>
+                    </div>
+                    <a
+                      href="https://api.whatsapp.com/send/?phone=56964155891&text=Olá Pri! Quero reservar Concha y Toro"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="btn btn-wa"
+                      style="width: 100%; justify-content: center"
+                      >📱 Reservar</a
+                    >
+                  </div>
+                </div>
+                <div class="tour-card">
+                  <div class="tour-head" style="background: var(--bg3)">
+                    <div class="tour-badge" style="color: var(--pri)">
+                      DAS MAIS ANTIGAS
+                    </div>
+                    <div class="tour-name">🍾 Vinícola Undurraga</div>
+                  </div>
+                  <div class="tour-body">
+                    <div class="tour-desc">
+                      Tour elegante com degustação. Disponível também no combo
+                      Isla Negra.
+                    </div>
+                    <div class="tour-meta">
+                      <div class="tour-mr">
+                        <span>🕐</span>Meio período — Saída 7h / Retorno ~13:30h
+                      </div>
+                      <div class="tour-mr">
+                        <span style="color: var(--mint)">✓</span>Transfer + guia
+                        + 3 degustações
+                      </div>
+                    </div>
+                    <a
+                      href="https://api.whatsapp.com/send/?phone=56964155891&text=Olá Pri! Quero reservar Undurraga"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="btn btn-wa"
+                      style="width: 100%; justify-content: center"
+                      >📱 Reservar</a
+                    >
+                  </div>
+                </div>
+              </div>
+              <div class="slbl" style="color: var(--amber)">
+                🏙 Cidade · O ano todo
+              </div>
+              <div class="tour-grid">
+                <div class="tour-card">
+                  <div class="tour-head" style="background: var(--amber-dim)">
+                    <div class="tour-badge" style="color: var(--amber)">
+                      ✅ FAZER NO 1º DIA
+                    </div>
+                    <div class="tour-name">🚶 City Walking Tour</div>
+                  </div>
+                  <div class="tour-body">
+                    <div class="tour-desc">
+                      Centro histórico, La Moneda, Lastarria. Guiado
+                      pessoalmente pela Pri.
+                    </div>
+                    <div class="tour-meta">
+                      <div class="tour-mr">
+                        <span>🕐</span>Meio período — 9:30h às 12:30h
+                      </div>
+                      <div class="tour-mr">
+                        <span style="color: var(--amber)">💡</span>Não busca no
+                        hotel — ponto combinado
+                      </div>
+                    </div>
+                    <a
+                      href="https://api.whatsapp.com/send/?phone=56964155891&text=Olá Pri! Quero reservar City Walking Tour"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="btn btn-wa"
+                      style="width: 100%; justify-content: center"
+                      >📱 Reservar</a
+                    >
+                  </div>
+                </div>
+                <div class="tour-card">
+                  <div class="tour-head" style="background: var(--bg3)">
+                    <div class="tour-badge" style="color: var(--red)">
+                      ⚠️ SÓ OUT–ABR
+                    </div>
+                    <div class="tour-name">♨️ Termas + Cajón del Maipo</div>
+                  </div>
+                  <div class="tour-body">
+                    <div class="tour-desc">
+                      Termas Colinas + Embalse El Yeso. Paisagens incríveis na
+                      Cordilheira.
+                    </div>
+                    <div class="tour-meta">
+                      <div class="tour-mr">
+                        <span>🕐</span>Dia completo — Saída 5:30h
+                      </div>
+                      <div class="tour-mr">
+                        <span style="color: var(--red)">⚠️</span>FECHADO
+                        junho–setembro
+                      </div>
+                    </div>
+                    <a
+                      href="https://api.whatsapp.com/send/?phone=56964155891&text=Olá Pri! Quero saber sobre Termas + Cajón del Maipo"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="btn btn-wa"
+                      style="width: 100%; justify-content: center"
+                      >📱 Consultar</a
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ANTES DE VIAJAR PAGE -->
+        <div class="page" id="p-antes">
+          <div class="scroll">
+            <div class="inner">
+              <div
+                class="page-hero"
+                style="
+                  background: linear-gradient(
+                    135deg,
+                    rgba(181, 123, 255, 0.1),
+                    rgba(181, 123, 255, 0.02)
+                  );
+                  border: 1px solid rgba(181, 123, 255, 0.18);
+                "
+              >
+                <div class="hero-tag" style="color: #b57bff">
+                  <span style="background: #b57bff"></span>Planejamento ·
+                  Documentos · Mala
+                </div>
+                <div class="hero-ht">
+                  Antes da
+                  <span style="color: #b57bff; font-style: normal">Viagem</span>
+                </div>
+                <div class="hero-hs">
+                  Checklist completo antes de embarcar.
+                  <strong>Clique para marcar como concluído.</strong>
+                </div>
+              </div>
+              <div class="slbl" style="color: #b57bff">📅 30 dias antes</div>
+              <div class="cl-card">
+                <div class="cl-row" onclick="ck(this)">
+                  <span class="cl-ck">⬜</span>
+                  <div>
+                    <div class="cl-t">Verificar o RG</div>
+                    <div class="cl-s">
+                      Menos de 10 anos de emissão. CNH
+                      <strong style="color: var(--red)">NÃO</strong> vale —
+                      muitos perderam o voo.
+                    </div>
+                  </div>
+                </div>
+                <div class="cl-row" onclick="ck(this)">
+                  <span class="cl-ck">⬜</span>
+                  <div>
+                    <div class="cl-t">Contratar seguro de viagem</div>
+                    <div class="cl-s">
+                      Chile não tem saúde gratuita. Use
+                      <strong style="color: var(--pri)">DICASDAPRI5</strong> →
+                      30% OFF
+                    </div>
+                  </div>
+                </div>
+                <div class="cl-row" onclick="ck(this)">
+                  <span class="cl-ck">⬜</span>
+                  <div>
+                    <div class="cl-t">Reservar passeios</div>
+                    <div class="cl-s">
+                      Inverno: vagas esgotam em abril para julho.
+                    </div>
+                  </div>
+                </div>
+                <div class="cl-row" onclick="ck(this)">
+                  <span class="cl-ck">⬜</span>
+                  <div>
+                    <div class="cl-t">Reservar hospedagem em El Golf</div>
+                    <div class="cl-s">
+                      Hotel MR Express (Rua Vezinal 40) — melhor
+                      custo-benefício.
+                    </div>
+                  </div>
+                </div>
+                <div class="cl-row" onclick="ck(this)">
+                  <span class="cl-ck">⬜</span>
+                  <div>
+                    <div class="cl-t">Abrir conta Wise</div>
+                    <div class="cl-s">
+                      Leva 5-7 dias para ativar. 80% Wise + 20% espécie.
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="slbl" style="color: var(--blue)">
+                📅 1 semana antes
+              </div>
+              <div class="cl-card">
+                <div class="cl-row" onclick="ck(this)">
+                  <span class="cl-ck">⬜</span>
+                  <div>
+                    <div class="cl-t">Check-in online</div>
+                    <div class="cl-s">
+                      Sky/Latam: 48h antes. JetSmart pode mudar horário —
+                      confirmar.
+                    </div>
+                  </div>
+                </div>
+                <div class="cl-row" onclick="ck(this)">
+                  <span class="cl-ck">⬜</span>
+                  <div>
+                    <div class="cl-t">Separar reais em espécie</div>
+                    <div class="cl-s">
+                      Melhor taxa que dólares. Câmbio na More Exchange em
+                      Santiago.
+                    </div>
+                  </div>
+                </div>
+                <div class="cl-row" onclick="ck(this)">
+                  <span class="cl-ck">⬜</span>
+                  <div>
+                    <div class="cl-t">Montar a mala</div>
+                    <div class="cl-s">
+                      Não comprar roupa de neve no Brasil. Alugar em Santiago
+                      (~R$220).
+                    </div>
+                  </div>
+                </div>
+                <div class="cl-row" onclick="ck(this)">
+                  <span class="cl-ck">⬜</span>
+                  <div>
+                    <div class="cl-t">Salvar emergências</div>
+                    <div class="cl-s">
+                      131 SAMU · 132 Bombeiros · 133 Carabineros · Consulado +56
+                      9 9334 5103
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="slbl" style="color: var(--amber)">📅 1 dia antes</div>
+              <div class="cl-card">
+                <div class="cl-row" onclick="ck(this)">
+                  <span class="cl-ck">⬜</span>
+                  <div>
+                    <div class="cl-t">Preencher formulário SAG</div>
+                    <div class="cl-s">
+                      Obrigatório. Multa por frutas, sementes ou carnes frescas
+                      não declaradas.
+                    </div>
+                  </div>
+                </div>
+                <div class="cl-row" onclick="ck(this)">
+                  <span class="cl-ck">⬜</span>
+                  <div>
+                    <div class="cl-t">Confirmar Transfer Trans VIP</div>
+                    <div class="cl-s">
+                      Horário e endereço do hotel. Funciona 24h.
+                    </div>
+                  </div>
+                </div>
+                <div class="cl-row" onclick="ck(this)">
+                  <span class="cl-ck">⬜</span>
+                  <div>
+                    <div class="cl-t">Se vai à neve: jantar LEVE</div>
+                    <div class="cl-s">
+                      Sem carne pesada nem álcool. 60 curvas + altitude =
+                      mal-estar.
+                    </div>
+                  </div>
+                </div>
+                <div class="cl-row" onclick="ck(this)">
+                  <span class="cl-ck">⬜</span>
+                  <div>
+                    <div class="cl-t">Separar $5.000 CLP para o Bip!</div>
+                    <div class="cl-s">
+                      Metro só aceita pesos em espécie. Taquillas não aceitam
+                      cartão.
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="slbl">🧳 Lista de mala</div>
+              <div class="mala-grid">
+                <div class="mala-card">
+                  <div class="mala-t" style="color: var(--blue)">
+                    🧊 Frio e neve
+                  </div>
+                  <div class="mala-i" onclick="mkck(this)">
+                    <span class="ck">⬜</span><span>Casaco parka técnico</span>
+                  </div>
+                  <div class="mala-i" onclick="mkck(this)">
+                    <span class="ck">⬜</span><span>Blusa térmica (2x)</span>
+                  </div>
+                  <div class="mala-i" onclick="mkck(this)">
+                    <span class="ck">⬜</span><span>Calças grossas</span>
+                  </div>
+                  <div class="mala-i" onclick="mkck(this)">
+                    <span class="ck">⬜</span><span>Meias grossas (3x)</span>
+                  </div>
+                  <div class="mala-i" onclick="mkck(this)">
+                    <span class="ck">⬜</span><span>Bota com pelo</span>
+                  </div>
+                  <div class="mala-i" onclick="mkck(this)">
+                    <span class="ck">⬜</span><span>Luvas e touca</span>
+                  </div>
+                  <div class="mala-n" style="color: var(--mint)">
+                    💡 Roupa ski: alugar em Santiago
+                  </div>
+                </div>
+                <div class="mala-card">
+                  <div class="mala-t" style="color: var(--amber)">
+                    📋 Documentos
+                  </div>
+                  <div class="mala-i" onclick="mkck(this)">
+                    <span class="ck">⬜</span><span>RG (menos de 10 anos)</span>
+                  </div>
+                  <div class="mala-i" onclick="mkck(this)">
+                    <span class="ck">⬜</span><span>Passaporte (opcional)</span>
+                  </div>
+                  <div class="mala-i" onclick="mkck(this)">
+                    <span class="ck">⬜</span><span>Seguro impresso</span>
+                  </div>
+                  <div class="mala-i" onclick="mkck(this)">
+                    <span class="ck">⬜</span><span>Cartão Wise</span>
+                  </div>
+                  <div class="mala-i" onclick="mkck(this)">
+                    <span class="ck">⬜</span><span>Reais em espécie</span>
+                  </div>
+                  <div class="mala-i" onclick="mkck(this)">
+                    <span class="ck">⬜</span
+                    ><span>Receita médica (controlados)</span>
+                  </div>
+                  <div class="mala-n" style="color: var(--red)">
+                    ❌ CNH não vale
+                  </div>
+                </div>
+                <div class="mala-card">
+                  <div class="mala-t" style="color: var(--amber)">🧴 Saúde</div>
+                  <div class="mala-i" onclick="mkck(this)">
+                    <span class="ck">⬜</span><span>Bloqueador FPS 70+</span>
+                  </div>
+                  <div class="mala-i" onclick="mkck(this)">
+                    <span class="ck">⬜</span><span>Óculos espelhados</span>
+                  </div>
+                  <div class="mala-i" onclick="mkck(this)">
+                    <span class="ck">⬜</span><span>Protetor labial</span>
+                  </div>
+                  <div class="mala-i" onclick="mkck(this)">
+                    <span class="ck">⬜</span><span>Antinauseante</span>
+                  </div>
+                  <div class="mala-i" onclick="mkck(this)">
+                    <span class="ck">⬜</span><span>Papel higiênico extra</span>
+                  </div>
+                  <div class="mala-n" style="color: var(--amber)">
+                    ⚠️ Altitude potencializa ressaca
+                  </div>
+                </div>
+                <div class="mala-card">
+                  <div class="mala-t" style="color: var(--pri)">
+                    📱 Tecnologia
+                  </div>
+                  <div class="mala-i" onclick="mkck(this)">
+                    <span class="ck">⬜</span
+                    ><span>Adaptador tomada tipo B/C</span>
+                  </div>
+                  <div class="mala-i" onclick="mkck(this)">
+                    <span class="ck">⬜</span><span>Power bank carregado</span>
+                  </div>
+                  <div class="mala-i" onclick="mkck(this)">
+                    <span class="ck">⬜</span><span>App Cabify instalado</span>
+                  </div>
+                  <div class="mala-i" onclick="mkck(this)">
+                    <span class="ck">⬜</span
+                    ><span>Google Translate offline ES</span>
+                  </div>
+                  <div class="mala-n" style="color: var(--pri)">
+                    💡 eSIM Chile — em breve!
+                  </div>
+                </div>
+              </div>
+              <div class="slbl">💰 Orçamento</div>
+              <div class="budget-row">
+                <div class="budget-card">
+                  <div class="bg-ic">🎒</div>
+                  <div class="bg-tag" style="color: var(--blue)">Econômico</div>
+                  <div class="bg-v" style="color: var(--blue)">R$6.000</div>
+                  <div class="bg-d">
+                    Airbnb + 3 passeios + alimentação moderada
+                  </div>
+                </div>
+                <div
+                  class="budget-card"
+                  style="background: var(--pri-dim); border-color: var(--l2)"
+                >
+                  <div class="bg-ic">⭐</div>
+                  <div class="bg-tag" style="color: var(--pri)">
+                    Recomendado
+                  </div>
+                  <div class="bg-v" style="color: var(--pri)">R$7.500</div>
+                  <div class="bg-d">
+                    Hotel + 4-5 passeios + bons restaurantes
+                  </div>
+                </div>
+                <div class="budget-card">
+                  <div class="bg-ic">💎</div>
+                  <div class="bg-tag" style="color: var(--gold)">Premium</div>
+                  <div class="bg-v" style="color: var(--gold)">R$9.000</div>
+                  <div class="bg-d">
+                    El Golf + todos passeios + Mestizo + vinhos
+                  </div>
+                </div>
+              </div>
+              <div
+                style="
+                  background: var(--pri-dim);
+                  border: 1px solid var(--l2);
+                  border-radius: var(--r2);
+                  padding: 15px 18px;
+                  display: flex;
+                  align-items: center;
+                  justify-content: space-between;
+                  flex-wrap: wrap;
+                  gap: 11px;
+                "
+              >
+                <div>
+                  <div
+                    style="
+                      font-size: 13px;
+                      font-weight: 700;
+                      color: var(--w);
+                      margin-bottom: 3px;
+                    "
+                  >
+                    🛡 Ainda não tem seguro?
+                  </div>
+                  <div style="font-size: 11px; color: var(--t2)">
+                    Cupom
+                    <strong style="color: var(--pri)">DICASDAPRI5</strong> →
+                    <strong style="color: var(--pri)">30% OFF</strong>
+                  </div>
+                </div>
+                <a
+                  href="https://www.segurospromo.com.br/?utm_medium=afiliado&pcrid=5008&utm_source=outro&cupom=DICASDAPRI5"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="btn btn-main"
+                  >Contratar agora →</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SEGURO PAGE -->
+        <div class="page" id="p-seguro">
+          <div class="scroll">
+            <div class="inner">
+              <div
+                class="page-hero"
+                style="
+                  background: linear-gradient(
+                    135deg,
+                    rgba(45, 212, 160, 0.1),
+                    rgba(45, 212, 160, 0.02)
+                  );
+                  border: 1px solid rgba(45, 212, 160, 0.18);
+                "
+              >
+                <div
+                  style="
+                    position: absolute;
+                    top: -50px;
+                    right: -50px;
+                    width: 180px;
+                    height: 180px;
+                    border-radius: 50%;
+                    background: radial-gradient(
+                      circle,
+                      rgba(45, 212, 160, 0.07),
+                      transparent
+                    );
+                    pointer-events: none;
+                  "
+                ></div>
+                <div class="hero-tag" style="color: var(--mint)">
+                  <span style="background: var(--mint)"></span>Parceiro oficial
+                  Dicas da Pri
+                </div>
+                <div class="hero-ht">
+                  Seguro de Viagem<br />para o
+                  <span style="color: var(--mint); font-style: normal"
+                    >Chile</span
+                  >
+                </div>
+                <div class="hero-hs">
+                  <strong>Chile não tem saúde pública gratuita.</strong>
+                  Atendimento básico = mínimo R$10.000. Se for esquiar, o seguro
+                  deve cobrir <strong>esportes radicais</strong> explicitamente.
+                </div>
+                <div class="coupon-box">
+                  <div>
+                    <div class="coup-lbl">🎁 Cupom exclusivo Dicas da Pri</div>
+                    <div class="coup-code">DICASDAPRI5</div>
+                    <div class="coup-desc">
+                      30% de desconto · Seguros Promo · válido agora
+                    </div>
+                  </div>
+                  <a
+                    href="https://www.segurospromo.com.br/?utm_medium=afiliado&pcrid=5008&utm_source=outro&cupom=DICASDAPRI5"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="btn btn-main"
+                    >🛡 Contratar com 30% OFF →</a
+                  >
+                </div>
+              </div>
+              <div
+                class="alert-box"
+                style="
+                  background: var(--amber-dim);
+                  border: 1px solid rgba(245, 150, 31, 0.2);
+                "
+              >
+                <div class="al-ico">⚠️</div>
+                <div>
+                  <div class="al-t" style="color: var(--amber)">
+                    Por que é obrigatório na prática
+                  </div>
+                  <div class="al-b" style="color: rgba(245, 150, 31, 0.8)">
+                    Atendimento médico para turistas é sempre pago. De unha
+                    encravada (R$10.000+) a acidente de ski (até R$100.000). Sem
+                    cobertura de
+                    <strong style="color: var(--amber)"
+                      >esportes radicais</strong
+                    >, clínicas podem negar atendimento.
+                  </div>
+                </div>
+              </div>
+              <div class="slbl">Por que você precisa</div>
+              <div
+                style="
+                  display: grid;
+                  grid-template-columns: 1fr 1fr;
+                  gap: 9px;
+                  margin-bottom: 18px;
+                "
+              >
+                <div
+                  style="
+                    background: var(--bg2);
+                    border: 1px solid var(--l1);
+                    border-radius: var(--r2);
+                    padding: 15px;
+                  "
+                >
+                  <div style="font-size: 22px; margin-bottom: 8px">🏥</div>
+                  <div
+                    style="
+                      font-size: 12px;
+                      font-weight: 700;
+                      color: var(--t1);
+                      margin-bottom: 4px;
+                    "
+                  >
+                    Sem saúde pública
+                  </div>
+                  <div
+                    style="
+                      font-size: 10.5px;
+                      color: var(--t2);
+                      line-height: 1.55;
+                    "
+                  >
+                    Chile não atende turistas de graça. Qualquer consulta começa
+                    em R$10.000.
+                  </div>
+                </div>
+                <div
+                  style="
+                    background: var(--bg2);
+                    border: 1px solid var(--l1);
+                    border-radius: var(--r2);
+                    padding: 15px;
+                  "
+                >
+                  <div style="font-size: 22px; margin-bottom: 8px">🎿</div>
+                  <div
+                    style="
+                      font-size: 12px;
+                      font-weight: 700;
+                      color: var(--t1);
+                      margin-bottom: 4px;
+                    "
+                  >
+                    Esportes na neve
+                  </div>
+                  <div
+                    style="
+                      font-size: 10.5px;
+                      color: var(--t2);
+                      line-height: 1.55;
+                    "
+                  >
+                    Ski exige cobertura de esportes radicais. Sem isso, podem
+                    negar atendimento.
+                  </div>
+                </div>
+                <div
+                  style="
+                    background: var(--bg2);
+                    border: 1px solid var(--l1);
+                    border-radius: var(--r2);
+                    padding: 15px;
+                  "
+                >
+                  <div style="font-size: 22px; margin-bottom: 8px">✈️</div>
+                  <div
+                    style="
+                      font-size: 12px;
+                      font-weight: 700;
+                      color: var(--t1);
+                      margin-bottom: 4px;
+                    "
+                  >
+                    Cancelamento de voo
+                  </div>
+                  <div
+                    style="
+                      font-size: 10.5px;
+                      color: var(--t2);
+                      line-height: 1.55;
+                    "
+                  >
+                    JetSmart costuma mudar horários. Cobertura para remarcações.
+                  </div>
+                </div>
+                <div
+                  style="
+                    background: var(--bg2);
+                    border: 1px solid var(--l1);
+                    border-radius: var(--r2);
+                    padding: 15px;
+                  "
+                >
+                  <div style="font-size: 22px; margin-bottom: 8px">🧳</div>
+                  <div
+                    style="
+                      font-size: 12px;
+                      font-weight: 700;
+                      color: var(--t1);
+                      margin-bottom: 4px;
+                    "
+                  >
+                    Bagagem perdida
+                  </div>
+                  <div
+                    style="
+                      font-size: 10.5px;
+                      color: var(--t2);
+                      line-height: 1.55;
+                    "
+                  >
+                    Voos com conexão, bagagem pode extraviar. Cobre até R$5.000.
+                  </div>
+                </div>
+              </div>
+              <div class="slbl">Planos recomendados</div>
+              <div class="plan-row">
+                <a
+                  href="https://www.segurospromo.com.br/?utm_medium=afiliado&pcrid=5008&utm_source=outro&cupom=DICASDAPRI5"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="plan-card"
+                  ><div
+                    class="plan-tag"
+                    style="background: var(--blue-dim); color: var(--blue)"
+                  >
+                    BÁSICO
+                  </div>
+                  <div class="plan-name">Santiago City</div>
+                  <div class="plan-desc">
+                    Para quem vai só à cidade, sem atividades na neve
+                  </div>
+                  <div class="plan-feats">
+                    <div class="pf">Cobertura médica básica</div>
+                    <div class="pf">Cancelamento de voo</div>
+                    <div class="pf">Bagagem extraviada</div>
+                    <div class="pf">Assistência 24h</div>
+                  </div></a
+                >
+                <a
+                  href="https://www.segurospromo.com.br/?utm_medium=afiliado&pcrid=5008&utm_source=outro&cupom=DICASDAPRI5"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="plan-card feat"
+                  ><div
+                    class="plan-tag"
+                    style="background: var(--pri-dim); color: var(--pri)"
+                  >
+                    ⭐ RECOMENDADO
+                  </div>
+                  <div class="plan-name">Santiago + Neve</div>
+                  <div class="plan-desc">
+                    Para quem vai esquiar ou praticar esportes na cordilheira
+                  </div>
+                  <div class="plan-feats">
+                    <div class="pf">Cobertura médica completa</div>
+                    <div class="pf" style="color: var(--pri)">
+                      <strong>Esportes radicais incluído</strong>
+                    </div>
+                    <div class="pf">Evacuação de emergência</div>
+                    <div class="pf">Cancelamento + bagagem</div>
+                  </div></a
+                >
+                <a
+                  href="https://www.segurospromo.com.br/?utm_medium=afiliado&pcrid=5008&utm_source=outro&cupom=DICASDAPRI5"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="plan-card"
+                  ><div
+                    class="plan-tag"
+                    style="background: var(--amber-dim); color: var(--amber)"
+                  >
+                    PREMIUM
+                  </div>
+                  <div class="plan-name">Chile Completo</div>
+                  <div class="plan-desc">
+                    Atacama, Patagônia ou muitas atividades
+                  </div>
+                  <div class="plan-feats">
+                    <div class="pf">Cobertura máxima</div>
+                    <div class="pf">Esportes radicais + altitude</div>
+                    <div class="pf">Evacuação helicóptero</div>
+                    <div class="pf">Responsabilidade civil</div>
+                  </div></a
+                >
+              </div>
+              <div
+                style="
+                  background: var(--mint-dim);
+                  border: 1px solid rgba(45, 212, 160, 0.18);
+                  border-radius: var(--r3);
+                  padding: 20px;
+                  text-align: center;
+                "
+              >
+                <div
+                  style="
+                    font-family: &quot;Fraunces&quot;, serif;
+                    font-size: 19px;
+                    font-style: italic;
+                    color: var(--w);
+                    margin-bottom: 5px;
+                  "
+                >
+                  Viaje tranquilo com o cupom da Pri
+                </div>
+                <div
+                  style="font-size: 11px; color: var(--t2); margin-bottom: 13px"
+                >
+                  30% de desconto na Seguros Promo — parceiro oficial da Dicas
+                  da Pri.
+                </div>
+                <div
+                  style="
+                    font-family: &quot;JetBrains Mono&quot;, monospace;
+                    font-size: 17px;
+                    font-weight: 600;
+                    color: var(--mint);
+                    background: var(--bg2);
+                    border: 1.5px dashed rgba(45, 212, 160, 0.3);
+                    border-radius: var(--r1);
+                    padding: 7px 18px;
+                    display: inline-block;
+                    margin-bottom: 13px;
+                  "
+                >
+                  DICASDAPRI5
+                </div>
+                <br />
+                <a
+                  href="https://www.segurospromo.com.br/?utm_medium=afiliado&pcrid=5008&utm_source=outro&cupom=DICASDAPRI5"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="btn btn-main"
+                  style="font-size: 13px; padding: 12px 24px"
+                  >🛡 Contratar com 30% OFF →</a
+                >
+                <div
+                  style="
+                    font-size: 10px;
+                    color: var(--t3);
+                    margin-top: 10px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 5px;
+                  "
+                >
+                  <span
+                    style="
+                      width: 5px;
+                      height: 5px;
+                      border-radius: 50%;
+                      background: var(--mint);
+                      animation: blink 2s infinite;
+                      display: inline-block;
+                    "
+                  ></span
+                  >Parceiro verificado pela Dicas da Pri
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TRANSFER PAGE -->
+        <div class="page" id="p-transfer">
+          <div class="scroll">
+            <div class="inner">
+              <div
+                class="page-hero"
+                style="
+                  background: linear-gradient(
+                    135deg,
+                    rgba(91, 155, 213, 0.08),
+                    rgba(91, 155, 213, 0.02)
+                  );
+                  border: 1px solid rgba(91, 155, 213, 0.15);
+                "
+              >
+                <div class="hero-tag" style="color: var(--blue)">
+                  <span style="background: var(--blue)"></span>Aeroporto ·
+                  Cidade · Passeios
+                </div>
+                <div class="hero-ht">
+                  Transfers em
+                  <span style="color: var(--blue); font-style: normal"
+                    >Santiago</span
+                  >
+                </div>
+                <div class="hero-hs">
+                  <strong>Uber é ILEGAL para sair do aeroporto.</strong> Taxis =
+                  risco de golpe. Use apenas os serviços verificados abaixo.
+                </div>
+              </div>
+              <div
+                class="alert-box"
+                style="
+                  background: var(--red-dim);
+                  border: 1px solid rgba(240, 79, 79, 0.2);
+                "
+              >
+                <div class="al-ico">🚫</div>
+                <div>
+                  <div class="al-t" style="color: var(--red)">
+                    Uber é ILEGAL no aeroporto SCL
+                  </div>
+                  <div class="al-b" style="color: rgba(240, 79, 79, 0.8)">
+                    Fiscalização rigorosa. Motorista multado, carro retido e
+                    você fica
+                    <strong style="color: var(--red)"
+                      >na estrada com as malas</strong
+                    >. Use Trans VIP.
+                  </div>
+                </div>
+              </div>
+              <div class="slbl">Serviços verificados</div>
+              <div
+                class="svc-card"
+                style="border-color: rgba(45, 212, 160, 0.2)"
+              >
+                <div class="svc-head" style="background: var(--mint-dim)">
+                  <div class="svc-info">
+                    <div
+                      class="svc-logo"
+                      style="
+                        background: rgba(45, 212, 160, 0.15);
+                        border: 1px solid rgba(45, 212, 160, 0.25);
+                      "
+                    >
+                      🚐
+                    </div>
+                    <div>
+                      <div class="svc-name">Trans VIP</div>
+                      <div class="svc-badge" style="color: var(--mint)">
+                        ⭐ RECOMENDADO PELA PRI
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    style="
+                      background: rgba(45, 212, 160, 0.15);
+                      border: 1px solid rgba(45, 212, 160, 0.25);
+                      border-radius: var(--r2);
+                      padding: 5px 12px;
+                      font-size: 11.5px;
+                      font-weight: 700;
+                      color: var(--mint);
+                    "
+                  >
+                    ~R$60/pessoa
+                  </div>
+                </div>
+                <div class="svc-body">
+                  <div class="svc-desc">
+                    Transfer compartilhado 24h. Balcão dentro do aeroporto. O
+                    mais prático com malas. Opção que a Pri usa pessoalmente.
+                  </div>
+                  <div class="tags">
+                    <span class="tag ok">✓ 24h</span
+                    ><span class="tag ok">✓ Balcão no aeroporto</span
+                    ><span class="tag ok">✓ Aceita cartão</span>
+                  </div>
+                  <a
+                    href="https://www.transvip.cl"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="btn btn-main"
+                    >🌐 Acessar Trans VIP →</a
+                  >
+                </div>
+              </div>
+              <div class="svc-card">
+                <div class="svc-head" style="background: var(--bg3)">
+                  <div class="svc-info">
+                    <div
+                      class="svc-logo"
+                      style="
+                        background: rgba(181, 123, 255, 0.12);
+                        border: 1px solid rgba(181, 123, 255, 0.2);
+                      "
+                    >
+                      🟣
+                    </div>
+                    <div>
+                      <div class="svc-name">Cabify</div>
+                      <div class="svc-badge" style="color: #b57bff">
+                        APP · ALTERNATIVA AO UBER
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="svc-body">
+                  <div class="svc-desc">
+                    Funciona bem
+                    <strong style="color: var(--t1)">dentro de Santiago</strong
+                    >. Preço fixo antes de confirmar. ⚠️ Verificar operação no
+                    aeroporto antes de usar na chegada.
+                  </div>
+                  <div class="tags">
+                    <span class="tag ok">✓ App</span
+                    ><span class="tag ok">✓ Preço fixo</span
+                    ><span class="tag warn">⚠️ Verificar no aeroporto</span>
+                  </div>
+                  <a
+                    href="https://cabify.com/chile"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="btn"
+                    style="background: #7c3aed; color: #fff"
+                    >🟣 Baixar Cabify →</a
+                  >
+                </div>
+              </div>
+              <div class="svc-card">
+                <div class="svc-head" style="background: var(--bg3)">
+                  <div class="svc-info">
+                    <div
+                      class="svc-logo"
+                      style="
+                        background: var(--blue-dim);
+                        border: 1px solid rgba(91, 155, 213, 0.2);
+                      "
+                    >
+                      🚙
+                    </div>
+                    <div>
+                      <div class="svc-name">WeTransport</div>
+                      <div class="svc-badge" style="color: var(--blue)">
+                        TRANSFER PARTICULAR
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="svc-body">
+                  <div class="svc-desc">
+                    Carro exclusivo para aeroporto e passeios. Ideal para grupos
+                    ou quem prefere privacidade.
+                  </div>
+                  <div class="tags">
+                    <span class="tag ok">✓ Carro exclusivo</span
+                    ><span class="tag ok">✓ Para grupos</span>
+                  </div>
+                  <a
+                    href="https://www.wetransport.cl"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="btn"
+                    style="background: #0284c7; color: #fff"
+                    >🚙 WeTransport →</a
+                  >
+                </div>
+              </div>
+              <div class="svc-card">
+                <div class="svc-head" style="background: var(--bg3)">
+                  <div class="svc-info">
+                    <div
+                      class="svc-logo"
+                      style="
+                        background: rgba(232, 21, 122, 0.1);
+                        border: 1px solid var(--l1);
+                      "
+                    >
+                      🏎
+                    </div>
+                    <div>
+                      <div class="svc-name">Ven Me Buscar</div>
+                      <div class="svc-badge" style="color: var(--pri)">
+                        FALAM PORTUGUÊS
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="svc-body">
+                  <div class="svc-desc">
+                    Transfer focado no público brasileiro. Motoristas que falam
+                    português. Contato via WhatsApp.
+                  </div>
+                  <div class="tags">
+                    <span class="tag ok">✓ Em português</span
+                    ><span class="tag ok">✓ WhatsApp</span>
+                  </div>
+                  <a
+                    href="https://www.instagram.com/venme_buscar/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="btn"
+                    style="background: #e1306c; color: #fff"
+                    >📸 Instagram →</a
+                  >
+                </div>
+              </div>
+              <div
+                style="
+                  background: var(--mint-dim);
+                  border: 1px solid rgba(45, 212, 160, 0.18);
+                  border-radius: var(--r2);
+                  padding: 15px 17px;
+                "
+              >
+                <div
+                  style="
+                    font-size: 12.5px;
+                    font-weight: 700;
+                    color: var(--mint);
+                    margin-bottom: 5px;
+                  "
+                >
+                  💡 Dica da Pri no aeroporto
+                </div>
+                <div
+                  style="font-size: 11.5px; color: var(--t2); line-height: 1.65"
+                >
+                  Ao chegar,
+                  <strong style="color: var(--t1)"
+                    >vá direto ao balcão da Trans VIP</strong
+                  >
+                  antes de sair do desembarque. Pague lá dentro. Não aceite
+                  motoristas avulsos no saguão.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CÂMBIO PAGE -->
+        <div class="page" id="p-cambio">
+          <div class="scroll">
+            <div class="inner">
+              <div
+                class="page-hero"
+                style="
+                  background: linear-gradient(
+                    135deg,
+                    rgba(212, 168, 83, 0.1),
+                    rgba(212, 168, 83, 0.02)
+                  );
+                  border: 1px solid rgba(212, 168, 83, 0.2);
+                "
+              >
+                <div class="hero-tag" style="color: var(--gold)">
+                  <span style="background: var(--gold)"></span>Parceiro oficial
+                  · Santiago
+                </div>
+                <div class="hero-ht">
+                  Câmbio em
+                  <span style="color: var(--gold); font-style: normal"
+                    >Santiago</span
+                  >
+                </div>
+                <div class="hero-hs">
+                  <strong>More Exchange — melhor taxa para brasileiros.</strong>
+                  Parque Arauco, Costanera, Providencia e mais 8 sucursais. Leva
+                  Reais — nunca trocar no aeroporto.
+                </div>
+              </div>
+              <div class="slbl">Conversor rápido</div>
+              <div class="conv-card">
+                <div class="conv-row">
+                  <div class="conv-f">
+                    <div class="conv-lbl">🇨🇱 Pesos (CLP)</div>
+                    <input
+                      class="conv-in"
+                      id="clpIn"
+                      type="number"
+                      value="10000"
+                      min="1"
+                      oninput="cvt()"
+                    />
+                  </div>
+                  <div class="conv-arr">→</div>
+                  <div class="conv-rf">
+                    <div class="conv-rl">🇧🇷 Reais (BRL)</div>
+                    <div class="conv-rv" id="brlOut">R$57,80</div>
+                  </div>
+                </div>
+                <div class="conv-ft">
+                  <div class="conv-rate">
+                    Taxa ref.:
+                    <strong style="color: var(--t1)"
+                      >$1.000 CLP = R$5,78</strong
+                    >
+                  </div>
+                  <div class="conv-tip">💡 80% Wise + 20% espécie</div>
+                </div>
+              </div>
+              <div
+                class="alert-box"
+                style="
+                  background: var(--amber-dim);
+                  border: 1px solid rgba(245, 150, 31, 0.2);
+                "
+              >
+                <div class="al-ico">⚠️</div>
+                <div>
+                  <div class="al-t" style="color: var(--amber)">
+                    Nunca troque no aeroporto
+                  </div>
+                  <div class="al-b" style="color: rgba(245, 150, 31, 0.8)">
+                    Taxa péssima. Troque só o mínimo para transfer e Bip! do
+                    metro. O resto na
+                    <strong style="color: var(--amber)">More Exchange</strong>.
+                  </div>
+                </div>
+              </div>
+              <div class="slbl">Parceiro recomendado</div>
+              <div
+                class="svc-card"
+                style="border-color: rgba(212, 168, 83, 0.2)"
+              >
+                <div class="svc-head" style="background: var(--gold-dim)">
+                  <div class="svc-info">
+                    <div
+                      class="svc-logo"
+                      style="
+                        background: rgba(212, 168, 83, 0.15);
+                        border: 1px solid rgba(212, 168, 83, 0.25);
+                      "
+                    >
+                      💵
+                    </div>
+                    <div>
+                      <div class="svc-name">More Exchange</div>
+                      <div class="svc-badge" style="color: var(--gold)">
+                        ⭐ MELHOR TAXA · 8 SUCURSAIS
+                      </div>
+                    </div>
+                  </div>
+                  <a
+                    href="https://moreexchange.cl"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="btn btn-main"
+                    >💵 Ver taxa →</a
+                  >
+                </div>
+                <div class="svc-body">
+                  <div class="svc-desc">
+                    Casa de câmbio líder do Chile. Sem comissões escondidas.
+                    Tótems 24h.
+                  </div>
+                  <div
+                    style="
+                      display: flex;
+                      flex-direction: column;
+                      gap: 7px;
+                      margin-bottom: 12px;
+                    "
+                  >
+                    <div
+                      style="
+                        background: var(--bg3);
+                        border: 1px solid var(--l1);
+                        border-radius: var(--r1);
+                        padding: 9px 12px;
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        flex-wrap: wrap;
+                        gap: 6px;
+                      "
+                    >
+                      <div>
+                        <div
+                          style="
+                            font-size: 11.5px;
+                            font-weight: 600;
+                            color: var(--t1);
+                          "
+                        >
+                          🛍 Parque Arauco
+                        </div>
+                        <div style="font-size: 9.5px; color: var(--t3)">
+                          Av. Kennedy 5413 — Piso 1
+                        </div>
+                      </div>
+                      <span class="tag">Horário do mall</span>
+                    </div>
+                    <div
+                      style="
+                        background: var(--bg3);
+                        border: 1px solid var(--l1);
+                        border-radius: var(--r1);
+                        padding: 9px 12px;
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        flex-wrap: wrap;
+                        gap: 6px;
+                      "
+                    >
+                      <div>
+                        <div
+                          style="
+                            font-size: 11.5px;
+                            font-weight: 600;
+                            color: var(--t1);
+                          "
+                        >
+                          🏙 Providencia
+                        </div>
+                        <div style="font-size: 9.5px; color: var(--t3)">
+                          Av. Andrés Bello 2425 (frente H&amp;M)
+                        </div>
+                      </div>
+                      <span class="tag">Horário do mall</span>
+                    </div>
+                    <div
+                      style="
+                        background: var(--gold-dim);
+                        border: 1px solid rgba(212, 168, 83, 0.18);
+                        border-radius: var(--r1);
+                        padding: 9px 12px;
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        flex-wrap: wrap;
+                        gap: 6px;
+                      "
+                    >
+                      <div>
+                        <div
+                          style="
+                            font-size: 11.5px;
+                            font-weight: 600;
+                            color: var(--gold);
+                          "
+                        >
+                          🤖 Tótem 24h
+                        </div>
+                        <div style="font-size: 9.5px; color: var(--t3)">
+                          Autoatendimento em pontos estratégicos
+                        </div>
+                      </div>
+                      <span
+                        class="tag"
+                        style="
+                          background: var(--gold-dim);
+                          border-color: rgba(212, 168, 83, 0.2);
+                          color: var(--gold);
+                        "
+                        >24 horas</span
+                      >
+                    </div>
+                  </div>
+                  <div style="display: flex; gap: 7px; flex-wrap: wrap">
+                    <a
+                      href="https://wa.me/56969060570"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="btn btn-wa"
+                      >📱 WhatsApp</a
+                    >
+                    <a
+                      href="https://moreexchange.cl"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="btn btn-outline"
+                      >🌐 Site</a
+                    >
+                  </div>
+                </div>
+              </div>
+              <div class="slbl">7 dicas de câmbio da Pri</div>
+              <div class="cl-card">
+                <div class="cl-row" style="cursor: default">
+                  <span style="font-size: 15px">✅</span>
+                  <div class="cl-t">
+                    Levar <strong>Reais em espécie</strong> — melhor taxa que
+                    dólares
+                  </div>
+                </div>
+                <div class="cl-row" style="cursor: default">
+                  <span style="font-size: 15px">✅</span>
+                  <div class="cl-t">
+                    <strong>80% cartão Wise + 20% espécie</strong> para
+                    emergências
+                  </div>
+                </div>
+                <div class="cl-row" style="cursor: default">
+                  <span style="font-size: 15px">✅</span>
+                  <div class="cl-t">
+                    Real vale mais no <strong>verão</strong> — chilenos viajam
+                    ao Brasil
+                  </div>
+                </div>
+                <div class="cl-row" style="cursor: default">
+                  <span style="font-size: 15px">⚠️</span>
+                  <div class="cl-t">Aeroporto: só o mínimo — taxa péssima</div>
+                </div>
+                <div class="cl-row" style="cursor: default">
+                  <span style="font-size: 15px">⚠️</span>
+                  <div class="cl-t">
+                    Metro: taquillas <strong>só pesos em espécie</strong> — ter
+                    sempre reserva
+                  </div>
+                </div>
+                <div class="cl-row" style="cursor: default">
+                  <span style="font-size: 15px">💡</span>
+                  <div class="cl-t">
+                    Conversão rápida: tire um zero × 6 ($10.000 ≈ R$58)
+                  </div>
+                </div>
+                <div class="cl-row" style="cursor: default">
+                  <span style="font-size: 15px">💡</span>
+                  <div class="cl-t">
+                    Propina: 10%, culturalmente esperada — não é suborno
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SOS PAGE -->
+        <div class="page" id="p-sos">
+          <div class="scroll">
+            <div class="inner">
+              <div
+                class="page-hero"
+                style="
+                  background: linear-gradient(
+                    135deg,
+                    rgba(240, 79, 79, 0.1),
+                    rgba(240, 79, 79, 0.02)
+                  );
+                  border: 1px solid rgba(240, 79, 79, 0.18);
+                "
+              >
+                <div class="hero-tag" style="color: var(--red)">
+                  <span style="background: var(--red)"></span>Esperamos que você
+                  nunca precise usar
+                </div>
+                <div class="hero-ht">
+                  SOS
+                  <span style="color: var(--red); font-style: normal"
+                    >Emergências</span
+                  >
+                </div>
+                <div class="hero-hs">
+                  Números, consulado e scripts em espanhol.
+                  <strong>Funciona offline — salve este app agora.</strong>
+                </div>
+              </div>
+              <div class="slbl" style="color: var(--red)">Ligue agora</div>
+              <div class="sos-nums">
+                <a
+                  href="tel:131"
+                  class="sos-n"
+                  style="
+                    background: var(--red-dim);
+                    border: 1.5px solid rgba(240, 79, 79, 0.25);
+                  "
+                  ><div class="sos-em">🚑</div>
+                  <div class="sos-v" style="color: var(--red)">131</div>
+                  <div class="sos-nm" style="color: var(--red)">SAMU</div>
+                  <div class="sos-tp" style="color: rgba(240, 79, 79, 0.7)">
+                    Ambulância
+                  </div></a
+                >
+                <a
+                  href="tel:132"
+                  class="sos-n"
+                  style="
+                    background: var(--amber-dim);
+                    border: 1.5px solid rgba(245, 150, 31, 0.25);
+                  "
+                  ><div class="sos-em">🚒</div>
+                  <div class="sos-v" style="color: var(--amber)">132</div>
+                  <div class="sos-nm" style="color: var(--amber)">
+                    Bombeiros
+                  </div>
+                  <div class="sos-tp" style="color: rgba(245, 150, 31, 0.7)">
+                    Incêndio
+                  </div></a
+                >
+                <a
+                  href="tel:133"
+                  class="sos-n"
+                  style="
+                    background: var(--blue-dim);
+                    border: 1.5px solid rgba(91, 155, 213, 0.25);
+                  "
+                  ><div class="sos-em">👮</div>
+                  <div class="sos-v" style="color: var(--blue)">133</div>
+                  <div class="sos-nm" style="color: var(--blue)">
+                    Carabineros
+                  </div>
+                  <div class="sos-tp" style="color: rgba(91, 155, 213, 0.7)">
+                    Polícia
+                  </div></a
+                >
+              </div>
+              <div class="slbl">🇧🇷 Consulado Brasileiro</div>
+              <div
+                style="
+                  background: var(--mint-dim);
+                  border: 1.5px solid rgba(45, 212, 160, 0.2);
+                  border-radius: var(--r3);
+                  padding: 16px 18px;
+                  margin-bottom: 18px;
+                "
+              >
+                <div
+                  style="
+                    display: flex;
+                    align-items: center;
+                    gap: 11px;
+                    margin-bottom: 12px;
+                  "
+                >
+                  <span style="font-size: 26px">🇧🇷</span>
+                  <div>
+                    <div
+                      style="
+                        font-size: 13.5px;
+                        font-weight: 700;
+                        color: var(--w);
+                      "
+                    >
+                      Consulado-Geral do Brasil
+                    </div>
+                    <div
+                      style="font-size: 10px; color: var(--t3); margin-top: 1px"
+                    >
+                      Calle Apoquindo 3039, Piso 4 — Las Condes
+                    </div>
+                  </div>
+                </div>
+                <div
+                  style="
+                    font-size: 11.5px;
+                    color: var(--t2);
+                    margin-bottom: 12px;
+                    display: flex;
+                    align-items: center;
+                    gap: 7px;
+                  "
+                >
+                  <span style="color: var(--mint)">📞</span>Plantão:
+                  <strong style="color: var(--t1)">+56 9 9334 5103</strong>
+                </div>
+                <div style="display: flex; gap: 7px; flex-wrap: wrap">
+                  <a href="tel:+56993345103" class="btn btn-main">📞 Ligar</a>
+                  <a
+                    href="https://wa.me/56993345103"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="btn btn-wa"
+                    >📱 WhatsApp</a
+                  >
+                  <a
+                    href="https://maps.google.com/?q=Apoquindo+3039+Las+Condes+Santiago"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="btn btn-outline"
+                    >🗺 Mapa</a
+                  >
+                </div>
+              </div>
+              <div class="slbl">Mostre o celular — eles vão entender</div>
+              <div
+                class="script-card"
+                onclick="cpScript(this, 'Necesito un médico urgente')"
+              >
+                <div>
+                  <div class="sc-ctx">🚑 Precisa de médico</div>
+                  <div class="sc-ph">"Necesito un médico urgente"</div>
+                </div>
+                <div class="sc-ico">📋</div>
+              </div>
+              <div
+                class="script-card"
+                onclick="
+                  cpScript(this, 'Me han robado la mochila / el pasaporte')
+                "
+              >
+                <div>
+                  <div class="sc-ctx">🎒 Roubaram pertences</div>
+                  <div class="sc-ph">
+                    "Me han robado la mochila / el pasaporte"
+                  </div>
+                </div>
+                <div class="sc-ico">📋</div>
+              </div>
+              <div
+                class="script-card"
+                onclick="
+                  cpScript(this, '¿Dónde queda el hospital más cercano?')
+                "
+              >
+                <div>
+                  <div class="sc-ctx">🏥 Procurando hospital</div>
+                  <div class="sc-ph">
+                    "¿Dónde queda el hospital más cercano?"
+                  </div>
+                </div>
+                <div class="sc-ico">📋</div>
+              </div>
+              <div
+                class="script-card"
+                onclick="
+                  cpScript(
+                    this,
+                    'He perdido mis documentos. Soy turista brasileño.',
+                  )
+                "
+              >
+                <div>
+                  <div class="sc-ctx">📄 Perdeu documentos</div>
+                  <div class="sc-ph">
+                    "He perdido mis documentos. Soy turista brasileño."
+                  </div>
+                </div>
+                <div class="sc-ico">📋</div>
+              </div>
+              <div
+                class="script-card"
+                onclick="
+                  cpScript(
+                    this,
+                    'Necesito hacer una denuncia. Soy turista brasileño.',
+                  )
+                "
+              >
+                <div>
+                  <div class="sc-ctx">👮 Fazer B.O.</div>
+                  <div class="sc-ph">
+                    "Necesito hacer una denuncia. Soy turista brasileño."
+                  </div>
+                </div>
+                <div class="sc-ico">📋</div>
+              </div>
+              <div
+                class="script-card"
+                onclick="
+                  cpScript(
+                    this,
+                    'Perdí mi vuelo. ¿Dónde puedo hablar con servicio al cliente?',
+                  )
+                "
+              >
+                <div>
+                  <div class="sc-ctx">✈️ Perdeu o voo</div>
+                  <div class="sc-ph">
+                    "Perdí mi vuelo. ¿Dónde puedo hablar con servicio al
+                    cliente?"
+                  </div>
+                </div>
+                <div class="sc-ico">📋</div>
+              </div>
+              <div
+                class="script-card"
+                onclick="
+                  cpScript(this, 'Necesito llamar al consulado de Brasil.')
+                "
+              >
+                <div>
+                  <div class="sc-ctx">🇧🇷 Falar com consulado</div>
+                  <div class="sc-ph">
+                    "Necesito llamar al consulado de Brasil."
+                  </div>
+                </div>
+                <div class="sc-ico">📋</div>
+              </div>
+              <div class="slbl" style="margin-top: 18px">🔒 Segurança</div>
+              <div class="cl-card">
+                <div class="cl-row" style="cursor: default">
+                  <span style="font-size: 15px">🎒</span>
+                  <div class="cl-t">
+                    Em restaurantes: <strong>bolsa sempre no colo</strong>,
+                    nunca no encosto
+                  </div>
+                </div>
+                <div class="cl-row" style="cursor: default">
+                  <span style="font-size: 15px">📱</span>
+                  <div class="cl-t">
+                    Celular <strong>nunca visível</strong> sobre a mesa em áreas
+                    movimentadas
+                  </div>
+                </div>
+                <div class="cl-row" style="cursor: default">
+                  <span style="font-size: 15px">🚕</span>
+                  <div class="cl-t">
+                    <strong>Evitar taxis</strong> — risco de notas falsas e
+                    golpes
+                  </div>
+                </div>
+                <div class="cl-row" style="cursor: default">
+                  <span style="font-size: 15px">🌙</span>
+                  <div class="cl-t">
+                    Centro histórico à noite: <strong>evitar</strong>
+                  </div>
+                </div>
+                <div class="cl-row" style="cursor: default">
+                  <span style="font-size: 15px">✅</span>
+                  <div class="cl-t">
+                    Bairros seguros:
+                    <strong>El Golf, Providencia, Las Condes</strong>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+    <div id="toast"></div>
+
+    <script>
+      const RATE = 173;
+      const EXPS = [
+        {
+          id: 1,
+          name: "Parque Farellones",
+          tag: "neve",
+          ic: "🏔",
+          desc: "Parque de diversões na neve. Tubing, tirolesa, trenó.",
+          price: "Consulte",
+          badge: "⭐ Mais popular",
+          w: "Parque Farellones",
+        },
+        {
+          id: 2,
+          name: "Panorâmico de Neve",
+          tag: "neve",
+          ic: "📸",
+          desc: "Conhecer a neve sem ingresso. Fotos e vilarejo.",
+          price: "Econômico",
+          badge: "💚 Mais barato",
+          w: "Panorâmico de Neve",
+        },
+        {
+          id: 3,
+          name: "Valle Nevado",
+          tag: "neve",
+          ic: "⛷️",
+          desc: "Resort de luxo para esquiadores experientes.",
+          price: "Consulte",
+          badge: "⚠️ Avançado",
+          w: "Valle Nevado",
+        },
+        {
+          id: 4,
+          name: "Isla Negra + Undurraga",
+          tag: "litoral",
+          ic: "🌊",
+          desc: "Museu Neruda + piscina Algarrobo + degustação Undurraga.",
+          price: "Consulte",
+          badge: "🏆 Favorito da Pri",
+          w: "Isla Negra Undurraga",
+        },
+        {
+          id: 5,
+          name: "Viña del Mar + Valparaíso",
+          tag: "litoral",
+          ic: "🎨",
+          desc: "Morros coloridos de Valparaíso + Viña moderna.",
+          price: "Consulte",
+          badge: "🎨 Arte",
+          w: "Viña del Mar Valparaíso",
+        },
+        {
+          id: 6,
+          name: "Concha y Toro",
+          tag: "vinhas",
+          ic: "🍷",
+          desc: "Maior vinícola da América Latina. 3 degustações.",
+          price: "Consulte",
+          badge: "🍷 Vinhas",
+          w: "Concha y Toro",
+        },
+        {
+          id: 7,
+          name: "Undurraga",
+          tag: "vinhas",
+          ic: "🍾",
+          desc: "Tour elegante com degustação. Das mais antigas do Chile.",
+          price: "Consulte",
+          badge: "🍾 Premium",
+          w: "Vinícola Undurraga",
+        },
+        {
+          id: 8,
+          name: "City Walking Tour",
+          tag: "cidade",
+          ic: "🚶",
+          desc: "Centro histórico, La Moneda, Lastarria. Com a Pri.",
+          price: "Consulte",
+          badge: "✅ 1º dia",
+          w: "City Walking Tour Santiago",
+        },
+        {
+          id: 9,
+          name: "Termas + Cajón del Maipo",
+          tag: "cidade",
+          ic: "♨️",
+          desc: "Termas Colinas + Embalse El Yeso. Só outubro–abril.",
+          price: "Consulte",
+          badge: "⚠️ Sazonal",
+          w: "Termas Cajón del Maipo",
+        },
+        {
+          id: 10,
+          name: "Portillo + Laguna del Inca",
+          tag: "neve",
+          ic: "🏔",
+          desc: "Paisagens deslumbrantes. Alto risco de cancelamento.",
+          price: "Consulte",
+          badge: "⚠️ Risco",
+          w: "Portillo Laguna del Inca",
+        },
+      ];
+
+      let curCat = "all";
+
+      function sw(id) {
+        document
+          .querySelectorAll(".page")
+          .forEach((p) => p.classList.remove("active"));
+        document
+          .querySelectorAll(".tab")
+          .forEach((t) => t.classList.remove("active"));
+        const pg = document.getElementById("p-" + id);
+        const tb = document.getElementById("t-" + id);
+        if (pg) pg.classList.add("active");
+        if (tb) tb.classList.add("active");
+        if (id !== "chat") window.scrollTo(0, 0);
+      }
+
+      function navTopic(q) {
+        sw("chat");
+        setTimeout(() => {
+          const b = document.getElementById("inputBox");
+          if (b) {
+            b.value = q;
+            b.focus();
+          }
+          if (q) setTimeout(sendMsg, 200);
+        }, 100);
+      }
+
+      function renderExps(list) {
+        const g = document.getElementById("expGrid");
+        if (!g) return;
+        g.innerHTML = (list || EXPS)
+          .filter((e) => curCat === "all" || e.tag === curCat)
+          .map(
+            (e) => `
+    <div class="exp-card">
+      <div class="exp-top">${e.ic}</div>
+      <div class="exp-body">
+        <div class="exp-badge">${e.badge}</div>
+        <div class="exp-name">${e.name}</div>
+        <div class="exp-desc">${e.desc}</div>
+        <div style="display:flex;gap:7px;margin-top:10px">
+          <button class="btn btn-sm" onclick="navTopic('Me conta mais sobre ${e.name}')">🤖 IA</button>
+          <a href="https://api.whatsapp.com/send/?phone=56964155891&text=Olá Pri! Quero reservar: ${e.w}" target="_blank" rel="noopener noreferrer" class="btn btn-wa btn-sm">📱 Reservar</a>
+        </div>
+      </div>
+    </div>`,
+          )
+          .join("");
+      }
+
+      function filterCat(el, cat) {
+        curCat = cat;
+        document
+          .querySelectorAll(".cat-pill")
+          .forEach((p) => p.classList.remove("on"));
+        el.classList.add("on");
+        renderExps();
+      }
+
+      function ck(row) {
+        const s = row.querySelector(".cl-ck");
+        if (!s) return;
+        const done = s.textContent === "✅";
+        s.textContent = done ? "⬜" : "✅";
+        row.style.opacity = done ? "1" : "0.45";
+      }
+
+      function mkck(item) {
+        const s = item.querySelector(".ck");
+        if (!s) return;
+        const done = s.textContent === "✅";
+        s.textContent = done ? "⬜" : "✅";
+        item.style.opacity = done ? "1" : "0.5";
+      }
+
+      function cpScript(el, txt) {
+        navigator.clipboard.writeText(txt).catch(() => {});
+        const ico = el.querySelector(".sc-ico");
+        if (ico) {
+          ico.textContent = "✅";
+          setTimeout(() => (ico.textContent = "📋"), 1800);
+        }
+        toast('📋 Copiado: "' + txt.substring(0, 30) + '..."');
+      }
+
+      function cvt() {
+        const clp = parseFloat(document.getElementById("clpIn").value) || 0;
+        const brl = clp / RATE;
+        document.getElementById("brlOut").textContent =
+          "R$" +
+          brl.toLocaleString("pt-BR", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          });
+      }
+
+      function toast(msg) {
+        const t = document.getElementById("toast");
+        t.textContent = msg;
+        t.classList.add("show");
+        clearTimeout(t._t);
+        t._t = setTimeout(() => t.classList.remove("show"), 2800);
+      }
+
+      const KB = `DICAS DA PRI — BASE DE CONHECIMENTO OFICIAL
+
+CÂMBIO E DINHEIRO:
+- More Exchange: melhor taxa para reais em Santiago
+- Leve Reais, nunca dólares (taxa menor)
+- 80% cartão Wise + 20% espécie
+- Aeroporto: taxa péssima, só pagar transfer e Bip!
+- Metro taquillas: só pesos em espécie
+- Conversão rápida: tire um zero × 6 ($10.000 = R$58 aprox.)
+- Propina: 10% esperada culturalmente
+- Wise: abrir 5-7 dias antes da viagem
+
+TRANSPORTE:
+- Uber ILEGAL para sair do aeroporto SCL
+- Trans VIP: compartilhado, ~R$60/pessoa, balcão no aeroporto
+- Cabify: funciona bem dentro de Santiago
+- WeTransport: carro exclusivo, ideal para grupos
+- Ven Me Buscar: falam português, contato WhatsApp
+- Metro: Bip! com pesos em espécie, funciona excelente
+
+PASSEIOS E TURISMO:
+- Parque Farellones: mais popular da neve, tubing + tirolesa + trenó + silla
+- Panorâmico de Neve: sem ingresso, mais econômico
+- Valle Nevado: resort de luxo, só para esquiadores experientes
+- Portillo + Laguna del Inca: deslumbrante mas alto risco de cancelamento
+- Isla Negra + Algarrobo + Undurraga: favorito da Pri, completo
+- Viña del Mar + Valparaíso: morros coloridos, arte e cultura
+- Concha y Toro: maior vinícola América Latina, 3 degustações
+- Undurraga: tour elegante, também disponível no combo Isla Negra
+- City Walking Tour: com a Pri, 9h30–12h30, não busca no hotel
+- Termas + Cajón del Maipo: fechado junho–setembro
+
+SEGURANÇA:
+- Bairros seguros: El Golf, Providencia, Las Condes
+- Evitar centro histórico à noite
+- Bolsa sempre no colo em restaurantes
+- Celular nunca visível na mesa em áreas movimentadas
+- Evitar taxis por risco de golpes e notas falsas
+
+DOCUMENTOS E VIAGEM:
+- RG: menos de 10 anos de emissão
+- CNH NÃO vale para entrar no Chile (muitos perderam voo)
+- Passaporte: aceito mas não obrigatório para brasileiros
+- SAG: preencher formulário online antes de embarcar
+- Proibido entrar com frutas, sementes, carnes frescas
+
+SEGURO DE VIAGEM:
+- Cupom DICASDAPRI5 = 30% OFF na Seguros Promo
+- Chile não tem saúde pública gratuita para turistas
+- Atendimento básico mínimo R$10.000
+- Se vai à neve/ski: exigir cobertura de esportes radicais
+- JetSmart: costuma mudar horários, seguro com cancelamento é importante
+
+HOSPEDAGEM:
+- Bairro recomendado: El Golf
+- Hotel MR Express: Rua Vezinal 40, melhor custo-benefício
+- El Golf tem metrô próprio, seguro e central
+
+NEVE E SKI:
+- Temporada: junho–setembro (julho é alta temporada)
+- Reservar em abril para julho, vagas esgotam rápido
+- Não comprar roupa de neve no Brasil, alugar em Santiago (~R$220)
+- Na véspera: jantar leve, sem álcool (altitude + 60 curvas)
+- Altitude pode piorar ressaca
+
+EMERGÊNCIAS:
+- 131 SAMU (ambulância)
+- 132 Bombeiros
+- 133 Carabineros (polícia)
+- Consulado Brasileiro: +56 9 9334 5103
+
+CHILENISMOS ESSENCIAIS:
+- Cuánto vale? = Quanto custa?
+- ¿Me puede hacer descuento? = Pode dar desconto?
+- La cuenta = A conta
+- El cajero = Caixa eletrônico
+- La micro = Ônibus
+- ¡Bacán! = Legal!
+- Fome = Chato (não é fome de comida)
+- Pololo/Polola = Namorado/Namorada
+
+RESTAURANTES E GASTRONOMIA:
+- Mestizo (Parque Bicentenario): melhor ceviche de Santiago
+- La Piojera: clássico do centro, chicha, ambiente histórico
+- Empório Armênio: mix árabe-chileno, almoço no centro
+- Boragó: alta gastronomia, reservar semanas antes
+- Mercado Central: cuidado com abordagem na entrada`;
+
+      const SYS = `Você é a Assistente IA da Descola Chile, o concierge digital powered by Dicas da Pri.
+
+Suas respostas são baseadas no conhecimento verificado da Dicas da Pri — agência brasileira em Santiago desde 2017, com mais de 60.000 brasileiros atendidos.
+
+REGRAS:
+1. Responda sempre em português brasileiro
+2. Seja concisa mas completa (máx 200 palavras por resposta)
+3. Cite preços em BRL quando possível (taxa ref: R$1 = $173 CLP)
+4. Para reservas, sempre direcionar para WhatsApp: +56964155891
+5. Para seguro, sempre mencionar cupom DICASDAPRI5 (30% OFF, Seguros Promo)
+6. Para câmbio, recomendar More Exchange
+7. Para transfer, recomendar Trans VIP
+8. Nunca inventar preços específicos de passeios — dizer "consulte via WhatsApp"
+9. Sempre verificar se a atividade está disponível na temporada correta
+10. Ser como uma amiga especialista, não um robô corporativo
+
+BASE DE CONHECIMENTO OFICIAL:
+${KB}`;
+
+      let hist = [];
+      let thinking = false;
+
+      function escapeHtml(text) {
+        return String(text)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#39;");
+      }
+
+      function formatReply(text) {
+        return escapeHtml(text)
+          .replace(/\n/g, "<br>")
+          .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
+      }
+
+      async function sendMsg() {
+        if (thinking) return;
+        const box = document.getElementById("inputBox");
+        const msg = (box.value || "").trim();
+        if (!msg) return;
+        box.value = "";
+        box.style.height = "auto";
+
+        const welcome = document.getElementById("welcome");
+        if (welcome) welcome.style.display = "none";
+
+        const msgs = document.getElementById("messages");
+        msgs.innerHTML += `<div class="msg user"><div class="bubble user">${escapeHtml(msg)}</div></div>`;
+
+        thinking = true;
+        document.getElementById("sendBtn").disabled = true;
+        msgs.innerHTML += `<div class="msg bot" id="thinking"><div class="typing"><span></span><span></span><span></span></div></div>`;
+        msgs.scrollTop = msgs.scrollHeight;
+
+        hist.push({ role: "user", content: msg });
+
+        try {
+          const res = await fetch("/api/chat", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              model: "claude-sonnet-4-20250514",
+              max_tokens: 1024,
+              system: SYS,
+              messages: hist.slice(-10),
+            }),
+          });
+          const data = await res.json();
+          const reply =
+            data?.content?.[0]?.text ||
+            data?.error?.message ||
+            "Erro ao conectar. Tente novamente.";
+          hist.push({ role: "assistant", content: reply });
+
+          const thinking_el = document.getElementById("thinking");
+          if (thinking_el) {
+            thinking_el.id = "";
+            thinking_el.innerHTML = `<div class="bubble ai">${formatReply(reply)}</div>`;
+          }
+        } catch (e) {
+          const tel = document.getElementById("thinking");
+          if (tel) {
+            tel.id = "";
+            tel.innerHTML =
+              '<div class="bubble ai">❌ Erro de conexão. <a href="https://api.whatsapp.com/send/?phone=56964155891" target="_blank" style="color:var(--pri)">Fale no WhatsApp</a></div>';
+          }
+        }
+
+        thinking = false;
+        document.getElementById("sendBtn").disabled = false;
+        msgs.scrollTop = msgs.scrollHeight;
+      }
+
+      function doAsk(q) {
+        const b = document.getElementById("inputBox");
+        if (b) {
+          b.value = q;
+        }
+        sendMsg();
+      }
+
+      // Init
+      document.addEventListener("DOMContentLoaded", () => {
+        renderExps();
+        cvt();
+        const rate = document.getElementById("sideRate");
+        if (rate) rate.textContent = "R$1 = $" + RATE + " CLP";
+      });
+    </script>
+  </body>
+</html>
