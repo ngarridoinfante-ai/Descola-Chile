@@ -4838,6 +4838,12 @@ ${KB}`;
         renderExps();
         cvt();
         initTourCardLinks();
+        const tabFromUrl = new URLSearchParams(window.location.search).get(
+          "tab",
+        );
+        if (tabFromUrl && document.getElementById("p-" + tabFromUrl)) {
+          sw(tabFromUrl);
+        }
         const rate = document.getElementById("sideRate");
         if (rate) rate.textContent = "R$1 = $" + RATE + " CLP";
       });
