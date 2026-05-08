@@ -1680,13 +1680,18 @@
           rgba(6, 4, 6, 0.95) 100%
         );
         border-radius: inherit;
+        pointer-events: none;
       }
-      .tour-head.has-img .tour-badge,
+      .tour-head.has-img .tour-badge {
+        position: relative;
+        z-index: 2;
+      }
       .tour-head-link {
         position: absolute;
         inset: 0;
         z-index: 2;
         display: block;
+        cursor: pointer;
       }
       .tour-head {
         position: relative;
@@ -4815,10 +4820,24 @@ ${KB}`;
         sendMsg();
       }
 
+      function initTourCardLinks() {
+        document.querySelectorAll(".tour-head.has-img").forEach((head) => {
+          const link = head.querySelector(".tour-head-link");
+          if (!link) return;
+
+          head.style.cursor = "pointer";
+          head.addEventListener("click", (event) => {
+            if (event.target.closest("a, button")) return;
+            window.location.href = link.getAttribute("href");
+          });
+        });
+      }
+
       // Init
       document.addEventListener("DOMContentLoaded", () => {
         renderExps();
         cvt();
+        initTourCardLinks();
         const rate = document.getElementById("sideRate");
         if (rate) rate.textContent = "R$1 = $" + RATE + " CLP";
       });
