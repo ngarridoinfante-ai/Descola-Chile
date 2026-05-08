@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
@@ -35,7 +35,63 @@
       href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="/styles.css" />
+    <style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    font-family: "Plus Jakarta Sans", "DM Sans", sans-serif;
+    background: #060406;
+    color: #ede0e8;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; text-decoration: none; }
+  img { max-width: 100%; display: block; }
+  .section { padding: 3rem 1rem; }
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 1rem; }
+  .eyebrow {
+    display: block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #e8157a;
+    margin-bottom: 0.5rem;
+  }
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: #0d080c !important;
+    border-bottom: 1px solid rgba(232,21,122,0.14) !important;
+    box-shadow: none !important;
+  }
+  .header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 60px;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 1.25rem;
+  }
+  .site-logo { font-family: "Fraunces", serif; font-size: 1.15rem; font-weight: 700; color: #e8157a !important; }
+  .site-nav { display: flex; gap: 1.5rem; align-items: center; }
+  .site-nav a { color: #8a6880 !important; font-size: 0.88rem; font-weight: 500; transition: color .15s; }
+  .site-nav a:hover { color: #ede0e8 !important; }
+  .btn-primary {
+    display: inline-block;
+    background: #e8157a !important;
+    color: #fff !important;
+    font-weight: 700;
+    border-radius: 999px;
+    text-decoration: none;
+    transition: background .15s;
+    cursor: pointer;
+    border: none;
+  }
+  .btn-primary:hover { background: #c4115f !important; }
+  .btn-sm { padding: 0.45rem 1.1rem !important; font-size: 0.82rem !important; }
+  @media (max-width: 640px) { .site-nav { display: none; } }
+</style>
   </head>
   <body>
     <header class="site-header" id="site-header">
@@ -144,7 +200,7 @@
 
       <nav
         aria-label="Breadcrumb"
-        style="background: #f9fafb; border-bottom: 1px solid #e5e7eb"
+        style="background: #0d080c; border-bottom: 1px solid rgba(232,21,122,0.1)"
       >
         <div
           class="container"
@@ -152,12 +208,12 @@
             padding-top: 0.75rem;
             padding-bottom: 0.75rem;
             font-size: 0.85rem;
-            color: #6b7280;
+            color: #8a6880;
           "
         >
-          <a href="/" style="color: #059669; text-decoration: none">Início</a>
+          <a href="/" style="color: #2dd4a0; text-decoration: none">Início</a>
           <span style="margin: 0 0.5rem">›</span>
-          <a href="/passeios" style="color: #059669; text-decoration: none"
+          <a href="/passeios" style="color: #2dd4a0; text-decoration: none"
             >Passeios</a
           >
           <span style="margin: 0 0.5rem">›</span>
@@ -178,7 +234,7 @@
               style="
                 font-size: 1.05rem;
                 line-height: 1.75;
-                color: #374151;
+                color: #b896ac;
                 margin-bottom: 1rem;
               "
             >
@@ -187,7 +243,7 @@
               histórico, o Palácio de La Moneda, o bairro Lastarria e os
               principais pontos que todo brasileiro precisa conhecer.
             </p>
-            <p style="font-size: 1rem; line-height: 1.75; color: #4b5563">
+            <p style="font-size: 1rem; line-height: 1.75; color: #9a7890">
               O tour é guiado <strong>pessoalmente pela Pri</strong> — então
               você vai ouvir histórias, dicas exclusivas e curiosidades que
               nenhum aplicativo te conta. Não busca no hotel — o ponto de
@@ -225,7 +281,7 @@
                 style="
                   margin: 0;
                   padding-left: 1.25rem;
-                  color: #374151;
+                  color: #b896ac;
                   line-height: 2;
                   font-size: 0.95rem;
                 "
@@ -240,8 +296,8 @@
             </div>
             <div
               style="
-                background: #fff;
-                border: 1px solid #e5e7eb;
+                background: #160d14;
+                border: 1px solid rgba(232,21,122,0.12);
                 border-radius: 1rem;
                 padding: 1.5rem;
               "
@@ -250,7 +306,7 @@
                 style="
                   font-size: 1rem;
                   font-weight: 700;
-                  color: #111827;
+                  color: #ede0e8;
                   margin-bottom: 1rem;
                 "
               >
@@ -261,7 +317,7 @@
                   margin: 0;
                   padding: 0;
                   list-style: none;
-                  color: #374151;
+                  color: #b896ac;
                   line-height: 2;
                   font-size: 0.95rem;
                 "
@@ -279,7 +335,7 @@
               style="
                 font-size: 1rem;
                 font-weight: 700;
-                color: #111827;
+                color: #ede0e8;
                 margin-bottom: 1rem;
               "
             >
@@ -341,8 +397,8 @@
 
           <div
             style="
-              background: #fffbeb;
-              border: 1px solid #fde68a;
+              background: #160d14;
+              border: 1px solid rgba(212,168,83,0.25);
               border-radius: 1rem;
               padding: 1.5rem;
               margin-bottom: 3rem;
@@ -352,7 +408,7 @@
               style="
                 font-size: 1rem;
                 font-weight: 700;
-                color: #92400e;
+                color: #d4a853;
                 margin-bottom: 1rem;
               "
             >
@@ -364,7 +420,7 @@
                 grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
                 gap: 1rem;
                 font-size: 0.95rem;
-                color: #374151;
+                color: #b896ac;
               "
             >
               <div><strong>Duração</strong><br />Meio período</div>
@@ -411,7 +467,7 @@
             <h2 style="font-size: 1.5rem; margin-bottom: 0.75rem">
               Pronto para reservar?
             </h2>
-            <p style="color: #6b7280; margin-bottom: 1.5rem">
+            <p style="color: #8a6880; margin-bottom: 1.5rem">
               Fale com a gente pelo WhatsApp e confirme sua vaga em minutos.
             </p>
             <a
@@ -424,7 +480,7 @@
               >Reservar pelo WhatsApp</a
             >
             <p style="margin-top: 1rem">
-              <a href="/passeios" style="color: #059669; font-size: 0.9rem"
+              <a href="/passeios" style="color: #2dd4a0; font-size: 0.9rem"
                 >← Ver todos os passeios</a
               >
             </p>
@@ -435,8 +491,8 @@
 
     <footer
       style="
-        background: #0a1f14;
-        color: #a7f3d0;
+        background: #0d080c;
+        color: #b896ac;
         text-align: center;
         padding: 2rem 1rem;
         font-size: 0.85rem;
@@ -445,21 +501,21 @@
       <p style="margin: 0 0 0.5rem">
         <a
           href="/"
-          style="color: #6ee7b7; font-weight: 700; text-decoration: none"
+          style="color: #2dd4a0; font-weight: 700; text-decoration: none"
           >Descola Chile</a
         >
         · Passeios para brasileiros no Chile
       </p>
-      <p style="margin: 0; color: #6b7280">
-        <a href="/passeios" style="color: #6b7280; text-decoration: none"
+      <p style="margin: 0; color: #8a6880">
+        <a href="/passeios" style="color: #8a6880; text-decoration: none"
           >Todos os passeios</a
         >
         ·
-        <a href="/vinas" style="color: #6b7280; text-decoration: none">Viñas</a>
+        <a href="/vinas" style="color: #8a6880; text-decoration: none">Viñas</a>
         ·
         <a
           href="/valle-nevado-inverno.html"
-          style="color: #6b7280; text-decoration: none"
+          style="color: #8a6880; text-decoration: none"
           >Neve & Ski</a
         >
       </p>
