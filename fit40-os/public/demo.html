@@ -394,14 +394,14 @@ const MChart = {
     <div class="login-form">
       <div class="field">
         <label>Email</label>
-        <input type="email" placeholder="tu@email.com" id="login-email">
+        <input type="text" placeholder="nicolas@fit40.com" id="login-email">
       </div>
       <div class="field">
         <label>Contraseña</label>
         <input type="password" placeholder="••••••••" id="login-pass">
       </div>
       <div id="login-err" style="font-size:12px;color:var(--red);text-align:center;display:none"></div>
-      <button class="btn primary" onclick="doLogin()" style="margin-top:4px">Iniciar sesión</button>
+      <button class="btn primary" type="button" onclick="showPage('dashboard')" style="margin-top:4px">Iniciar sesión</button>
       <p style="text-align:center;font-size:13px;color:var(--text3)">
         ¿No tienes cuenta? <span class="login-link" onclick="showPage('register')">Crear cuenta</span>
       </p>
