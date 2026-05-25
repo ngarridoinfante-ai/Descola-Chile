@@ -20,9 +20,8 @@ const MChart = {
     const pad = { l: 34, r: 8, t: 8, b: 22 };
     const x0 = pad.l, y0 = pad.t;
     const w = W - pad.l - pad.r, h = H - pad.t - pad.b;
-    const yRaw = isBar ? [0, ...data] : data;
-    const yMin = isBar ? 0 : Math.min(...yRaw) - (yPad||0.5);
-    const yMax = (isBar ? Math.max(...data, refLine||0) * 1.18 : Math.max(...yRaw) + (yPad||0.5));
+    const yMin = isBar ? 0 : Math.min(...data) - (yPad||0.5);
+    const yMax = isBar ? Math.max(...data, refLine||0) * 1.18 : Math.max(...data) + (yPad||0.5);
     const toX = i => x0 + (w / Math.max(data.length - 1, 1)) * i;
     const toXBar = i => x0 + (w / data.length) * i;
     const toY = v => y0 + h - ((v - yMin) / (yMax - yMin)) * h;
@@ -31,7 +30,7 @@ const MChart = {
       const y = y0 + (h / 4) * i;
       ctx.beginPath(); ctx.moveTo(x0, y); ctx.lineTo(x0 + w, y); ctx.stroke();
     }
-    ctx.fillStyle = '#4A4A5A'; ctx.textAlign = 'right'; ctx.font = '9px -apple-system,system-ui,sans-serif';
+    ctx.fillStyle = '#4A4A5A'; ctx.textAlign = 'right'; ctx.font = '9px system-ui,sans-serif';
     for (let i = 0; i <= 4; i++) {
       const val = yMax - ((yMax - yMin) / 4) * i;
       ctx.fillText(val.toFixed(isBar?0:1), x0 - 4, y0 + (h / 4) * i + 3.5);
@@ -74,52 +73,33 @@ const MChart = {
     }
   },
   line(id, labels, data, color, yPad=0.5) {
-    const W=320, H=140;
-    const ctx = this._setup(id, W, H); if(!ctx) return;
-    this._draw(ctx, labels, data, W, H, color, false, null, yPad);
+    const ctx = this._setup(id, 320, 140); if(!ctx) return;
+    this._draw(ctx, labels, data, 320, 140, color, false, null, yPad);
   },
   bar(id, labels, data, color, refLine) {
-    const W=320, H=140;
-    const ctx = this._setup(id, W, H); if(!ctx) return;
-    this._draw(ctx, labels, data, W, H, color, true, refLine, 0);
+    const ctx = this._setup(id, 320, 140); if(!ctx) return;
+    this._draw(ctx, labels, data, 320, 140, color, true, refLine, 0);
   }
 };
 </script>
 <style>
   :root {
-    --bg: #0A0A0F;
-    --surface: #111118;
-    --card: #14141C;
-    --elevated: #1A1A24;
-    --border: #2A2A38;
-    --border-bright: #3A3A50;
-    --green: #00FF87;
-    --green-dim: #00CC6A;
-    --orange: #FF6B35;
-    --red: #FF4757;
-    --blue: #3D8EFF;
-    --text: #F5F5F7;
-    --text2: #8E8EA0;
-    --text3: #4A4A5A;
+    --bg:#0A0A0F;--surface:#111118;--card:#14141C;--elevated:#1A1A24;
+    --border:#2A2A38;--border-bright:#3A3A50;
+    --green:#00FF87;--green-dim:#00CC6A;--orange:#FF6B35;--red:#FF4757;--blue:#3D8EFF;
+    --text:#F5F5F7;--text2:#8E8EA0;--text3:#4A4A5A;
   }
   *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
   html,body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Inter',system-ui,sans-serif;height:100%;-webkit-font-smoothing:antialiased}
   body{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:16px}
-
-  .phone{width:390px;height:844px;background:var(--bg);border-radius:40px;overflow:hidden;position:relative;box-shadow:0 0 0 1px #2A2A38,0 32px 80px rgba(0,0,0,0.8),0 0 60px rgba(0,255,135,0.04);border:1px solid #2A2A38}
+  .phone{width:390px;height:844px;background:var(--bg);border-radius:40px;overflow:hidden;position:relative;box-shadow:0 0 0 1px #2A2A38,0 32px 80px rgba(0,0,0,.8),0 0 60px rgba(0,255,135,.04);border:1px solid #2A2A38}
   @media(max-width:440px){body{padding:0}.phone{width:100%;height:100dvh;border-radius:0;box-shadow:none;border:none}}
 
-  /* ── Page navigation via CSS :target ── */
+  /* ── CSS :target navigation ── */
   .page{display:none;flex-direction:column;height:100%;overflow-y:auto;overflow-x:hidden;scrollbar-width:none}
   .page::-webkit-scrollbar{display:none}
-
-  /* Dashboard is the default page (no hash needed) */
   #page-dashboard{display:flex}
-
-  /* Show whichever page is targeted */
   .page:target{display:flex}
-
-  /* When any non-dashboard page is targeted, hide dashboard */
   html:has(#page-login:target) #page-dashboard,
   html:has(#page-register:target) #page-dashboard,
   html:has(#page-training:target) #page-dashboard,
@@ -127,75 +107,50 @@ const MChart = {
   html:has(#page-nutrition:target) #page-dashboard,
   html:has(#page-progress:target) #page-dashboard,
   html:has(#page-profile:target) #page-dashboard{display:none}
-
-  /* Login pages */
   .login-page{display:none;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:24px;background:var(--bg)}
   .login-page:target{display:flex}
 
-  /* ── Nav active states via :has() ── */
-  /* Default (no hash) → dashboard nav active */
+  /* ── Nav active via :has() ── */
+  .nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:10px 4px 14px;cursor:pointer;transition:all .15s;color:var(--text3);text-decoration:none}
+  .nav-item svg{width:22px;height:22px}
+  .nav-item span{font-size:10px;font-weight:600}
   html:not(:has(.page:not(#page-dashboard):target)):not(:has(.login-page:target)) a.nav-item[href="#page-dashboard"],
   html:has(#page-dashboard:target) a.nav-item[href="#page-dashboard"]{color:var(--green)}
   html:not(:has(.page:not(#page-dashboard):target)):not(:has(.login-page:target)) a.nav-item[href="#page-dashboard"] svg,
-  html:has(#page-dashboard:target) a.nav-item[href="#page-dashboard"] svg{filter:drop-shadow(0 0 6px rgba(0,255,135,0.5))}
-
+  html:has(#page-dashboard:target) a.nav-item[href="#page-dashboard"] svg{filter:drop-shadow(0 0 6px rgba(0,255,135,.5))}
   html:has(#page-training:target) a.nav-item[href="#page-training"],
   html:has(#page-session:target) a.nav-item[href="#page-training"]{color:var(--green)}
   html:has(#page-training:target) a.nav-item[href="#page-training"] svg,
-  html:has(#page-session:target) a.nav-item[href="#page-training"] svg{filter:drop-shadow(0 0 6px rgba(0,255,135,0.5))}
-
+  html:has(#page-session:target) a.nav-item[href="#page-training"] svg{filter:drop-shadow(0 0 6px rgba(0,255,135,.5))}
   html:has(#page-nutrition:target) a.nav-item[href="#page-nutrition"]{color:var(--green)}
-  html:has(#page-nutrition:target) a.nav-item[href="#page-nutrition"] svg{filter:drop-shadow(0 0 6px rgba(0,255,135,0.5))}
-
+  html:has(#page-nutrition:target) a.nav-item[href="#page-nutrition"] svg{filter:drop-shadow(0 0 6px rgba(0,255,135,.5))}
   html:has(#page-progress:target) a.nav-item[href="#page-progress"]{color:var(--green)}
-  html:has(#page-progress:target) a.nav-item[href="#page-progress"] svg{filter:drop-shadow(0 0 6px rgba(0,255,135,0.5))}
+  html:has(#page-progress:target) a.nav-item[href="#page-progress"] svg{filter:drop-shadow(0 0 6px rgba(0,255,135,.5))}
 
-  /* Scrollable content area */
   .content{flex:1;padding:16px;display:flex;flex-direction:column;gap:12px;padding-bottom:88px}
-
-  /* Top bar */
-  .topbar{background:rgba(10,10,15,0.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:14px 16px 10px;position:sticky;top:0;z-index:40;flex-shrink:0}
+  .topbar{background:rgba(10,10,15,.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:14px 16px 10px;position:sticky;top:0;z-index:40;flex-shrink:0}
   .topbar h1{font-size:17px;font-weight:700;line-height:1.2}
   .topbar p{font-size:11px;color:var(--text2);margin-top:2px}
   .topbar-row{display:flex;align-items:center;justify-content:space-between}
   .icon-btn{width:36px;height:36px;border-radius:10px;background:var(--elevated);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text2);font-size:15px;transition:all .15s;text-decoration:none}
   .icon-btn:hover{border-color:var(--border-bright);color:var(--text)}
-
-  /* Bottom nav */
-  .bottom-nav{position:sticky;bottom:0;left:0;right:0;background:rgba(17,17,24,0.96);backdrop-filter:blur(20px);border-top:1px solid var(--border);display:flex;z-index:50;flex-shrink:0}
-  .nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:10px 4px 14px;cursor:pointer;transition:all .15s;color:var(--text3);text-decoration:none}
-  .nav-item svg{width:22px;height:22px}
-  .nav-item span{font-size:10px;font-weight:600}
-
-  /* Cards */
+  .bottom-nav{position:sticky;bottom:0;background:rgba(17,17,24,.96);backdrop-filter:blur(20px);border-top:1px solid var(--border);display:flex;z-index:50;flex-shrink:0}
   .card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:16px}
-  .card.glow-green{box-shadow:0 0 24px rgba(0,255,135,0.12);border-color:rgba(0,255,135,0.18)}
-  .card.glow-orange{box-shadow:0 0 24px rgba(255,107,53,0.12);border-color:rgba(255,107,53,0.18)}
-  .card.glow-red{box-shadow:0 0 24px rgba(255,71,87,0.12);border-color:rgba(255,71,87,0.18)}
-
-  /* Metric grid */
+  .card.glow-green{box-shadow:0 0 24px rgba(0,255,135,.12);border-color:rgba(0,255,135,.18)}
+  .card.glow-orange{box-shadow:0 0 24px rgba(255,107,53,.12);border-color:rgba(255,107,53,.18)}
   .metric-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
   .metric-card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:14px}
-  .metric-card.green{border-color:rgba(0,255,135,0.18);box-shadow:0 0 20px rgba(0,255,135,0.1)}
+  .metric-card.green{border-color:rgba(0,255,135,.18);box-shadow:0 0 20px rgba(0,255,135,.1)}
   .metric-label{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px}
   .metric-value{font-size:22px;font-weight:800;font-variant-numeric:tabular-nums;line-height:1.1}
   .metric-sub{font-size:11px;margin-top:3px}
-  .green-text{color:var(--green)}
-  .orange-text{color:var(--orange)}
-  .red-text{color:var(--red)}
-  .blue-text{color:var(--blue)}
-  .muted{color:var(--text2)}
-  .very-muted{color:var(--text3)}
-
-  /* Badges */
+  .green-text{color:var(--green)} .orange-text{color:var(--orange)} .red-text{color:var(--red)} .blue-text{color:var(--blue)} .muted{color:var(--text2)} .very-muted{color:var(--text3)}
   .badge{display:inline-flex;align-items:center;padding:2px 9px;border-radius:100px;font-size:11px;font-weight:600;border:1px solid}
   .badge.green{background:rgba(0,255,135,.1);color:var(--green);border-color:rgba(0,255,135,.2)}
   .badge.orange{background:rgba(255,107,53,.1);color:var(--orange);border-color:rgba(255,107,53,.2)}
   .badge.red{background:rgba(255,71,87,.1);color:var(--red);border-color:rgba(255,71,87,.2)}
   .badge.blue{background:rgba(61,142,255,.1);color:var(--blue);border-color:rgba(61,142,255,.2)}
   .badge.neutral{background:var(--elevated);color:var(--text2);border-color:var(--border)}
-
-  /* Buttons */
   .btn{border:none;border-radius:12px;cursor:pointer;font-weight:600;font-family:inherit;transition:all .15s;display:inline-flex;align-items:center;justify-content:center;gap:8px;text-decoration:none}
   .btn:active{transform:scale(.97)}
   .btn.primary{background:var(--green);color:#0A0A0F;font-size:15px;height:48px;padding:0 20px;box-shadow:0 0 20px rgba(0,255,135,.25);width:100%}
@@ -204,8 +159,6 @@ const MChart = {
   .btn.ghost{background:transparent;color:var(--text2);font-size:13px;height:36px;padding:0 12px}
   .btn.ghost:hover{color:var(--text)}
   .btn.sm{height:34px;font-size:12px;padding:0 12px;border-radius:9px}
-
-  /* Inputs */
   .field{display:flex;flex-direction:column;gap:6px}
   .field label{font-size:10px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.08em}
   .field input,.field textarea,.field select{background:var(--elevated);border:1px solid var(--border);border-radius:12px;color:var(--text);font-family:inherit;font-size:14px;padding:0 14px;height:44px;width:100%;outline:none;transition:border-color .15s}
@@ -216,58 +169,43 @@ const MChart = {
   .input-with-unit{position:relative}
   .input-with-unit input{padding-right:40px}
   .input-unit{position:absolute;right:13px;top:50%;transform:translateY(-50%);font-size:12px;color:var(--text3);pointer-events:none}
-
-  /* Status banners */
   .banner{border-radius:18px;border:1px solid;padding:14px;display:flex;gap:10px;align-items:flex-start}
   .banner.green{background:rgba(0,255,135,.07);border-color:rgba(0,255,135,.2);color:var(--green)}
   .banner.orange{background:rgba(255,107,53,.07);border-color:rgba(255,107,53,.2);color:var(--orange)}
   .banner.red{background:rgba(255,71,87,.07);border-color:rgba(255,71,87,.2);color:var(--red)}
+  .banner.blue{background:rgba(61,142,255,.07);border-color:rgba(61,142,255,.2);color:var(--blue)}
   .banner-icon{font-size:18px;flex-shrink:0;margin-top:1px}
   .banner-title{font-size:14px;font-weight:700}
   .banner-sub{font-size:11px;opacity:.75;margin-top:2px}
   .banner-rec{font-size:11px;margin-top:8px;padding-top:8px;border-top:1px solid currentColor;opacity:.8;font-weight:500}
-
-  /* Section label */
   .section-label{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.1em;padding:0 2px}
-
-  /* Weight logger */
   .weight-logger{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:14px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;transition:all .15s}
   .weight-logger:hover{border-color:var(--border-bright)}
   .weight-icon-box{width:36px;height:36px;background:var(--elevated);border:1px solid var(--border);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
   .weight-input-row{display:flex;gap:8px;align-items:center;margin-top:12px}
   .weight-input-row input{flex:1;background:var(--elevated);border:1px solid var(--border);border-radius:12px;color:var(--text);font-family:inherit;font-size:22px;font-weight:800;padding:0 14px;height:48px;outline:none;font-variant-numeric:tabular-nums;text-align:center}
   .weight-input-row input:focus{border-color:rgba(0,255,135,.5)}
-
-  /* Macro bars */
   .macro-bar-wrap{display:flex;flex-direction:column;gap:6px}
   .macro-bar-row{display:flex;align-items:center;justify-content:space-between}
   .macro-bar-row span{font-size:12px}
   .macro-bar-row .val{font-weight:700;font-variant-numeric:tabular-nums}
   .bar-track{height:7px;background:var(--elevated);border-radius:4px;overflow:hidden}
-  .bar-fill{height:100%;border-radius:4px;transition:width .5s ease}
-
-  /* Macro mini cards */
+  .bar-fill{height:100%;border-radius:4px;transition:width .6s ease}
   .macro-mini{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
   .macro-mini-card{background:var(--elevated);border-radius:12px;padding:10px 8px;text-align:center}
   .macro-mini-card .val{font-size:16px;font-weight:800;font-variant-numeric:tabular-nums}
   .macro-mini-card .lbl{font-size:9px;color:var(--text3);margin-top:2px}
   .macro-mini-card .mini-bar{height:3px;background:var(--border);border-radius:2px;margin-top:6px;overflow:hidden}
   .macro-mini-card .mini-bar-fill{height:100%;border-radius:2px}
-
-  /* Training exercise row */
   .exercise-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)}
   .exercise-row:last-child{border-bottom:none}
   .exercise-name{font-size:13px;font-weight:600;color:var(--text)}
   .exercise-group{font-size:11px;color:var(--text3);margin-top:1px}
   .exercise-sets{font-size:13px;font-weight:800;color:var(--text2);font-variant-numeric:tabular-nums;text-align:right}
   .exercise-sets-label{font-size:10px;color:var(--text3);text-align:right}
-
-  /* Day pills */
   .day-pills{display:flex;gap:6px;flex-wrap:wrap}
   .day-pill{padding:4px 10px;border-radius:8px;font-size:11px;font-weight:700;border:1px solid var(--border);background:var(--elevated);color:var(--text3)}
   .day-pill.active{background:rgba(0,255,135,.1);border-color:rgba(0,255,135,.25);color:var(--green)}
-
-  /* Set logger */
   .set-header{display:grid;grid-template-columns:28px 1fr 1fr 44px 24px;gap:6px;padding:0 4px;margin-bottom:6px}
   .set-header span{font-size:9px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;text-align:center}
   .set-row{display:grid;grid-template-columns:28px 1fr 1fr 44px 24px;gap:6px;align-items:center;background:var(--elevated);border-radius:10px;padding:8px 6px;margin-bottom:5px}
@@ -280,42 +218,31 @@ const MChart = {
   .rpe-btn.high{background:rgba(255,71,87,.15);color:var(--red);border-color:rgba(255,71,87,.3)}
   .del-btn{background:none;border:none;color:var(--text3);cursor:pointer;font-size:13px;padding:0;display:flex;align-items:center;justify-content:center}
   .del-btn:hover{color:var(--red)}
-
-  /* RPE picker */
   .rpe-grid{display:flex;gap:5px;flex-wrap:wrap}
   .rpe-pip{width:32px;height:32px;border-radius:8px;border:1px solid var(--border);background:var(--elevated);color:var(--text3);font-size:11px;font-weight:800;cursor:pointer;font-family:inherit;transition:all .15s}
-  .rpe-pip:hover{border-color:var(--border-bright);color:var(--text)}
   .rpe-pip.selected.low{background:rgba(0,255,135,.2);color:var(--green);border-color:rgba(0,255,135,.35)}
   .rpe-pip.selected.mid{background:rgba(255,107,53,.2);color:var(--orange);border-color:rgba(255,107,53,.35)}
   .rpe-pip.selected.high{background:rgba(255,71,87,.2);color:var(--red);border-color:rgba(255,71,87,.35)}
-
-  /* Progress alert */
   .prog-alert{border-radius:10px;border:1px solid;padding:10px;display:flex;gap:8px;align-items:flex-start;margin-top:6px}
   .prog-alert.increase{background:rgba(0,255,135,.06);border-color:rgba(0,255,135,.2);color:var(--green)}
   .prog-alert.maintain{background:rgba(61,142,255,.06);border-color:rgba(61,142,255,.2);color:var(--blue)}
   .prog-alert.decrease{background:rgba(255,107,53,.06);border-color:rgba(255,107,53,.2);color:var(--orange)}
   .prog-alert-icon{font-size:13px;flex-shrink:0;margin-top:1px}
   .prog-alert p{font-size:11px;line-height:1.5}
-
-  /* AI card */
   .ai-card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:14px}
   .ai-header{display:flex;align-items:center;gap:8px;margin-bottom:10px}
   .ai-icon{width:28px;height:28px;background:rgba(0,255,135,.1);border:1px solid rgba(0,255,135,.2);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px}
   .ai-label{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.08em}
   .ai-text{font-size:13px;color:var(--text);line-height:1.6}
-
-  /* Workout card */
   .workout-card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:14px;cursor:pointer;transition:all .15s;display:block;color:inherit;text-decoration:none}
   .workout-card:hover{border-color:var(--border-bright)}
   .workout-card:active{transform:scale(.98)}
   .workout-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
   .workout-title{font-size:14px;font-weight:700;color:var(--text)}
-
-  /* Profile wizard */
   .wizard-tabs{display:flex;gap:6px}
   .wizard-tab{flex:1;border-radius:10px;border:1px solid var(--border);background:var(--card);color:var(--text3);font-size:11px;font-weight:700;padding:9px 4px;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:4px;transition:all .15s}
   .wizard-tab.active{background:rgba(0,255,135,.1);border-color:rgba(0,255,135,.3);color:var(--green)}
-  .goal-option{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px;cursor:pointer;transition:all .15s;width:100%;text-align:left;font-family:inherit;margin-bottom:8px}
+  .goal-option{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px;cursor:pointer;transition:all .15s;width:100%;text-align:left;font-family:inherit;margin-bottom:8px;display:block}
   .goal-option:hover{border-color:var(--border-bright)}
   .goal-option.selected{background:rgba(0,255,135,.07);border-color:rgba(0,255,135,.3);box-shadow:0 0 20px rgba(0,255,135,.08)}
   .goal-option-row{display:flex;align-items:center;justify-content:space-between}
@@ -327,752 +254,692 @@ const MChart = {
   .training-day-grid{display:flex;gap:6px;flex-wrap:wrap}
   .day-toggle{width:42px;height:42px;border-radius:10px;border:1px solid var(--border);background:var(--elevated);color:var(--text3);font-size:11px;font-weight:800;cursor:pointer;font-family:inherit;transition:all .15s}
   .day-toggle.on{background:rgba(0,255,135,.1);border-color:rgba(0,255,135,.3);color:var(--green)}
-
-  /* Calculated targets box */
   .targets-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
   .target-box{background:var(--elevated);border-radius:12px;padding:12px}
   .target-label{font-size:9px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.08em}
-  .target-value{font-size:20px;font-weight:800;color:var(--green);font-variant-numeric:tabular-nums;margin-top:4px}
+  .target-value{font-size:18px;font-weight:800;color:var(--green);font-variant-numeric:tabular-nums;margin-top:4px;line-height:1.2}
   .target-sub{font-size:10px;color:var(--text2);margin-top:2px}
-
-  /* Chart container */
   .chart-wrap{position:relative;height:140px;margin-top:8px}
-
-  /* Session exercise accordion */
   .session-ex{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-bottom:8px}
   .session-ex-header{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;cursor:pointer}
   .session-ex-body{padding:0 14px 14px;border-top:1px solid var(--border)}
   .session-ex-num{width:28px;height:28px;background:var(--elevated);border:1px solid var(--border);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:var(--text3);flex-shrink:0;margin-right:10px}
   .session-ex-name{font-size:13px;font-weight:700;color:var(--text)}
   .session-ex-info{font-size:11px;color:var(--text3);margin-top:1px}
-
-  /* AI analyzing animation */
   .analyzing{display:flex;align-items:center;gap:8px;color:var(--green);font-size:12px;font-weight:600}
   .dot-pulse{display:flex;gap:3px}
   .dot-pulse span{width:5px;height:5px;background:var(--green);border-radius:50%;animation:pulse 1.4s ease-in-out infinite}
   .dot-pulse span:nth-child(2){animation-delay:.2s}
   .dot-pulse span:nth-child(3){animation-delay:.4s}
   @keyframes pulse{0%,80%,100%{opacity:.2;transform:scale(.8)}40%{opacity:1;transform:scale(1)}}
-
-  /* Progress ring */
   .ring-wrap{position:relative;width:80px;height:80px;flex-shrink:0}
   .ring-wrap svg{transform:rotate(-90deg)}
   .ring-label{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:800}
-
-  /* Fade-in */
   @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
   .fade-in{animation:fadeUp .25s ease both}
-
-  /* Login styles */
   .login-logo{width:64px;height:64px;background:rgba(0,255,135,.1);border:1px solid rgba(0,255,135,.2);border-radius:20px;display:flex;align-items:center;justify-content:center;font-size:28px;margin-bottom:16px;box-shadow:0 0 30px rgba(0,255,135,.15)}
   .login-form{width:100%;display:flex;flex-direction:column;gap:14px;margin-top:24px}
   .login-link{color:var(--green);font-weight:600;cursor:pointer;text-decoration:none}
   .demo-hint{background:var(--elevated);border:1px solid var(--border);border-radius:12px;padding:12px;text-align:center;font-size:11px;color:var(--text3);margin-top:12px}
-
-  /* Nutrition result card */
   .macro-result-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
   .macro-result-card{background:var(--elevated);border-radius:12px;padding:12px}
   .macro-result-val{font-size:20px;font-weight:800;font-variant-numeric:tabular-nums}
   .macro-result-lbl{font-size:10px;color:var(--text2);margin-top:2px}
-
-  /* Divider */
-  .divider{height:1px;background:var(--border);margin:4px 0}
-
-  /* Recent day row */
   .recent-day{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px}
   .recent-day-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
   .recent-day-macros{display:flex;gap:12px;font-size:11px;color:var(--text3)}
   .recent-day-macros strong{font-variant-numeric:tabular-nums}
-
-  /* Stats row */
   .stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
   .stat-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px}
   .stat-label{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.08em}
   .stat-value{font-size:20px;font-weight:800;margin-top:4px;font-variant-numeric:tabular-nums}
-
-  /* Adherence */
   .adherence-row{display:flex;align-items:center;gap:16px}
   .adherence-info h3{font-size:15px;font-weight:700;color:var(--text)}
   .adherence-info p{font-size:12px;color:var(--text2);margin-top:3px}
   .adherence-tip{font-size:11px;font-weight:600;margin-top:8px}
-
-  /* Session complete */
   .session-done{background:rgba(0,255,135,.08);border:1px solid rgba(0,255,135,.2);border-radius:18px;padding:20px;text-align:center;box-shadow:0 0 30px rgba(0,255,135,.1)}
   .done-check{font-size:36px;margin-bottom:8px}
   .done-title{font-size:17px;font-weight:800;color:var(--green)}
   .done-sub{font-size:12px;color:var(--text2);margin-top:4px}
+  .macro4{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
 </style>
 </head>
 <body>
-
 <div class="phone">
 
-  <!-- ═══ LOGIN ═══ -->
-  <div class="login-page" id="page-login">
-    <div class="login-logo">💪</div>
-    <h1 style="font-size:26px;font-weight:800;text-align:center">Fit40 OS</h1>
-    <p style="color:var(--text2);font-size:14px;margin-top:6px;text-align:center">Tu sistema operativo físico</p>
-    <div class="login-form">
-      <div class="field">
-        <label>Email</label>
-        <input type="text" placeholder="nicolas@fit40.com">
-      </div>
-      <div class="field">
-        <label>Contraseña</label>
-        <input type="password" placeholder="••••••••">
-      </div>
-      <a class="btn primary" href="#page-dashboard" style="margin-top:4px">Iniciar sesión</a>
-      <p style="text-align:center;font-size:13px;color:var(--text3)">
-        ¿No tienes cuenta? <a class="login-link" href="#page-register">Crear cuenta</a>
-      </p>
-    </div>
-    <div class="demo-hint">
-      <strong style="color:var(--text2)">Demo:</strong> ingresa cualquier email y contraseña
+<!-- ═══ LOGIN ═══ -->
+<div class="login-page" id="page-login">
+  <div class="login-logo">💪</div>
+  <h1 style="font-size:26px;font-weight:800;text-align:center">Fit40 OS</h1>
+  <p style="color:var(--text2);font-size:14px;margin-top:6px;text-align:center">Tu sistema operativo físico</p>
+  <div class="login-form">
+    <div class="field"><label>Email</label><input type="text" placeholder="nicolas@fit40.com"></div>
+    <div class="field"><label>Contraseña</label><input type="password" placeholder="••••••••"></div>
+    <a class="btn primary" href="#page-dashboard" style="margin-top:4px">Iniciar sesión</a>
+    <p style="text-align:center;font-size:13px;color:var(--text3)">¿No tienes cuenta? <a class="login-link" href="#page-register">Crear cuenta</a></p>
+  </div>
+  <div class="demo-hint"><strong style="color:var(--text2)">Demo:</strong> cualquier email y contraseña</div>
+</div>
+
+<!-- ═══ REGISTER ═══ -->
+<div class="login-page" id="page-register">
+  <div class="login-logo">🏋️</div>
+  <h1 style="font-size:24px;font-weight:800;text-align:center">Crea tu cuenta</h1>
+  <div class="login-form">
+    <div class="field"><label>Nombre</label><input type="text" placeholder="Nicolás"></div>
+    <div class="field"><label>Email</label><input type="text" placeholder="tu@email.com"></div>
+    <div class="field"><label>Contraseña</label><input type="password" placeholder="Mínimo 8 caracteres"></div>
+    <a class="btn primary" href="#page-dashboard" style="margin-top:4px">Crear cuenta</a>
+    <p style="text-align:center;font-size:13px;color:var(--text3)">¿Ya tienes cuenta? <a class="login-link" href="#page-login">Iniciar sesión</a></p>
+  </div>
+</div>
+
+<!-- ═══ DASHBOARD ═══ -->
+<div class="page" id="page-dashboard">
+  <div class="topbar">
+    <div class="topbar-row">
+      <div><h1 id="dash-greeting">Buenos días, Nicolás 💪</h1><p id="dash-date"></p></div>
+      <a class="icon-btn" href="#page-profile">⚙️</a>
     </div>
   </div>
-
-  <!-- ═══ REGISTER ═══ -->
-  <div class="login-page" id="page-register">
-    <div class="login-logo">🏋️</div>
-    <h1 style="font-size:24px;font-weight:800;text-align:center">Crea tu cuenta</h1>
-    <p style="color:var(--text2);font-size:13px;margin-top:6px;text-align:center">Empieza tu transformación hoy</p>
-    <div class="login-form">
-      <div class="field"><label>Nombre</label><input type="text" placeholder="Nicolás"></div>
-      <div class="field"><label>Email</label><input type="text" placeholder="tu@email.com"></div>
-      <div class="field"><label>Contraseña</label><input type="password" placeholder="Mínimo 8 caracteres"></div>
-      <a class="btn primary" href="#page-dashboard" style="margin-top:4px">Crear cuenta</a>
-      <p style="text-align:center;font-size:13px;color:var(--text3)">
-        ¿Ya tienes cuenta? <a class="login-link" href="#page-login">Iniciar sesión</a>
-      </p>
-    </div>
-  </div>
-
-  <!-- ═══ DASHBOARD ═══ -->
-  <div class="page" id="page-dashboard">
-    <div class="topbar">
-      <div class="topbar-row">
+  <div class="content fade-in">
+    <!-- Weight logger -->
+    <div id="weight-closed" class="weight-logger" onclick="openWeightLogger()">
+      <div style="display:flex;align-items:center;gap:12px">
+        <div class="weight-icon-box" id="weight-icon">⚖️</div>
         <div>
-          <h1 id="dash-greeting">Buenos días, Nicolás 💪</h1>
-          <p id="dash-date"></p>
+          <div style="font-size:14px;font-weight:600" id="weight-main-text">Registrar peso hoy</div>
+          <div style="font-size:11px;color:var(--text3)" id="weight-sub-text">Añade tu peso de esta mañana</div>
         </div>
-        <a class="icon-btn" href="#page-profile" title="Perfil">⚙️</a>
+      </div>
+      <span id="weight-check" style="display:none;color:var(--green);font-size:18px">✓</span>
+      <span id="weight-plus" style="color:var(--text3);font-size:20px">+</span>
+    </div>
+    <div id="weight-open" style="display:none" class="card glow-green">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px"><span>⚖️</span><span style="font-size:13px;font-weight:700">Peso de hoy (kg)</span></div>
+      <div class="weight-input-row">
+        <input type="number" id="weight-input" placeholder="88.5" step="0.1" min="30" max="300">
+        <button class="btn primary" style="width:auto;padding:0 18px;height:48px" onclick="saveWeight()">Guardar</button>
+        <button class="btn ghost" onclick="closeWeightLogger()" style="height:48px;padding:0 12px">✕</button>
       </div>
     </div>
-
-    <div class="content fade-in">
-      <!-- Weight logger -->
-      <div id="weight-closed" class="weight-logger" onclick="openWeightLogger()">
-        <div style="display:flex;align-items:center;gap:12px">
-          <div class="weight-icon-box" id="weight-icon">⚖️</div>
-          <div>
-            <div style="font-size:14px;font-weight:600" id="weight-main-text">Registrar peso hoy</div>
-            <div style="font-size:11px;color:var(--text3)" id="weight-sub-text">Añade tu peso de esta mañana</div>
-          </div>
-        </div>
-        <span id="weight-check" style="display:none;color:var(--green)">✓</span>
-        <span id="weight-plus" style="color:var(--text3)">+</span>
-      </div>
-      <div id="weight-open" style="display:none" class="card glow-green">
-        <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
-          <span>⚖️</span>
-          <span style="font-size:13px;font-weight:700">Peso de hoy (kg)</span>
-        </div>
-        <div class="weight-input-row">
-          <input type="number" id="weight-input" placeholder="88.5" step="0.1" min="30" max="300">
-          <button class="btn primary" style="width:auto;padding:0 18px;height:48px" onclick="saveWeight()">Guardar</button>
-          <button class="btn ghost" onclick="closeWeightLogger()" style="height:48px;padding:0 12px">✕</button>
-        </div>
-      </div>
-
-      <!-- Status banner -->
-      <div class="banner red">
-        <div class="banner-icon">⚠️</div>
-        <div>
-          <div class="banner-title">Bajando muy rápido</div>
-          <div class="banner-sub">&gt; 1% del peso por semana</div>
-          <div class="banner-rec">→ Sube 150–250 kcal para proteger músculo</div>
-        </div>
-      </div>
-
-      <!-- Metrics -->
-      <div class="metric-grid">
-        <div class="metric-card green">
-          <div class="metric-label">⚖️ Peso actual</div>
-          <div class="metric-value green-text" id="current-weight-display">88.4 kg ↓</div>
-          <div class="metric-sub muted">Promedio: 88.2 kg</div>
-        </div>
-        <div class="metric-card">
-          <div class="metric-label">% Grasa est.</div>
-          <div class="metric-value" style="color:var(--text)">22.0%</div>
-          <div class="metric-sub muted">Meta: &lt; 15%</div>
-        </div>
-        <div class="metric-card">
-          <div class="metric-label">🔥 Calorías objetivo</div>
-          <div class="metric-value blue-text">2.063</div>
-          <div class="metric-sub muted">kcal / día</div>
-        </div>
-        <div class="metric-card">
-          <div class="metric-label">🥩 Proteína objetivo</div>
-          <div class="metric-value" style="color:var(--text)">177g</div>
-          <div class="metric-sub muted">2.0 g/kg</div>
-        </div>
-      </div>
-
-      <!-- Today's nutrition -->
-      <div class="card">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-          <div class="section-label">Nutrición de hoy</div>
-          <span style="font-size:11px;color:var(--green);font-weight:600">1.985 / 2.063 kcal</span>
-        </div>
-        <div class="macro-mini">
-          <div class="macro-mini-card">
-            <div class="val green-text">185g</div>
-            <div class="lbl">Proteína</div>
-            <div class="mini-bar"><div class="mini-bar-fill" style="width:100%;background:var(--green)"></div></div>
-          </div>
-          <div class="macro-mini-card">
-            <div class="val blue-text">210g</div>
-            <div class="lbl">Carbs</div>
-            <div class="mini-bar"><div class="mini-bar-fill" style="width:99%;background:var(--blue)"></div></div>
-          </div>
-          <div class="macro-mini-card">
-            <div class="val orange-text">45g</div>
-            <div class="lbl">Grasas</div>
-            <div class="mini-bar"><div class="mini-bar-fill" style="width:79%;background:var(--orange)"></div></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Workout card -->
-      <a class="workout-card" href="#page-training">
-        <div class="workout-header">
-          <div style="display:flex;align-items:center;gap:8px">
-            <span style="color:var(--text2)">🏋️</span>
-            <div class="section-label">Entrenamiento de hoy</div>
-          </div>
-          <span style="color:var(--text3);font-size:18px">›</span>
-        </div>
-        <div class="workout-title">PPL Intermedio 4 días</div>
-        <div style="margin-top:8px;display:flex;flex-direction:column;gap:5px">
-          <div style="font-size:12px;color:var(--text2)">4×6-8 Press Banca</div>
-          <div style="font-size:12px;color:var(--text2)">3×8-12 Press Inclinado</div>
-          <div style="font-size:12px;color:var(--text2)">3×8-10 Press Militar</div>
-          <div style="font-size:12px;color:var(--text2)">3×8-12 Fondos en paralelas</div>
-        </div>
-      </a>
-
-      <!-- AI Recommendation -->
-      <div class="ai-card">
-        <div class="ai-header">
-          <div class="ai-icon">✨</div>
-          <div class="ai-label">Recomendación del día</div>
-        </div>
-        <p class="ai-text">Tu progreso esta semana es sólido: -0.5 kg de promedio. Proteína promedio en 175g, un poco bajo para tu peso. Intenta llegar a 180g hoy. Si el hombro sigue molestando en press banca, considera bajar a 75 kg y agregar más trabajo de manguito rotador.</p>
+    <!-- Status banner -->
+    <div class="banner red" id="status-banner">
+      <div class="banner-icon">🔴</div>
+      <div>
+        <div class="banner-title" id="banner-title">Bajando muy rápido</div>
+        <div class="banner-sub" id="banner-sub">&gt; 1% del peso por semana</div>
+        <div class="banner-rec" id="banner-rec">→ Sube 150–250 kcal para proteger músculo</div>
       </div>
     </div>
-
-    <nav class="bottom-nav">
-      <a class="nav-item" href="#page-dashboard">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
-        <span>Inicio</span>
-      </a>
-      <a class="nav-item" href="#page-training">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 4v6a6 6 0 0 0 12 0V4"/><line x1="6" y1="7" x2="2" y2="7"/><line x1="22" y1="7" x2="18" y2="7"/></svg>
-        <span>Training</span>
-      </a>
-      <a class="nav-item" href="#page-nutrition">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l19-9-9 19-2-8-8-2z"/></svg>
-        <span>Nutrición</span>
-      </a>
-      <a class="nav-item" href="#page-progress">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
-        <span>Progreso</span>
-      </a>
-    </nav>
-  </div>
-
-  <!-- ═══ TRAINING ═══ -->
-  <div class="page" id="page-training">
-    <div class="topbar">
-      <div class="topbar-row">
-        <div><h1>Entrenamiento</h1><p>Día de entrenamiento</p></div>
-        <a class="icon-btn" href="#page-dashboard">←</a>
+    <!-- Metrics -->
+    <div class="metric-grid">
+      <div class="metric-card green">
+        <div class="metric-label">⚖️ Peso actual</div>
+        <div class="metric-value green-text" id="metric-weight">88.4 kg</div>
+        <div class="metric-sub muted" id="metric-weight-sub">Prom. 7d: 88.5 kg</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">% Grasa est.</div>
+        <div class="metric-value" style="color:var(--text)" id="metric-bf">22.0%</div>
+        <div class="metric-sub muted">Meta: &lt; 15%</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">🔥 Cal. objetivo</div>
+        <div class="metric-value blue-text" id="metric-kcal">2.063</div>
+        <div class="metric-sub muted">kcal / día</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">🥩 Proteína obj.</div>
+        <div class="metric-value" style="color:var(--text)" id="metric-protein">177g</div>
+        <div class="metric-sub muted" id="metric-protein-sub">2.0 g/kg</div>
       </div>
     </div>
-    <div class="content fade-in">
-      <div class="card">
-        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px">
-          <div>
-            <div class="section-label" style="margin-bottom:4px">Plan activo</div>
-            <div style="font-size:15px;font-weight:800">PPL Intermedio 4 días</div>
-          </div>
-          <span class="badge green">Hoy toca</span>
-        </div>
-        <div class="day-pills" style="margin-bottom:14px">
-          <div class="day-pill">Dom</div>
-          <div class="day-pill active">Lun</div>
-          <div class="day-pill active">Mar</div>
-          <div class="day-pill">Mié</div>
-          <div class="day-pill active">Jue</div>
-          <div class="day-pill active">Vie</div>
-          <div class="day-pill">Sáb</div>
-        </div>
-        <div class="exercise-row">
-          <div><div class="exercise-name">Press Banca</div><div class="exercise-group">Pecho</div></div>
-          <div><div class="exercise-sets">4 × 6–8</div><div class="exercise-sets-label">series × reps</div></div>
-        </div>
-        <div class="exercise-row">
-          <div><div class="exercise-name">Press Inclinado</div><div class="exercise-group">Pecho</div></div>
-          <div><div class="exercise-sets">3 × 8–12</div><div class="exercise-sets-label">series × reps</div></div>
-        </div>
-        <div class="exercise-row">
-          <div><div class="exercise-name">Press Militar</div><div class="exercise-group">Hombros</div></div>
-          <div><div class="exercise-sets">3 × 8–10</div><div class="exercise-sets-label">series × reps</div></div>
-        </div>
-        <div class="exercise-row" style="border:none">
-          <div><div class="exercise-name">Fondos en paralelas</div><div class="exercise-group">Pecho</div></div>
-          <div><div class="exercise-sets">3 × 8–12</div><div class="exercise-sets-label">series × reps</div></div>
-        </div>
+    <!-- Today nutrition -->
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+        <div class="section-label">Nutrición de hoy</div>
+        <span style="font-size:11px;color:var(--green);font-weight:600" id="dash-kcal-summary">1.985 / — kcal</span>
       </div>
-      <a class="btn primary" href="#page-session" style="font-size:15px">▶ Iniciar sesión de hoy</a>
-      <div class="section-label">Sesiones recientes</div>
-      <div class="card" style="display:flex;align-items:center;justify-content:space-between">
-        <div style="display:flex;align-items:center;gap:10px">
-          <span style="font-size:16px">🏋️</span>
-          <div>
-            <div style="font-size:13px;font-weight:600">jue, 22 may</div>
-            <div style="font-size:11px;color:var(--text3)">58 min · RPE 7</div>
-          </div>
+      <div class="macro-mini">
+        <div class="macro-mini-card">
+          <div class="val green-text">185g</div><div class="lbl">Proteína</div>
+          <div class="mini-bar"><div class="mini-bar-fill" id="dash-prot-bar" style="width:100%;background:var(--green)"></div></div>
         </div>
-        <span class="badge green">Completado</span>
+        <div class="macro-mini-card">
+          <div class="val blue-text">210g</div><div class="lbl">Carbs</div>
+          <div class="mini-bar"><div class="mini-bar-fill" id="dash-carbs-bar" style="width:99%;background:var(--blue)"></div></div>
+        </div>
+        <div class="macro-mini-card">
+          <div class="val orange-text">45g</div><div class="lbl">Grasas</div>
+          <div class="mini-bar"><div class="mini-bar-fill" id="dash-fat-bar" style="width:79%;background:var(--orange)"></div></div>
+        </div>
       </div>
     </div>
-    <nav class="bottom-nav">
-      <a class="nav-item" href="#page-dashboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><span>Inicio</span></a>
-      <a class="nav-item" href="#page-training"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 4v6a6 6 0 0 0 12 0V4"/><line x1="6" y1="7" x2="2" y2="7"/><line x1="22" y1="7" x2="18" y2="7"/></svg><span>Training</span></a>
-      <a class="nav-item" href="#page-nutrition"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l19-9-9 19-2-8-8-2z"/></svg><span>Nutrición</span></a>
-      <a class="nav-item" href="#page-progress"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg><span>Progreso</span></a>
-    </nav>
-  </div>
-
-  <!-- ═══ SESSION ═══ -->
-  <div class="page" id="page-session">
-    <div class="topbar">
-      <div class="topbar-row">
-        <div><h1>Sesión activa</h1><p id="session-date-label"></p></div>
-        <a class="btn ghost" href="#page-training" style="font-size:13px">← Volver</a>
+    <!-- Workout card -->
+    <a class="workout-card" href="#page-training">
+      <div class="workout-header">
+        <div style="display:flex;align-items:center;gap:8px"><span style="color:var(--text2)">🏋️</span><div class="section-label">Entrenamiento de hoy</div></div>
+        <span style="color:var(--text3);font-size:18px">›</span>
       </div>
-    </div>
-    <div class="content fade-in" id="session-content">
-      <!-- Pre-rendered session (enhanced by JS if available) -->
-      <div style="display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--text3);margin-bottom:4px">
-        <span id="session-progress-label">0 de 13 series registradas</span>
-        <span>PPL Intermedio 4 días</span>
+      <div class="workout-title" id="dash-plan-name">PPL Intermedio 4 días</div>
+      <div style="margin-top:8px;display:flex;flex-direction:column;gap:5px">
+        <div style="font-size:12px;color:var(--text2)">4×6-8 Press Banca</div>
+        <div style="font-size:12px;color:var(--text2)">3×8-12 Press Inclinado</div>
+        <div style="font-size:12px;color:var(--text2)">3×8-10 Press Militar</div>
+        <div style="font-size:12px;color:var(--text2)">3×8-12 Fondos en paralelas</div>
       </div>
-
-      <!-- Exercise 1: Press Banca (expanded) -->
-      <div class="session-ex">
-        <div class="session-ex-header" onclick="toggleEx(0)">
-          <div style="display:flex;align-items:center">
-            <div class="session-ex-num">1</div>
-            <div>
-              <div class="session-ex-name">Press Banca</div>
-              <div class="session-ex-info">Pecho · 4×6–8</div>
-            </div>
-          </div>
-          <span class="badge neutral" id="badge-ex0">0/4</span>
-        </div>
-        <div class="session-ex-body" id="body-ex0">
-          <div class="set-header"><span>#</span><span>Reps</span><span>Peso kg</span><span>RPE</span><span></span></div>
-          <div class="set-row">
-            <div class="set-num">1</div>
-            <input class="set-input" type="number" placeholder="6–8" min="1" max="50" onchange="updateReps(0,0,this.value)">
-            <input class="set-input" type="number" value="80" step="0.5" onchange="updateKg(0,0,this.value)">
-            <button class="rpe-btn" onclick="openRPE(0,0)">RPE</button>
-            <button class="del-btn" onclick="delSet(0,0)">✕</button>
-          </div>
-          <div class="set-row">
-            <div class="set-num">2</div>
-            <input class="set-input" type="number" placeholder="6–8" min="1" max="50" onchange="updateReps(0,1,this.value)">
-            <input class="set-input" type="number" value="80" step="0.5" onchange="updateKg(0,1,this.value)">
-            <button class="rpe-btn" onclick="openRPE(0,1)">RPE</button>
-            <button class="del-btn" onclick="delSet(0,1)">✕</button>
-          </div>
-          <div class="set-row">
-            <div class="set-num">3</div>
-            <input class="set-input" type="number" placeholder="6–8" min="1" max="50" onchange="updateReps(0,2,this.value)">
-            <input class="set-input" type="number" value="80" step="0.5" onchange="updateKg(0,2,this.value)">
-            <button class="rpe-btn" onclick="openRPE(0,2)">RPE</button>
-            <button class="del-btn" onclick="delSet(0,2)">✕</button>
-          </div>
-          <div class="set-row">
-            <div class="set-num">4</div>
-            <input class="set-input" type="number" placeholder="6–8" min="1" max="50" onchange="updateReps(0,3,this.value)">
-            <input class="set-input" type="number" value="80" step="0.5" onchange="updateKg(0,3,this.value)">
-            <button class="rpe-btn" onclick="openRPE(0,3)">RPE</button>
-            <button class="del-btn" onclick="delSet(0,3)">✕</button>
-          </div>
-          <button class="btn ghost sm" onclick="addSet(0)" style="margin-top:8px">+ Agregar serie</button>
-        </div>
-      </div>
-
-      <!-- Exercise 2: Press Inclinado -->
-      <div class="session-ex">
-        <div class="session-ex-header" onclick="toggleEx(1)">
-          <div style="display:flex;align-items:center">
-            <div class="session-ex-num">2</div>
-            <div>
-              <div class="session-ex-name">Press Inclinado</div>
-              <div class="session-ex-info">Pecho · 3×8–12</div>
-            </div>
-          </div>
-          <span class="badge neutral">0/3</span>
-        </div>
-      </div>
-
-      <!-- Exercise 3: Press Militar -->
-      <div class="session-ex">
-        <div class="session-ex-header" onclick="toggleEx(2)">
-          <div style="display:flex;align-items:center">
-            <div class="session-ex-num">3</div>
-            <div>
-              <div class="session-ex-name">Press Militar</div>
-              <div class="session-ex-info">Hombros · 3×8–10</div>
-            </div>
-          </div>
-          <span class="badge neutral">0/3</span>
-        </div>
-      </div>
-
-      <!-- Exercise 4: Fondos -->
-      <div class="session-ex">
-        <div class="session-ex-header" onclick="toggleEx(3)">
-          <div style="display:flex;align-items:center">
-            <div class="session-ex-num">4</div>
-            <div>
-              <div class="session-ex-name">Fondos en paralelas</div>
-              <div class="session-ex-info">Pecho · 3×8–12</div>
-            </div>
-          </div>
-          <span class="badge neutral">0/3</span>
-        </div>
-      </div>
-
-      <button class="btn primary" onclick="finishSession()" style="margin-top:4px">✓ Finalizar sesión</button>
-      <div style="height:8px"></div>
+    </a>
+    <!-- AI Recommendation -->
+    <div class="ai-card">
+      <div class="ai-header"><div class="ai-icon">✨</div><div class="ai-label">Recomendación del día</div></div>
+      <p class="ai-text" id="dash-ai-rec">Tu progreso esta semana es sólido: -0.5 kg de promedio. Proteína promedio en 175g, un poco bajo para tu peso. Intenta llegar a 180g hoy. Si el hombro sigue molestando en press banca, considera bajar a 75 kg y agregar más trabajo de manguito rotador.</p>
     </div>
   </div>
+  <nav class="bottom-nav">
+    <a class="nav-item" href="#page-dashboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><span>Inicio</span></a>
+    <a class="nav-item" href="#page-training"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 4v6a6 6 0 0 0 12 0V4"/><line x1="6" y1="7" x2="2" y2="7"/><line x1="22" y1="7" x2="18" y2="7"/></svg><span>Training</span></a>
+    <a class="nav-item" href="#page-nutrition"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l19-9-9 19-2-8-8-2z"/></svg><span>Nutrición</span></a>
+    <a class="nav-item" href="#page-progress"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg><span>Progreso</span></a>
+  </nav>
+</div>
 
-  <!-- ═══ NUTRITION ═══ -->
-  <div class="page" id="page-nutrition">
-    <div class="topbar">
-      <div class="topbar-row">
-        <div><h1>Nutrición</h1><p id="nutrition-date"></p></div>
-        <a class="icon-btn" href="#page-dashboard">⚙️</a>
-      </div>
-    </div>
-    <div class="content fade-in">
-      <div class="card">
-        <div class="section-label" style="margin-bottom:10px">Objetivos de hoy</div>
-        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px">
-          <div class="macro-mini-card"><div class="val green-text">177</div><div class="lbl">Proteína</div></div>
-          <div class="macro-mini-card"><div class="val blue-text">211</div><div class="lbl">Carbs</div></div>
-          <div class="macro-mini-card"><div class="val orange-text">57</div><div class="lbl">Grasas</div></div>
-          <div class="macro-mini-card"><div class="val" style="color:var(--text)">2063</div><div class="lbl">Calorías</div></div>
-        </div>
-        <div id="macro-bars" style="display:none;flex-direction:column;gap:10px">
-          <div class="macro-bar-wrap">
-            <div class="macro-bar-row"><span class="muted">Proteína</span><span class="val green-text" id="bar-prot-val">0g / 177g</span></div>
-            <div class="bar-track"><div class="bar-fill" id="bar-prot" style="width:0%;background:var(--green)"></div></div>
-          </div>
-          <div class="macro-bar-wrap">
-            <div class="macro-bar-row"><span class="muted">Carbohidratos</span><span class="val blue-text" id="bar-carbs-val">0g / 211g</span></div>
-            <div class="bar-track"><div class="bar-fill" id="bar-carbs" style="width:0%;background:var(--blue)"></div></div>
-          </div>
-          <div class="macro-bar-wrap">
-            <div class="macro-bar-row"><span class="muted">Grasas</span><span class="val orange-text" id="bar-fat-val">0g / 57g</span></div>
-            <div class="bar-track"><div class="bar-fill" id="bar-fat" style="width:0%;background:var(--orange)"></div></div>
-          </div>
-          <div class="macro-bar-wrap">
-            <div class="macro-bar-row"><span class="muted">Calorías</span><span class="val" id="bar-kcal-val" style="color:var(--text)">0 / 2063 kcal</span></div>
-            <div class="bar-track"><div class="bar-fill" id="bar-kcal" style="width:0%;background:var(--text2)"></div></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="card">
-        <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
-          <span>🍽️</span>
-          <div class="section-label">¿Qué comiste hoy?</div>
-        </div>
-        <div class="field">
-          <textarea id="food-text" rows="4" placeholder="Ej: 3 huevos revueltos, 200g pechuga de pollo, arroz integral 150g, 1 scoop whey, yogurt proteico..."></textarea>
-        </div>
-        <button class="btn primary" onclick="analyzeFood()" id="analyze-btn" style="margin-top:10px">✨ Analizar con IA</button>
-        <div id="analyzing-status" style="display:none;margin-top:10px" class="analyzing">
-          <div class="dot-pulse"><span></span><span></span><span></span></div>
-          Analizando con IA...
-        </div>
-      </div>
-
-      <div id="nutrition-result" style="display:none" class="card glow-green fade-in">
-        <div class="section-label" style="margin-bottom:10px">Estimación de macros</div>
-        <div class="macro-result-grid">
-          <div class="macro-result-card"><div class="macro-result-val green-text" id="res-prot">–</div><div class="macro-result-lbl">Proteína</div></div>
-          <div class="macro-result-card"><div class="macro-result-val blue-text" id="res-carbs">–</div><div class="macro-result-lbl">Carbohidratos</div></div>
-          <div class="macro-result-card"><div class="macro-result-val orange-text" id="res-fat">–</div><div class="macro-result-lbl">Grasas</div></div>
-          <div class="macro-result-card"><div class="macro-result-val" style="color:var(--text)" id="res-kcal">–</div><div class="macro-result-lbl">Calorías</div></div>
-        </div>
-        <div id="res-notes" style="background:var(--elevated);border-radius:10px;padding:10px;font-size:12px;color:var(--text2);line-height:1.5;display:none"></div>
-      </div>
-
-      <div class="section-label">Días anteriores</div>
-      <div class="recent-day">
-        <div class="recent-day-header"><span style="font-size:12px;font-weight:600;color:var(--text2)">vie, 23 may</span><span style="font-size:13px;font-weight:800;font-variant-numeric:tabular-nums">1.985 kcal</span></div>
-        <div class="recent-day-macros"><span><strong class="green-text">185g</strong> prot</span><span><strong class="blue-text">210g</strong> carbs</span><span><strong class="orange-text">45g</strong> grasas</span></div>
-      </div>
-      <div class="recent-day">
-        <div class="recent-day-header"><span style="font-size:12px;font-weight:600;color:var(--text2)">jue, 22 may</span><span style="font-size:13px;font-weight:800;font-variant-numeric:tabular-nums">1.900 kcal</span></div>
-        <div class="recent-day-macros"><span><strong class="green-text">175g</strong> prot</span><span><strong class="blue-text">195g</strong> carbs</span><span><strong class="orange-text">48g</strong> grasas</span></div>
-      </div>
-      <div class="recent-day">
-        <div class="recent-day-header"><span style="font-size:12px;font-weight:600;color:var(--text2)">mié, 21 may</span><span style="font-size:13px;font-weight:800;font-variant-numeric:tabular-nums">1.740 kcal</span></div>
-        <div class="recent-day-macros"><span><strong class="green-text">165g</strong> prot</span><span><strong class="blue-text">140g</strong> carbs</span><span><strong class="orange-text">52g</strong> grasas</span></div>
-      </div>
-    </div>
-    <nav class="bottom-nav">
-      <a class="nav-item" href="#page-dashboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><span>Inicio</span></a>
-      <a class="nav-item" href="#page-training"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 4v6a6 6 0 0 0 12 0V4"/><line x1="6" y1="7" x2="2" y2="7"/><line x1="22" y1="7" x2="18" y2="7"/></svg><span>Training</span></a>
-      <a class="nav-item" href="#page-nutrition"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l19-9-9 19-2-8-8-2z"/></svg><span>Nutrición</span></a>
-      <a class="nav-item" href="#page-progress"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg><span>Progreso</span></a>
-    </nav>
+<!-- ═══ TRAINING ═══ -->
+<div class="page" id="page-training">
+  <div class="topbar">
+    <div class="topbar-row"><div><h1>Entrenamiento</h1><p>Día de entrenamiento</p></div><a class="icon-btn" href="#page-dashboard">←</a></div>
   </div>
-
-  <!-- ═══ PROGRESS ═══ -->
-  <div class="page" id="page-progress">
-    <div class="topbar">
-      <div class="topbar-row">
-        <div><h1>Progreso</h1><p>Tu evolución en el tiempo</p></div>
-        <a class="icon-btn" href="#page-dashboard">←</a>
+  <div class="content fade-in">
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px">
+        <div><div class="section-label" style="margin-bottom:4px">Plan activo</div><div style="font-size:15px;font-weight:800">PPL Intermedio 4 días</div></div>
+        <span class="badge green">Hoy toca</span>
       </div>
+      <div class="day-pills" style="margin-bottom:14px">
+        <div class="day-pill">Dom</div><div class="day-pill active">Lun</div><div class="day-pill active">Mar</div>
+        <div class="day-pill">Mié</div><div class="day-pill active">Jue</div><div class="day-pill active">Vie</div><div class="day-pill">Sáb</div>
+      </div>
+      <div class="exercise-row"><div><div class="exercise-name">Press Banca</div><div class="exercise-group">Pecho</div></div><div><div class="exercise-sets">4 × 6–8</div><div class="exercise-sets-label">series × reps</div></div></div>
+      <div class="exercise-row"><div><div class="exercise-name">Press Inclinado</div><div class="exercise-group">Pecho</div></div><div><div class="exercise-sets">3 × 8–12</div><div class="exercise-sets-label">series × reps</div></div></div>
+      <div class="exercise-row"><div><div class="exercise-name">Press Militar</div><div class="exercise-group">Hombros</div></div><div><div class="exercise-sets">3 × 8–10</div><div class="exercise-sets-label">series × reps</div></div></div>
+      <div class="exercise-row" style="border:none"><div><div class="exercise-name">Fondos en paralelas</div><div class="exercise-group">Pecho</div></div><div><div class="exercise-sets">3 × 8–12</div><div class="exercise-sets-label">series × reps</div></div></div>
     </div>
-    <div class="content fade-in">
-      <div class="stats-grid">
-        <div class="stat-card"><div class="stat-label">Peso inicial</div><div class="stat-value">92 kg</div></div>
-        <div class="stat-card"><div class="stat-label">Peso actual</div><div class="stat-value">88.4 kg</div></div>
-        <div class="stat-card"><div class="stat-label">Pérdida total</div><div class="stat-value green-text">-3.6 kg</div></div>
-        <div class="stat-card"><div class="stat-label">Adherencia</div><div class="stat-value orange-text">72%</div></div>
-      </div>
-      <div class="card">
-        <div class="section-label">Peso diario (kg)</div>
-        <div class="chart-wrap"><canvas id="chart-weight"></canvas></div>
-      </div>
-      <div class="card">
-        <div class="section-label">Proteína diaria (g)</div>
-        <div class="chart-wrap"><canvas id="chart-protein"></canvas></div>
-      </div>
-      <div class="card">
-        <div class="section-label">Fuerza — Press Banca (kg)</div>
-        <div class="chart-wrap"><canvas id="chart-strength"></canvas></div>
-      </div>
-      <div class="card">
-        <div class="section-label" style="margin-bottom:12px">Adherencia semanal</div>
-        <div class="adherence-row">
-          <div class="ring-wrap">
-            <svg width="80" height="80" viewBox="0 0 36 36">
-              <circle cx="18" cy="18" r="15.9" fill="none" stroke="#2A2A38" stroke-width="3.8"/>
-              <circle cx="18" cy="18" r="15.9" fill="none" stroke="#FF6B35" stroke-width="3.8"
-                stroke-dasharray="72 28" stroke-linecap="round"/>
-            </svg>
-            <div class="ring-label orange-text">72%</div>
-          </div>
-          <div class="adherence-info">
-            <h3>18 sesiones completadas</h3>
-            <p>4 días / semana planificados</p>
-            <div class="adherence-tip orange-text">Mejora la consistencia para mejores resultados</div>
-          </div>
-        </div>
-      </div>
+    <a class="btn primary" href="#page-session" style="font-size:15px">▶ Iniciar sesión de hoy</a>
+    <div class="section-label">Sesiones recientes</div>
+    <div class="card" style="display:flex;align-items:center;justify-content:space-between">
+      <div style="display:flex;align-items:center;gap:10px"><span style="font-size:16px">🏋️</span><div><div style="font-size:13px;font-weight:600">jue, 22 may</div><div style="font-size:11px;color:var(--text3)">58 min · RPE 7</div></div></div>
+      <span class="badge green">Completado</span>
     </div>
-    <nav class="bottom-nav">
-      <a class="nav-item" href="#page-dashboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><span>Inicio</span></a>
-      <a class="nav-item" href="#page-training"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 4v6a6 6 0 0 0 12 0V4"/><line x1="6" y1="7" x2="2" y2="7"/><line x1="22" y1="7" x2="18" y2="7"/></svg><span>Training</span></a>
-      <a class="nav-item" href="#page-nutrition"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l19-9-9 19-2-8-8-2z"/></svg><span>Nutrición</span></a>
-      <a class="nav-item" href="#page-progress"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg><span>Progreso</span></a>
-    </nav>
   </div>
+  <nav class="bottom-nav">
+    <a class="nav-item" href="#page-dashboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><span>Inicio</span></a>
+    <a class="nav-item" href="#page-training"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 4v6a6 6 0 0 0 12 0V4"/><line x1="6" y1="7" x2="2" y2="7"/><line x1="22" y1="7" x2="18" y2="7"/></svg><span>Training</span></a>
+    <a class="nav-item" href="#page-nutrition"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l19-9-9 19-2-8-8-2z"/></svg><span>Nutrición</span></a>
+    <a class="nav-item" href="#page-progress"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg><span>Progreso</span></a>
+  </nav>
+</div>
 
-  <!-- ═══ PROFILE ═══ -->
-  <div class="page" id="page-profile">
-    <div class="topbar">
-      <div class="topbar-row">
-        <div><h1>Perfil físico</h1><p>Tu información y objetivos</p></div>
-        <a class="icon-btn" href="#page-dashboard">←</a>
-      </div>
-    </div>
-    <div class="content fade-in">
-      <div class="wizard-tabs">
-        <button class="wizard-tab active" id="tab-1" onclick="switchTab(1)">👤 Personal</button>
-        <button class="wizard-tab" id="tab-2" onclick="switchTab(2)">🎯 Objetivo</button>
-        <button class="wizard-tab" id="tab-3" onclick="switchTab(3)">📊 Entreno</button>
-      </div>
-
-      <!-- Tab 1 -->
-      <div id="prof-tab-1">
-        <div class="card" style="display:flex;flex-direction:column;gap:14px">
-          <div class="field"><label>Nombre</label><input type="text" value="Nicolás"></div>
-          <div class="input-group">
-            <div class="field"><label>Edad</label><div class="input-with-unit"><input type="number" value="42"><span class="input-unit">años</span></div></div>
-            <div class="field"><label>Altura</label><div class="input-with-unit"><input type="number" value="178"><span class="input-unit">cm</span></div></div>
-          </div>
-          <div class="input-group">
-            <div class="field"><label>Peso inicial</label><div class="input-with-unit"><input type="number" value="92" step="0.1"><span class="input-unit">kg</span></div></div>
-            <div class="field"><label>Peso actual</label><div class="input-with-unit"><input type="number" value="88.4" step="0.1"><span class="input-unit">kg</span></div></div>
-          </div>
-          <div class="field"><label>% Grasa aprox.</label><div class="input-with-unit"><input type="number" value="22" step="0.5"><span class="input-unit">%</span></div></div>
-          <div class="field"><label>Lesiones / limitaciones</label><textarea rows="2" style="height:auto">Leve molestia en hombro derecho</textarea></div>
-          <button class="btn primary" onclick="switchTab(2)">Siguiente →</button>
-        </div>
-      </div>
-
-      <!-- Tab 2 -->
-      <div id="prof-tab-2" style="display:none;flex-direction:column;gap:10px">
-        <div class="section-label">Objetivo principal</div>
-        <button class="goal-option selected" id="goal-cut" onclick="selectGoal('cut')">
-          <div class="goal-option-row"><span class="goal-name">Definición</span><span style="color:var(--green);display:none" id="check-cut">✓</span></div>
-          <div class="goal-desc">Bajar grasa manteniendo músculo</div>
-        </button>
-        <button class="goal-option" id="goal-recomp" onclick="selectGoal('recomp')">
-          <div class="goal-option-row"><span class="goal-name">Recomposición</span><span style="color:var(--green);display:none" id="check-recomp">✓</span></div>
-          <div class="goal-desc">Bajar grasa y ganar músculo simultáneo</div>
-        </button>
-        <button class="goal-option" id="goal-bulk" onclick="selectGoal('bulk')">
-          <div class="goal-option-row"><span class="goal-name">Volumen limpio</span><span style="color:var(--green);display:none" id="check-bulk">✓</span></div>
-          <div class="goal-desc">Ganar músculo con mínima grasa</div>
-        </button>
-        <div class="section-label" style="margin-top:4px">Nivel de experiencia</div>
-        <div class="level-btns">
-          <button class="level-btn" onclick="selectLevel(this)">Principiante</button>
-          <button class="level-btn active" onclick="selectLevel(this)">Intermedio</button>
-          <button class="level-btn" onclick="selectLevel(this)">Avanzado</button>
-        </div>
-        <div class="section-label" style="margin-top:4px">Actividad diaria</div>
-        <div class="field"><select>
-          <option>Sedentario — trabajo de oficina</option>
-          <option selected>Ligero — ejercicio 1-3 días/sem</option>
-          <option>Moderado — ejercicio 3-5 días/sem</option>
-          <option>Activo — ejercicio 6-7 días/sem</option>
-          <option>Muy activo — trabajo físico + entreno</option>
-        </select></div>
-        <div style="display:flex;gap:8px;margin-top:4px">
-          <button class="btn secondary" onclick="switchTab(1)" style="flex:1">← Atrás</button>
-          <button class="btn primary" onclick="switchTab(3)" style="flex:1">Siguiente →</button>
-        </div>
-      </div>
-
-      <!-- Tab 3 -->
-      <div id="prof-tab-3" style="display:none;flex-direction:column;gap:12px">
-        <div class="card">
-          <div class="section-label" style="margin-bottom:10px">Días disponibles para entrenar</div>
-          <div class="training-day-grid">
-            <button class="day-toggle">Dom</button>
-            <button class="day-toggle on" onclick="toggleDay(this)">Lun</button>
-            <button class="day-toggle on" onclick="toggleDay(this)">Mar</button>
-            <button class="day-toggle" onclick="toggleDay(this)">Mié</button>
-            <button class="day-toggle on" onclick="toggleDay(this)">Jue</button>
-            <button class="day-toggle on" onclick="toggleDay(this)">Vie</button>
-            <button class="day-toggle" onclick="toggleDay(this)">Sáb</button>
-          </div>
-          <div style="margin-top:10px;font-size:12px;color:var(--text2)">4 días seleccionados</div>
-        </div>
-        <div class="card glow-green">
-          <div class="section-label" style="margin-bottom:10px">Tus objetivos calculados</div>
-          <div class="targets-grid">
-            <div class="target-box"><div class="target-label">TDEE</div><div class="target-value">2.463 kcal</div><div class="target-sub">Mantenimiento</div></div>
-            <div class="target-box"><div class="target-label">Objetivo</div><div class="target-value">2.063 kcal</div><div class="target-sub">Déficit -400 kcal</div></div>
-            <div class="target-box"><div class="target-label">Proteína</div><div class="target-value">177g</div><div class="target-sub">2.0 g/kg</div></div>
-            <div class="target-box"><div class="target-label">Carbos</div><div class="target-value">211g</div><div class="target-sub">Objetivo diario</div></div>
-          </div>
-        </div>
-        <div style="display:flex;gap:8px">
-          <button class="btn secondary" onclick="switchTab(2)" style="flex:1">← Atrás</button>
-          <button class="btn primary" onclick="saveProfile()" id="save-btn" style="flex:1">Guardar perfil</button>
-        </div>
-      </div>
-    </div>
-    <nav class="bottom-nav">
-      <a class="nav-item" href="#page-dashboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><span>Inicio</span></a>
-      <a class="nav-item" href="#page-training"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 4v6a6 6 0 0 0 12 0V4"/><line x1="6" y1="7" x2="2" y2="7"/><line x1="22" y1="7" x2="18" y2="7"/></svg><span>Training</span></a>
-      <a class="nav-item" href="#page-nutrition"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l19-9-9 19-2-8-8-2z"/></svg><span>Nutrición</span></a>
-      <a class="nav-item" href="#page-progress"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg><span>Progreso</span></a>
-    </nav>
+<!-- ═══ SESSION ═══ -->
+<div class="page" id="page-session">
+  <div class="topbar">
+    <div class="topbar-row"><div><h1>Sesión activa</h1><p id="session-date-label"></p></div><a class="btn ghost" href="#page-training" style="font-size:13px">← Volver</a></div>
   </div>
+  <div class="content fade-in" id="session-content"></div>
+</div>
+
+<!-- ═══ NUTRITION ═══ -->
+<div class="page" id="page-nutrition">
+  <div class="topbar">
+    <div class="topbar-row"><div><h1>Nutrición</h1><p id="nutrition-date"></p></div><a class="icon-btn" href="#page-dashboard">←</a></div>
+  </div>
+  <div class="content fade-in">
+    <div class="card">
+      <div class="section-label" style="margin-bottom:10px">Objetivos de hoy</div>
+      <div class="macro4" style="margin-bottom:14px">
+        <div class="macro-mini-card"><div class="val green-text" id="nutr-prot-target">177</div><div class="lbl">Proteína g</div></div>
+        <div class="macro-mini-card"><div class="val blue-text" id="nutr-carbs-target">211</div><div class="lbl">Carbs g</div></div>
+        <div class="macro-mini-card"><div class="val orange-text" id="nutr-fat-target">57</div><div class="lbl">Grasas g</div></div>
+        <div class="macro-mini-card"><div class="val" style="color:var(--text)" id="nutr-kcal-target">2.063</div><div class="lbl">kcal</div></div>
+      </div>
+      <div id="macro-bars" style="display:none;flex-direction:column;gap:10px">
+        <div class="macro-bar-wrap">
+          <div class="macro-bar-row"><span class="muted">Proteína</span><span class="val green-text" id="bar-prot-val">0g / 177g</span></div>
+          <div class="bar-track"><div class="bar-fill" id="bar-prot" style="width:0%;background:var(--green)"></div></div>
+        </div>
+        <div class="macro-bar-wrap">
+          <div class="macro-bar-row"><span class="muted">Carbohidratos</span><span class="val blue-text" id="bar-carbs-val">0g / 211g</span></div>
+          <div class="bar-track"><div class="bar-fill" id="bar-carbs" style="width:0%;background:var(--blue)"></div></div>
+        </div>
+        <div class="macro-bar-wrap">
+          <div class="macro-bar-row"><span class="muted">Grasas</span><span class="val orange-text" id="bar-fat-val">0g / 57g</span></div>
+          <div class="bar-track"><div class="bar-fill" id="bar-fat" style="width:0%;background:var(--orange)"></div></div>
+        </div>
+        <div class="macro-bar-wrap">
+          <div class="macro-bar-row"><span class="muted">Calorías</span><span class="val" id="bar-kcal-val" style="color:var(--text)">0 / 2063 kcal</span></div>
+          <div class="bar-track"><div class="bar-fill" id="bar-kcal" style="width:0%;background:var(--text2)"></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px"><span>🍽️</span><div class="section-label">¿Qué comiste hoy?</div></div>
+      <div class="field"><textarea id="food-text" rows="4" placeholder="Ej: 3 huevos revueltos, 200g pechuga de pollo, arroz integral 150g, 1 scoop whey, yogurt proteico..."></textarea></div>
+      <button class="btn primary" onclick="analyzeFood()" id="analyze-btn" style="margin-top:10px">✨ Analizar con IA</button>
+      <div id="analyzing-status" style="display:none;margin-top:10px" class="analyzing">
+        <div class="dot-pulse"><span></span><span></span><span></span></div>Analizando con IA...
+      </div>
+    </div>
+    <div id="nutrition-result" style="display:none" class="card glow-green fade-in">
+      <div class="section-label" style="margin-bottom:10px">Estimación de macros</div>
+      <div class="macro-result-grid">
+        <div class="macro-result-card"><div class="macro-result-val green-text" id="res-prot">–</div><div class="macro-result-lbl">Proteína</div></div>
+        <div class="macro-result-card"><div class="macro-result-val blue-text" id="res-carbs">–</div><div class="macro-result-lbl">Carbohidratos</div></div>
+        <div class="macro-result-card"><div class="macro-result-val orange-text" id="res-fat">–</div><div class="macro-result-lbl">Grasas</div></div>
+        <div class="macro-result-card"><div class="macro-result-val" style="color:var(--text)" id="res-kcal">–</div><div class="macro-result-lbl">Calorías</div></div>
+      </div>
+      <div id="res-notes" style="background:var(--elevated);border-radius:10px;padding:10px;font-size:12px;color:var(--text2);line-height:1.5;display:none"></div>
+    </div>
+    <div class="section-label">Días anteriores</div>
+    <div class="recent-day"><div class="recent-day-header"><span style="font-size:12px;font-weight:600;color:var(--text2)">vie, 23 may</span><span style="font-size:13px;font-weight:800;font-variant-numeric:tabular-nums">1.985 kcal</span></div><div class="recent-day-macros"><span><strong class="green-text">185g</strong> prot</span><span><strong class="blue-text">210g</strong> carbs</span><span><strong class="orange-text">45g</strong> grasas</span></div></div>
+    <div class="recent-day"><div class="recent-day-header"><span style="font-size:12px;font-weight:600;color:var(--text2)">jue, 22 may</span><span style="font-size:13px;font-weight:800;font-variant-numeric:tabular-nums">1.900 kcal</span></div><div class="recent-day-macros"><span><strong class="green-text">175g</strong> prot</span><span><strong class="blue-text">195g</strong> carbs</span><span><strong class="orange-text">48g</strong> grasas</span></div></div>
+    <div class="recent-day"><div class="recent-day-header"><span style="font-size:12px;font-weight:600;color:var(--text2)">mié, 21 may</span><span style="font-size:13px;font-weight:800;font-variant-numeric:tabular-nums">1.740 kcal</span></div><div class="recent-day-macros"><span><strong class="green-text">165g</strong> prot</span><span><strong class="blue-text">140g</strong> carbs</span><span><strong class="orange-text">52g</strong> grasas</span></div></div>
+  </div>
+  <nav class="bottom-nav">
+    <a class="nav-item" href="#page-dashboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><span>Inicio</span></a>
+    <a class="nav-item" href="#page-training"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 4v6a6 6 0 0 0 12 0V4"/><line x1="6" y1="7" x2="2" y2="7"/><line x1="22" y1="7" x2="18" y2="7"/></svg><span>Training</span></a>
+    <a class="nav-item" href="#page-nutrition"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l19-9-9 19-2-8-8-2z"/></svg><span>Nutrición</span></a>
+    <a class="nav-item" href="#page-progress"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg><span>Progreso</span></a>
+  </nav>
+</div>
+
+<!-- ═══ PROGRESS ═══ -->
+<div class="page" id="page-progress">
+  <div class="topbar">
+    <div class="topbar-row"><div><h1>Progreso</h1><p>Tu evolución en el tiempo</p></div><a class="icon-btn" href="#page-dashboard">←</a></div>
+  </div>
+  <div class="content fade-in">
+    <div class="stats-grid">
+      <div class="stat-card"><div class="stat-label">Peso inicial</div><div class="stat-value" id="stat-start">92 kg</div></div>
+      <div class="stat-card"><div class="stat-label">Peso actual</div><div class="stat-value" id="stat-current">88.4 kg</div></div>
+      <div class="stat-card"><div class="stat-label">Cambio total</div><div class="stat-value green-text" id="stat-change">-3.6 kg</div></div>
+      <div class="stat-card"><div class="stat-label">Adherencia</div><div class="stat-value orange-text">72%</div></div>
+    </div>
+    <div class="card"><div class="section-label">Peso diario (kg)</div><div class="chart-wrap"><canvas id="chart-weight"></canvas></div></div>
+    <div class="card"><div class="section-label">Proteína diaria (g)</div><div class="chart-wrap"><canvas id="chart-protein"></canvas></div></div>
+    <div class="card"><div class="section-label">Fuerza — Press Banca (kg)</div><div class="chart-wrap"><canvas id="chart-strength"></canvas></div></div>
+    <div class="card">
+      <div class="section-label" style="margin-bottom:12px">Adherencia semanal</div>
+      <div class="adherence-row">
+        <div class="ring-wrap">
+          <svg width="80" height="80" viewBox="0 0 36 36">
+            <circle cx="18" cy="18" r="15.9" fill="none" stroke="#2A2A38" stroke-width="3.8"/>
+            <circle cx="18" cy="18" r="15.9" fill="none" stroke="#FF6B35" stroke-width="3.8" stroke-dasharray="72 28" stroke-linecap="round"/>
+          </svg>
+          <div class="ring-label orange-text">72%</div>
+        </div>
+        <div class="adherence-info">
+          <h3>18 sesiones completadas</h3>
+          <p>4 días / semana planificados</p>
+          <div class="adherence-tip orange-text">Mejora la consistencia para mejores resultados</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <nav class="bottom-nav">
+    <a class="nav-item" href="#page-dashboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><span>Inicio</span></a>
+    <a class="nav-item" href="#page-training"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 4v6a6 6 0 0 0 12 0V4"/><line x1="6" y1="7" x2="2" y2="7"/><line x1="22" y1="7" x2="18" y2="7"/></svg><span>Training</span></a>
+    <a class="nav-item" href="#page-nutrition"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l19-9-9 19-2-8-8-2z"/></svg><span>Nutrición</span></a>
+    <a class="nav-item" href="#page-progress"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg><span>Progreso</span></a>
+  </nav>
+</div>
+
+<!-- ═══ PROFILE ═══ -->
+<div class="page" id="page-profile">
+  <div class="topbar">
+    <div class="topbar-row"><div><h1>Perfil físico</h1><p>Tu información y objetivos</p></div><a class="icon-btn" href="#page-dashboard">←</a></div>
+  </div>
+  <div class="content fade-in">
+    <div class="wizard-tabs">
+      <button class="wizard-tab active" id="tab-1" onclick="switchTab(1)">👤 Personal</button>
+      <button class="wizard-tab" id="tab-2" onclick="switchTab(2)">🎯 Objetivo</button>
+      <button class="wizard-tab" id="tab-3" onclick="switchTab(3)">📊 Metas</button>
+    </div>
+
+    <!-- Tab 1: Personal -->
+    <div id="prof-tab-1">
+      <div class="card" style="display:flex;flex-direction:column;gap:14px">
+        <div class="field"><label>Nombre</label><input id="prof-name" type="text" value="Nicolás" oninput="onProfileChange()"></div>
+        <div class="input-group">
+          <div class="field"><label>Edad</label><div class="input-with-unit"><input id="prof-age" type="number" value="42" min="18" max="80" oninput="onProfileChange()"><span class="input-unit">años</span></div></div>
+          <div class="field"><label>Altura</label><div class="input-with-unit"><input id="prof-height" type="number" value="178" min="140" max="220" oninput="onProfileChange()"><span class="input-unit">cm</span></div></div>
+        </div>
+        <div class="input-group">
+          <div class="field"><label>Peso inicial</label><div class="input-with-unit"><input id="prof-start-weight" type="number" value="92" step="0.1" oninput="onProfileChange()"><span class="input-unit">kg</span></div></div>
+          <div class="field"><label>Peso actual</label><div class="input-with-unit"><input id="prof-weight" type="number" value="88.4" step="0.1" oninput="onProfileChange()"><span class="input-unit">kg</span></div></div>
+        </div>
+        <div class="field"><label>% Grasa corporal aprox.</label><div class="input-with-unit"><input id="prof-bf" type="number" value="22" step="0.5" min="5" max="50" oninput="onProfileChange()"><span class="input-unit">%</span></div></div>
+        <div class="field"><label>Lesiones / limitaciones</label><textarea id="prof-injuries" rows="2" style="height:auto">Leve molestia en hombro derecho</textarea></div>
+        <button class="btn primary" onclick="switchTab(2)">Siguiente →</button>
+      </div>
+    </div>
+
+    <!-- Tab 2: Goal + Activity -->
+    <div id="prof-tab-2" style="display:none;flex-direction:column;gap:10px">
+      <div class="section-label">Objetivo principal</div>
+      <button class="goal-option selected" id="goal-cut" onclick="selectGoal('cut')">
+        <div class="goal-option-row"><span class="goal-name">Definición 🔥</span><span class="green-text" id="check-cut" style="font-weight:800">✓</span></div>
+        <div class="goal-desc">Bajar grasa manteniendo músculo · Déficit -400 kcal</div>
+      </button>
+      <button class="goal-option" id="goal-recomp" onclick="selectGoal('recomp')">
+        <div class="goal-option-row"><span class="goal-name">Recomposición ⚖️</span><span class="green-text" id="check-recomp" style="display:none;font-weight:800">✓</span></div>
+        <div class="goal-desc">Bajar grasa y ganar músculo · Déficit -200 kcal</div>
+      </button>
+      <button class="goal-option" id="goal-bulk" onclick="selectGoal('bulk')">
+        <div class="goal-option-row"><span class="goal-name">Volumen limpio 💪</span><span class="green-text" id="check-bulk" style="display:none;font-weight:800">✓</span></div>
+        <div class="goal-desc">Ganar músculo con mínima grasa · Superávit +300 kcal</div>
+      </button>
+      <div class="section-label" style="margin-top:4px">Nivel de experiencia</div>
+      <div class="level-btns">
+        <button class="level-btn" id="level-0" onclick="selectLevel(0)">Principiante</button>
+        <button class="level-btn active" id="level-1" onclick="selectLevel(1)">Intermedio</button>
+        <button class="level-btn" id="level-2" onclick="selectLevel(2)">Avanzado</button>
+      </div>
+      <div class="section-label" style="margin-top:4px">Actividad diaria</div>
+      <div class="field">
+        <select id="prof-activity" onchange="onProfileChange()">
+          <option value="0">Sedentario — trabajo de oficina (×1.2)</option>
+          <option value="1" selected>Ligero — ejercicio 1-3 días/sem (×1.375)</option>
+          <option value="2">Moderado — ejercicio 3-5 días/sem (×1.55)</option>
+          <option value="3">Activo — ejercicio 6-7 días/sem (×1.725)</option>
+          <option value="4">Muy activo — trabajo físico + entreno (×1.9)</option>
+        </select>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:4px">
+        <button class="btn secondary" onclick="switchTab(1)" style="flex:1">← Atrás</button>
+        <button class="btn primary" onclick="switchTab(3)" style="flex:1">Ver mis metas →</button>
+      </div>
+    </div>
+
+    <!-- Tab 3: Training days + Calculated targets -->
+    <div id="prof-tab-3" style="display:none;flex-direction:column;gap:12px">
+      <div class="card">
+        <div class="section-label" style="margin-bottom:10px">Días disponibles para entrenar</div>
+        <div class="training-day-grid" id="training-days-grid"></div>
+        <div style="margin-top:10px;font-size:12px;color:var(--text2)" id="training-days-count">4 días seleccionados</div>
+      </div>
+      <div class="card glow-green">
+        <div class="section-label" style="margin-bottom:10px">📊 Tus objetivos calculados</div>
+        <div class="targets-grid">
+          <div class="target-box"><div class="target-label">TDEE</div><div class="target-value" id="prof-tdee">—</div><div class="target-sub">Mantenimiento</div></div>
+          <div class="target-box"><div class="target-label">Objetivo diario</div><div class="target-value" id="prof-cal-target">—</div><div class="target-sub" id="prof-cal-desc">—</div></div>
+          <div class="target-box"><div class="target-label">Proteína</div><div class="target-value" id="prof-prot-target">—</div><div class="target-sub">2.0 g/kg peso</div></div>
+          <div class="target-box"><div class="target-label">Carbohidratos</div><div class="target-value" id="prof-carbs-target">—</div><div class="target-sub">Objetivo diario</div></div>
+        </div>
+        <div style="margin-top:10px;padding-top:10px;border-top:1px solid rgba(0,255,135,.15);font-size:11px;color:var(--text2)" id="prof-bmr-info">BMR: — kcal/día</div>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button class="btn secondary" onclick="switchTab(2)" style="flex:1">← Atrás</button>
+        <button class="btn primary" onclick="saveProfile()" id="save-btn" style="flex:1">💾 Guardar perfil</button>
+      </div>
+    </div>
+  </div>
+  <nav class="bottom-nav">
+    <a class="nav-item" href="#page-dashboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><span>Inicio</span></a>
+    <a class="nav-item" href="#page-training"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 4v6a6 6 0 0 0 12 0V4"/><line x1="6" y1="7" x2="2" y2="7"/><line x1="22" y1="7" x2="18" y2="7"/></svg><span>Training</span></a>
+    <a class="nav-item" href="#page-nutrition"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l19-9-9 19-2-8-8-2z"/></svg><span>Nutrición</span></a>
+    <a class="nav-item" href="#page-progress"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg><span>Progreso</span></a>
+  </nav>
+</div>
 
 </div><!-- /phone -->
 
 <script>
-// ── State ──────────────────────────────────────────
-const state = {
-  savedWeight: null,
+// ══════════════════════════════════════════════════
+//  STATE
+// ══════════════════════════════════════════════════
+const S = {
+  profile: { name:'Nicolás', age:42, height:178, weight:88.4, startWeight:92, bodyFat:22, goal:'cut', level:1, activity:1 },
+  targets: null,
+  todayWeight: null,
+  weightHistory: [90.1,89.8,89.5,89.3,89.6,89.0,88.7,88.9,88.5,88.4,88.2,88.0,88.4,87.9],
+  trainingDays: new Set(['lun','mar','jue','vie']),
   sessionExercises: [
-    { id:'e1', name:'Press Banca', group:'Pecho', sets:4, repMin:6, repMax:8, expanded:true,
-      rows:[{num:1,reps:'',kg:'80',rpe:0},{num:2,reps:'',kg:'80',rpe:0},{num:3,reps:'',kg:'80',rpe:0},{num:4,reps:'',kg:'80',rpe:0}]},
-    { id:'e2', name:'Press Inclinado', group:'Pecho', sets:3, repMin:8, repMax:12, expanded:false,
-      rows:[{num:1,reps:'',kg:'60',rpe:0},{num:2,reps:'',kg:'60',rpe:0},{num:3,reps:'',kg:'60',rpe:0}]},
-    { id:'e3', name:'Press Militar', group:'Hombros', sets:3, repMin:8, repMax:10, expanded:false,
-      rows:[{num:1,reps:'',kg:'50',rpe:0},{num:2,reps:'',kg:'50',rpe:0},{num:3,reps:'',kg:'50',rpe:0}]},
-    { id:'e4', name:'Fondos en paralelas', group:'Pecho', sets:3, repMin:8, repMax:12, expanded:false,
-      rows:[{num:1,reps:'',kg:'0',rpe:0},{num:2,reps:'',kg:'0',rpe:0},{num:3,reps:'',kg:'0',rpe:0}]},
+    { name:'Press Banca', group:'Pecho', sets:4, repMin:6, repMax:8, expanded:true,
+      rows:[{n:1,reps:'',kg:'80',rpe:0},{n:2,reps:'',kg:'80',rpe:0},{n:3,reps:'',kg:'80',rpe:0},{n:4,reps:'',kg:'80',rpe:0}]},
+    { name:'Press Inclinado', group:'Pecho', sets:3, repMin:8, repMax:12, expanded:false,
+      rows:[{n:1,reps:'',kg:'60',rpe:0},{n:2,reps:'',kg:'60',rpe:0},{n:3,reps:'',kg:'60',rpe:0}]},
+    { name:'Press Militar', group:'Hombros', sets:3, repMin:8, repMax:10, expanded:false,
+      rows:[{n:1,reps:'',kg:'50',rpe:0},{n:2,reps:'',kg:'50',rpe:0},{n:3,reps:'',kg:'50',rpe:0}]},
+    { name:'Fondos en paralelas', group:'Pecho', sets:3, repMin:8, repMax:12, expanded:false,
+      rows:[{n:1,reps:'',kg:'0',rpe:0},{n:2,reps:'',kg:'0',rpe:0},{n:3,reps:'',kg:'0',rpe:0}]},
   ],
   sessionDone: false,
   activeRPESet: null,
-  goal: 'cut',
 };
 
-// ── Hash-based navigation helpers ─────────────────
-function showPage(name) {
-  location.hash = 'page-' + name;
+// ══════════════════════════════════════════════════
+//  CALCULATIONS
+// ══════════════════════════════════════════════════
+function calcTargets(p) {
+  const bmr = Math.round(10 * p.weight + 6.25 * p.height - 5 * p.age + 5);
+  const mult = [1.2, 1.375, 1.55, 1.725, 1.9][p.activity] || 1.375;
+  const tdee = Math.round(bmr * mult);
+  const deficit = { cut: -400, recomp: -200, bulk: 300 }[p.goal] || -400;
+  const calories = tdee + deficit;
+  const protein = Math.round(p.weight * 2.0);
+  const fat = Math.round(p.weight * 0.8);
+  const carbs = Math.max(10, Math.round((calories - protein * 4 - fat * 9) / 4));
+  return { bmr, tdee, calories, protein, carbs, fat };
 }
 
-window.addEventListener('hashchange', function() {
-  const hash = location.hash;
-  // Scroll active page to top
-  const el = document.querySelector(hash);
-  if (el) el.scrollTop = 0;
-  // Side effects
-  if (hash === '#page-progress') initCharts();
-  if (hash === '#page-session') {
-    updateSessionDate();
-    renderSession();
+function weightStatus(history, todayW) {
+  const full = todayW != null ? [...history, todayW] : [...history];
+  if (full.length < 7) return { cls:'blue', icon:'ℹ️', title:'Datos insuficientes', sub:'Registra al menos 7 días', rec:'→ Pesa cada mañana en ayunas para análisis preciso' };
+  const r7 = full.slice(-7);
+  const r14 = full.slice(-14, -7);
+  const avg7 = r7.reduce((a, b) => a + b) / r7.length;
+  const avg14 = r14.length >= 3 ? r14.reduce((a, b) => a + b) / r14.length : avg7;
+  const diff = avg7 - avg14;
+  const pct = Math.abs(diff / avg14) * 100;
+  if (diff > 0.3) return { cls:'orange', icon:'⚠️', title:'Subiendo de peso', sub:`+${diff.toFixed(2)} kg/sem`, rec:'→ Reduce 150-200 kcal si tu meta es definición' };
+  if (diff < 0 && pct > 1) return { cls:'red', icon:'🔴', title:'Bajando muy rápido', sub:`${diff.toFixed(2)} kg/sem (>${pct.toFixed(0)}%)`, rec:'→ Sube 150–250 kcal para proteger músculo' };
+  if (diff < -0.05) return { cls:'green', icon:'✅', title:'Progresando bien', sub:`${diff.toFixed(2)} kg/sem`, rec:'→ Mantén el déficit, va perfecto' };
+  return { cls:'orange', icon:'⚠️', title:'Peso estancado', sub:'< 0.05 kg/sem', rec:'→ Reduce 100 kcal o añade 30 min de cardio ligero' };
+}
+
+// ══════════════════════════════════════════════════
+//  HELPERS
+// ══════════════════════════════════════════════════
+function $set(id, val) { const el = document.getElementById(id); if (el) el.textContent = val; }
+function $fmt(n) { return (Math.round(n * 10) / 10).toFixed(1); }
+function fmtNum(n) { return n.toLocaleString('es-CL'); }
+
+// ══════════════════════════════════════════════════
+//  REFRESH ALL PAGES FROM STATE
+// ══════════════════════════════════════════════════
+function refreshAll() {
+  S.targets = calcTargets(S.profile);
+  paintDashboard();
+  paintNutritionTargets();
+  paintProfileTargets(S.targets);
+  paintProgressStats();
+}
+
+function paintDashboard() {
+  const p = S.profile, t = S.targets;
+  const w = S.todayWeight != null ? S.todayWeight : p.weight;
+  const hist = S.todayWeight != null ? [...S.weightHistory, S.todayWeight] : S.weightHistory;
+  const len7 = Math.min(7, hist.length);
+  const avg7 = hist.slice(-len7).reduce((a, b) => a + b) / len7;
+
+  $set('metric-weight', $fmt(w) + ' kg');
+  $set('metric-weight-sub', 'Prom. 7d: ' + $fmt(avg7) + ' kg');
+  $set('metric-bf', p.bodyFat.toFixed(1) + '%');
+  $set('metric-kcal', fmtNum(t.calories));
+  $set('metric-protein', t.protein + 'g');
+  $set('metric-protein-sub', (t.protein / p.weight).toFixed(1) + ' g/kg');
+
+  // Nutrition mini bars on dashboard
+  const todayProt = 185, todayCarbs = 210, todayFat = 45;
+  const todayKcal = todayProt * 4 + todayCarbs * 4 + todayFat * 9;
+  $set('dash-kcal-summary', fmtNum(todayKcal) + ' / ' + fmtNum(t.calories) + ' kcal');
+  const pb = document.getElementById('dash-prot-bar');
+  const cb = document.getElementById('dash-carbs-bar');
+  const fb = document.getElementById('dash-fat-bar');
+  if (pb) pb.style.width = Math.min(100, todayProt / t.protein * 100) + '%';
+  if (cb) cb.style.width = Math.min(100, todayCarbs / t.carbs * 100) + '%';
+  if (fb) fb.style.width = Math.min(100, todayFat / t.fat * 100) + '%';
+
+  // Weight status banner
+  const ws = weightStatus(S.weightHistory, S.todayWeight);
+  const banner = document.getElementById('status-banner');
+  if (banner) {
+    banner.className = 'banner ' + ws.cls;
+    banner.innerHTML = `<div class="banner-icon">${ws.icon}</div><div><div class="banner-title">${ws.title}</div><div class="banner-sub">${ws.sub}</div><div class="banner-rec">${ws.rec}</div></div>`;
   }
-  if (hash === '#page-nutrition') updateNutritionDate();
-  if (hash === '#page-dashboard') updateDashDate();
-});
 
-// ── Date helpers ───────────────────────────────────
-function updateDashDate() {
-  const now = new Date();
-  const h = now.getHours();
-  const g = h < 12 ? 'Buenos días' : h < 19 ? 'Buenas tardes' : 'Buenas noches';
-  const el1 = document.getElementById('dash-greeting');
-  const el2 = document.getElementById('dash-date');
-  if (el1) el1.textContent = g + ', Nicolás 💪';
-  if (el2) el2.textContent = now.toLocaleDateString('es-CL', {weekday:'long',day:'numeric',month:'long'});
-}
-function updateNutritionDate() {
-  const el = document.getElementById('nutrition-date');
-  if (el) el.textContent = new Date().toLocaleDateString('es-CL', {weekday:'long',day:'numeric',month:'long'});
-}
-function updateSessionDate() {
-  const el = document.getElementById('session-date-label');
-  if (el) el.textContent = new Date().toLocaleDateString('es-CL', {weekday:'long',day:'numeric',month:'short'});
+  // Greeting
+  const h = new Date().getHours();
+  const gr = h < 12 ? 'Buenos días' : h < 19 ? 'Buenas tardes' : 'Buenas noches';
+  $set('dash-greeting', gr + ', ' + p.name + ' 💪');
+  $set('dash-date', new Date().toLocaleDateString('es-CL', { weekday:'long', day:'numeric', month:'long' }));
+
+  // AI recommendation based on goal
+  const recs = {
+    cut: 'Estás en déficit calórico de -400 kcal/día. Prioriza la proteína en cada comida. Si el hambre es difícil, añade fibra y bebe más agua. Revisa que el descanso sea óptimo.',
+    recomp: 'Recomposición activa. Come cerca de tu proteína objetivo todos los días. Los días de entreno puedes subir un poco los carbos. La paciencia es clave.',
+    bulk: 'En fase de volumen. Aprovecha los días de entreno para comer más carbohidratos. Monitorea que el peso suba máximo 0.3–0.5 kg/sem para minimizar grasa.'
+  };
+  $set('dash-ai-rec', recs[S.profile.goal] || recs.cut);
 }
 
-// ── Weight Logger ──────────────────────────────────
+function paintNutritionTargets() {
+  const t = S.targets;
+  if (!t) return;
+  $set('nutr-prot-target', t.protein);
+  $set('nutr-carbs-target', t.carbs);
+  $set('nutr-fat-target', t.fat);
+  $set('nutr-kcal-target', fmtNum(t.calories));
+  $set('nutrition-date', new Date().toLocaleDateString('es-CL', { weekday:'long', day:'numeric', month:'long' }));
+}
+
+function paintProfileTargets(t) {
+  if (!t) return;
+  const goalDesc = { cut:'Déficit -400 kcal/día', recomp:'Déficit -200 kcal/día', bulk:'Superávit +300 kcal/día' };
+  $set('prof-tdee', fmtNum(t.tdee) + ' kcal');
+  $set('prof-cal-target', fmtNum(t.calories) + ' kcal');
+  $set('prof-cal-desc', goalDesc[S.profile.goal] || '');
+  $set('prof-prot-target', t.protein + 'g');
+  $set('prof-carbs-target', t.carbs + 'g');
+  $set('prof-bmr-info', 'BMR: ' + fmtNum(t.bmr) + ' kcal/día · Grasa: ' + S.targets.fat + 'g/día');
+}
+
+function paintProgressStats() {
+  const p = S.profile;
+  const w = S.todayWeight != null ? S.todayWeight : p.weight;
+  const diff = w - p.startWeight;
+  $set('stat-start', p.startWeight + ' kg');
+  $set('stat-current', $fmt(w) + ' kg');
+  const el = document.getElementById('stat-change');
+  if (el) {
+    el.textContent = (diff >= 0 ? '+' : '') + $fmt(diff) + ' kg';
+    el.className = diff < 0 ? 'stat-value green-text' : 'stat-value orange-text';
+  }
+}
+
+// ══════════════════════════════════════════════════
+//  PROFILE FORM
+// ══════════════════════════════════════════════════
+function readProfileForm() {
+  return {
+    name: document.getElementById('prof-name')?.value.trim() || S.profile.name,
+    age: parseInt(document.getElementById('prof-age')?.value) || S.profile.age,
+    height: parseFloat(document.getElementById('prof-height')?.value) || S.profile.height,
+    weight: parseFloat(document.getElementById('prof-weight')?.value) || S.profile.weight,
+    startWeight: parseFloat(document.getElementById('prof-start-weight')?.value) || S.profile.startWeight,
+    bodyFat: parseFloat(document.getElementById('prof-bf')?.value) || S.profile.bodyFat,
+    activity: parseInt(document.getElementById('prof-activity')?.value ?? S.profile.activity),
+    goal: S.profile.goal,
+    level: S.profile.level,
+  };
+}
+
+function onProfileChange() {
+  const draft = readProfileForm();
+  const t = calcTargets(draft);
+  const goalDesc = { cut:'Déficit -400 kcal/día', recomp:'Déficit -200 kcal/día', bulk:'Superávit +300 kcal/día' };
+  $set('prof-tdee', fmtNum(t.tdee) + ' kcal');
+  $set('prof-cal-target', fmtNum(t.calories) + ' kcal');
+  $set('prof-cal-desc', goalDesc[draft.goal] || '');
+  $set('prof-prot-target', t.protein + 'g');
+  $set('prof-carbs-target', t.carbs + 'g');
+  $set('prof-bmr-info', 'BMR: ' + fmtNum(t.bmr) + ' kcal/día · Grasa: ' + t.fat + 'g/día');
+}
+
+function selectGoal(g) {
+  ['cut','recomp','bulk'].forEach(id => {
+    document.getElementById('goal-' + id)?.classList.remove('selected');
+    const ch = document.getElementById('check-' + id);
+    if (ch) ch.style.display = 'none';
+  });
+  document.getElementById('goal-' + g)?.classList.add('selected');
+  const chk = document.getElementById('check-' + g);
+  if (chk) chk.style.display = 'inline';
+  S.profile.goal = g;
+  onProfileChange();
+}
+
+function selectLevel(n) {
+  [0, 1, 2].forEach(i => document.getElementById('level-' + i)?.classList.remove('active'));
+  document.getElementById('level-' + n)?.classList.add('active');
+  S.profile.level = n;
+}
+
+let currentTab = 1;
+function switchTab(n) {
+  document.getElementById('prof-tab-' + currentTab).style.display = 'none';
+  document.getElementById('tab-' + currentTab).classList.remove('active');
+  currentTab = n;
+  document.getElementById('prof-tab-' + n).style.display = n === 1 ? 'block' : 'flex';
+  document.getElementById('tab-' + n).classList.add('active');
+  if (n === 3) { renderTrainingDays(); onProfileChange(); }
+}
+
+function renderTrainingDays() {
+  const days = [['Dom','dom'],['Lun','lun'],['Mar','mar'],['Mié','mié'],['Jue','jue'],['Vie','vie'],['Sáb','sáb']];
+  const grid = document.getElementById('training-days-grid');
+  if (!grid) return;
+  grid.innerHTML = days.map(([label, key]) =>
+    `<button class="day-toggle${S.trainingDays.has(key)?' on':''}" onclick="toggleDay('${key}')">${label}</button>`
+  ).join('');
+  const cnt = S.trainingDays.size;
+  $set('training-days-count', cnt + (cnt === 1 ? ' día seleccionado' : ' días seleccionados'));
+}
+
+function toggleDay(key) {
+  S.trainingDays.has(key) ? S.trainingDays.delete(key) : S.trainingDays.add(key);
+  renderTrainingDays();
+}
+
+function saveProfile() {
+  const form = readProfileForm();
+  S.profile = { ...S.profile, ...form };
+  refreshAll();
+  const btn = document.getElementById('save-btn');
+  if (btn) {
+    btn.textContent = '✅ Guardado';
+    btn.style.background = 'rgba(0,255,135,.15)';
+    btn.style.color = 'var(--green)';
+    setTimeout(() => { btn.textContent = '💾 Guardar perfil'; btn.style.background = ''; btn.style.color = ''; }, 2500);
+  }
+}
+
+// ══════════════════════════════════════════════════
+//  WEIGHT LOGGER
+// ══════════════════════════════════════════════════
 function openWeightLogger() {
   document.getElementById('weight-closed').style.display = 'none';
   document.getElementById('weight-open').style.display = 'block';
-  setTimeout(() => document.getElementById('weight-input').focus(), 50);
+  setTimeout(() => document.getElementById('weight-input')?.focus(), 50);
 }
 function closeWeightLogger() {
   document.getElementById('weight-open').style.display = 'none';
@@ -1081,115 +948,123 @@ function closeWeightLogger() {
 function saveWeight() {
   const v = parseFloat(document.getElementById('weight-input').value);
   if (isNaN(v) || v < 30 || v > 300) return;
-  state.savedWeight = v;
+  S.todayWeight = v;
   closeWeightLogger();
-  document.getElementById('weight-main-text').textContent = v.toFixed(1) + ' kg registrado';
-  document.getElementById('weight-sub-text').textContent = 'Toca para editar';
+  $set('weight-main-text', $fmt(v) + ' kg registrado');
+  $set('weight-sub-text', 'Toca para editar');
   document.getElementById('weight-icon').textContent = '✅';
   document.getElementById('weight-check').style.display = 'inline';
   document.getElementById('weight-plus').style.display = 'none';
-  document.getElementById('current-weight-display').textContent = v.toFixed(1) + ' kg ↓';
+  refreshAll();
 }
 
-// ── Nutrition AI (mock) ────────────────────────────
+// ══════════════════════════════════════════════════
+//  NUTRITION ANALYSIS (mock AI)
+// ══════════════════════════════════════════════════
 async function analyzeFood() {
   const text = document.getElementById('food-text').value.trim();
-  if (text.length < 10) return;
+  if (text.length < 5) return;
   document.getElementById('analyze-btn').style.display = 'none';
   document.getElementById('analyzing-status').style.display = 'flex';
   document.getElementById('nutrition-result').style.display = 'none';
 
   await new Promise(r => setTimeout(r, 1800));
 
+  // Mock analysis proportional to text length (longer description = more food)
+  const factor = Math.min(1.3, 0.7 + text.length / 300);
+  const t = S.targets || calcTargets(S.profile);
+  const r = {
+    protein_g: Math.round(t.protein * factor * 0.9),
+    carbs_g: Math.round(t.carbs * factor * 0.85),
+    fat_g: Math.round(t.fat * factor * 0.8),
+  };
+  r.calories = Math.round(r.protein_g * 4 + r.carbs_g * 4 + r.fat_g * 9);
+
+  const pctProt = Math.round(r.protein_g / t.protein * 100);
+  const notes = pctProt >= 90
+    ? '✅ Excelente ingesta proteica. Buen trabajo manteniendo los macros.'
+    : `📌 Proteína al ${pctProt}% del objetivo. Agrega una fuente más de proteína (huevos, pollo, whey) para cerrar el día.`;
+
   document.getElementById('analyzing-status').style.display = 'none';
   document.getElementById('analyze-btn').style.display = 'flex';
-
-  const r = { protein_g: 182, carbs_g: 205, fat_g: 48, calories: 1990,
-    notes: 'Buena ingesta proteica. Considera agregar más verduras verdes para fibra y micronutrientes.' };
-
   document.getElementById('res-prot').textContent = r.protein_g + 'g';
   document.getElementById('res-carbs').textContent = r.carbs_g + 'g';
   document.getElementById('res-fat').textContent = r.fat_g + 'g';
-  document.getElementById('res-kcal').textContent = r.calories + ' kcal';
+  document.getElementById('res-kcal').textContent = fmtNum(r.calories) + ' kcal';
   const notesEl = document.getElementById('res-notes');
-  notesEl.textContent = r.notes; notesEl.style.display = 'block';
+  notesEl.textContent = notes; notesEl.style.display = 'block';
   document.getElementById('nutrition-result').style.display = 'block';
 
   document.getElementById('macro-bars').style.display = 'flex';
-  const t = {prot:177, carbs:211, fat:57, kcal:2063};
-  document.getElementById('bar-prot').style.width = Math.min(100,(r.protein_g/t.prot)*100) + '%';
-  document.getElementById('bar-carbs').style.width = Math.min(100,(r.carbs_g/t.carbs)*100) + '%';
-  document.getElementById('bar-fat').style.width = Math.min(100,(r.fat_g/t.fat)*100) + '%';
-  document.getElementById('bar-kcal').style.width = Math.min(100,(r.calories/t.kcal)*100) + '%';
-  document.getElementById('bar-prot-val').textContent = r.protein_g + 'g / 177g';
-  document.getElementById('bar-carbs-val').textContent = r.carbs_g + 'g / 211g';
-  document.getElementById('bar-fat-val').textContent = r.fat_g + 'g / 57g';
-  document.getElementById('bar-kcal-val').textContent = r.calories + ' / 2063 kcal';
+  document.getElementById('bar-prot').style.width = Math.min(100, r.protein_g / t.protein * 100) + '%';
+  document.getElementById('bar-carbs').style.width = Math.min(100, r.carbs_g / t.carbs * 100) + '%';
+  document.getElementById('bar-fat').style.width = Math.min(100, r.fat_g / t.fat * 100) + '%';
+  document.getElementById('bar-kcal').style.width = Math.min(100, r.calories / t.calories * 100) + '%';
+  document.getElementById('bar-prot-val').textContent = r.protein_g + 'g / ' + t.protein + 'g';
+  document.getElementById('bar-carbs-val').textContent = r.carbs_g + 'g / ' + t.carbs + 'g';
+  document.getElementById('bar-fat-val').textContent = r.fat_g + 'g / ' + t.fat + 'g';
+  document.getElementById('bar-kcal-val').textContent = fmtNum(r.calories) + ' / ' + fmtNum(t.calories) + ' kcal';
 }
 
-// ── Session ────────────────────────────────────────
+// ══════════════════════════════════════════════════
+//  SESSION
+// ══════════════════════════════════════════════════
 function renderSession() {
-  if (state.sessionDone) {
+  if (S.sessionDone) {
     document.getElementById('session-content').innerHTML = `
       <div class="session-done fade-in">
         <div class="done-check">✅</div>
         <div class="done-title">¡Sesión completada!</div>
-        <div class="done-sub">4 ejercicios · ~58 min</div>
+        <div class="done-sub">4 ejercicios completados</div>
         <div style="margin-top:16px;display:flex;flex-direction:column;gap:8px">
-          <div class="prog-alert increase"><div class="prog-alert-icon">📈</div><p>Press Banca: Completaste 8 reps en todas las series. Sube a 82.5 kg la próxima sesión.</p></div>
-          <div class="prog-alert maintain"><div class="prog-alert-icon">→</div><p>Press Inclinado: Buen trabajo. Mantén la misma carga y busca completar más reps.</p></div>
+          <div class="prog-alert increase"><div class="prog-alert-icon">📈</div><p><strong>Press Banca:</strong> Completaste el rango máximo en todas las series. Sube 2.5 kg la próxima sesión.</p></div>
+          <div class="prog-alert maintain"><div class="prog-alert-icon">→</div><p><strong>Press Inclinado:</strong> Buen trabajo. Mantén la carga y busca completar más reps.</p></div>
         </div>
         <a class="btn secondary" href="#page-training" style="margin-top:16px;display:inline-flex">← Volver al entrenamiento</a>
       </div>`;
     return;
   }
 
-  const exs = state.sessionExercises;
-  const totalLogged = exs.reduce((s,e) => s + e.rows.filter(r=>r.reps!=='').length, 0);
-  const totalSets = exs.reduce((s,e) => s + e.rows.length, 0);
+  const exs = S.sessionExercises;
+  const totalLogged = exs.reduce((s, e) => s + e.rows.filter(r => r.reps !== '').length, 0);
+  const totalSets = exs.reduce((s, e) => s + e.rows.length, 0);
 
-  let html = `<div style="display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--text3);margin-bottom:4px">
+  let html = `<div style="display:flex;justify-content:space-between;font-size:12px;color:var(--text3);margin-bottom:4px;align-items:center">
     <span>${totalLogged} de ${totalSets} series registradas</span>
-    <span>PPL Intermedio 4 días</span>
-  </div>`;
+    <span>PPL Intermedio</span></div>`;
 
-  exs.forEach((ex,ei) => {
-    const logged = ex.rows.filter(r=>r.reps!=='').length;
-    const pct = logged === ex.rows.length ? 'green' : logged > 0 ? 'blue' : 'neutral';
+  exs.forEach((ex, ei) => {
+    const logged = ex.rows.filter(r => r.reps !== '').length;
+    const badgeCls = logged === ex.rows.length ? 'green' : logged > 0 ? 'blue' : 'neutral';
     html += `<div class="session-ex">
       <div class="session-ex-header" onclick="toggleEx(${ei})">
         <div style="display:flex;align-items:center">
-          <div class="session-ex-num">${ei+1}</div>
-          <div>
-            <div class="session-ex-name">${ex.name}</div>
-            <div class="session-ex-info">${ex.group} · ${ex.sets}×${ex.repMin}–${ex.repMax}</div>
-          </div>
+          <div class="session-ex-num">${ei + 1}</div>
+          <div><div class="session-ex-name">${ex.name}</div><div class="session-ex-info">${ex.group} · ${ex.sets}×${ex.repMin}–${ex.repMax}</div></div>
         </div>
-        <span class="badge ${pct}">${logged}/${ex.rows.length}</span>
+        <span class="badge ${badgeCls}">${logged}/${ex.rows.length}</span>
       </div>`;
 
     if (ex.expanded) {
       html += `<div class="session-ex-body">
         <div class="set-header"><span>#</span><span>Reps</span><span>Peso kg</span><span>RPE</span><span></span></div>`;
-      ex.rows.forEach((row,ri) => {
-        const rpeCls = row.rpe===0?'':row.rpe<=4?'low':row.rpe<=7?'mid':'high';
-        const repCls = row.reps===''?'':'color:'+( parseInt(row.reps)>=ex.repMax?'var(--green)':parseInt(row.reps)>=ex.repMin?'var(--blue)':'var(--orange)');
+      ex.rows.forEach((row, ri) => {
+        const rpeCls = row.rpe === 0 ? '' : row.rpe <= 4 ? 'low' : row.rpe <= 7 ? 'mid' : 'high';
+        const repColor = row.reps === '' ? '' : 'color:' + (parseInt(row.reps) >= ex.repMax ? 'var(--green)' : parseInt(row.reps) >= ex.repMin ? 'var(--blue)' : 'var(--orange)');
         html += `<div class="set-row">
-          <div class="set-num">${row.num}</div>
-          <input class="set-input" type="number" value="${row.reps}" placeholder="${ex.repMin}–${ex.repMax}" min="1" max="50"
-            style="${repCls}" onchange="updateReps(${ei},${ri},this.value)">
-          <input class="set-input" type="number" value="${row.kg}" placeholder="0" step="0.5" min="0"
-            onchange="updateKg(${ei},${ri},this.value)">
-          <button class="rpe-btn ${rpeCls}" onclick="openRPE(${ei},${ri})">${row.rpe||'RPE'}</button>
+          <div class="set-num">${row.n}</div>
+          <input class="set-input" type="number" value="${row.reps}" placeholder="${ex.repMin}–${ex.repMax}" min="1" max="50" style="${repColor}" onchange="updateReps(${ei},${ri},this.value)">
+          <input class="set-input" type="number" value="${row.kg}" placeholder="0" step="0.5" min="0" onchange="updateKg(${ei},${ri},this.value)">
+          <button class="rpe-btn ${rpeCls}" onclick="openRPE(${ei},${ri})">${row.rpe || 'RPE'}</button>
           <button class="del-btn" onclick="delSet(${ei},${ri})">✕</button>
         </div>`;
-        if (state.activeRPESet && state.activeRPESet[0]===ei && state.activeRPESet[1]===ri) {
+        if (S.activeRPESet && S.activeRPESet[0] === ei && S.activeRPESet[1] === ri) {
           html += `<div style="background:var(--elevated);border-radius:10px;padding:10px;margin-bottom:5px"><div class="rpe-grid">`;
-          for (let n=1;n<=10;n++) {
-            const cls = row.rpe===n?(n<=4?'selected low':n<=7?'selected mid':'selected high'):'';
-            html += `<button class="rpe-pip ${cls}" onclick="setRPE(${ei},${ri},${n})">${n}</button>`;
+          for (let n = 1; n <= 10; n++) {
+            const sel = row.rpe === n ? (n <= 4 ? 'selected low' : n <= 7 ? 'selected mid' : 'selected high') : '';
+            html += `<button class="rpe-pip ${sel}" onclick="setRPE(${ei},${ri},${n})">${n}</button>`;
           }
-          html += `</div><div style="font-size:11px;color:var(--text3);margin-top:6px">${row.rpe?'RPE '+row.rpe+' — '+rpeLabel(row.rpe):''}</div></div>`;
+          html += `</div><div style="font-size:11px;color:var(--text3);margin-top:6px">${row.rpe ? 'RPE ' + row.rpe + ' — ' + rpeLabel(row.rpe) : 'Selecciona el esfuerzo percibido'}</div></div>`;
         }
       });
       const prog = calcProgression(ex);
@@ -1203,97 +1078,78 @@ function renderSession() {
   document.getElementById('session-content').innerHTML = html;
 }
 
-function toggleEx(i) { state.sessionExercises[i].expanded = !state.sessionExercises[i].expanded; state.activeRPESet = null; renderSession(); }
-function updateReps(ei,ri,v) { state.sessionExercises[ei].rows[ri].reps = v; renderSession(); }
-function updateKg(ei,ri,v) { state.sessionExercises[ei].rows[ri].kg = v; }
-function delSet(ei,ri) { state.sessionExercises[ei].rows.splice(ri,1); state.sessionExercises[ei].rows.forEach((r,i)=>r.num=i+1); renderSession(); }
+function toggleEx(i) { S.sessionExercises[i].expanded = !S.sessionExercises[i].expanded; S.activeRPESet = null; renderSession(); }
+function updateReps(ei, ri, v) { S.sessionExercises[ei].rows[ri].reps = v; renderSession(); }
+function updateKg(ei, ri, v) { S.sessionExercises[ei].rows[ri].kg = v; }
+function delSet(ei, ri) { S.sessionExercises[ei].rows.splice(ri, 1); S.sessionExercises[ei].rows.forEach((r, i) => r.n = i + 1); renderSession(); }
 function addSet(ei) {
-  const ex = state.sessionExercises[ei];
-  const last = ex.rows[ex.rows.length-1];
-  ex.rows.push({num:ex.rows.length+1,reps:'',kg:last?.kg||'0',rpe:0});
+  const ex = S.sessionExercises[ei];
+  const last = ex.rows[ex.rows.length - 1];
+  ex.rows.push({ n: ex.rows.length + 1, reps: '', kg: last?.kg || '0', rpe: 0 });
   renderSession();
 }
-function openRPE(ei,ri) {
-  state.activeRPESet = (state.activeRPESet && state.activeRPESet[0]===ei && state.activeRPESet[1]===ri) ? null : [ei,ri];
-  if (state.activeRPESet) state.sessionExercises[ei].expanded = true;
+function openRPE(ei, ri) {
+  S.activeRPESet = (S.activeRPESet && S.activeRPESet[0] === ei && S.activeRPESet[1] === ri) ? null : [ei, ri];
+  if (S.activeRPESet) S.sessionExercises[ei].expanded = true;
   renderSession();
 }
-function setRPE(ei,ri,v) { state.sessionExercises[ei].rows[ri].rpe=v; state.activeRPESet=null; renderSession(); }
-function rpeLabel(n) { return ['','Muy fácil','Fácil','Moderado','Algo difícil','Difícil','Difícil+','Muy difícil','Casi al límite','Al límite','Máximo'][n]||''; }
-
+function setRPE(ei, ri, v) { S.sessionExercises[ei].rows[ri].rpe = v; S.activeRPESet = null; renderSession(); }
+function rpeLabel(n) { return ['','Muy fácil','Fácil','Moderado','Algo difícil','Difícil','Difícil+','Muy difícil','Casi al límite','Al límite','Máximo'][n] || ''; }
 function calcProgression(ex) {
   const logged = ex.rows.filter(r => r.reps !== '' && parseInt(r.reps) > 0);
   if (logged.length < ex.rows.length) return null;
   const allMax = logged.every(r => parseInt(r.reps) >= ex.repMax);
   const allMin = logged.every(r => parseInt(r.reps) >= ex.repMin);
-  const avgRPE = logged.reduce((s,r) => s+r.rpe, 0) / logged.length;
-  const curKg = parseFloat(logged[0].kg)||0;
+  const avgRPE = logged.reduce((s, r) => s + r.rpe, 0) / logged.length;
+  const curKg = parseFloat(logged[0].kg) || 0;
   if (allMax && avgRPE <= 8.5) {
     const inc = curKg >= 80 ? 2.5 : 1.25;
-    return {type:'increase',icon:'📈',msg:`Completaste ${ex.repMax} reps. Sube a ${(curKg+inc).toFixed(2).replace('.00','')} kg la próxima sesión.`};
+    return { type:'increase', icon:'📈', msg:`Completaste ${ex.repMax} reps en todas las series. Sube a ${(curKg + inc).toFixed(curKg >= 80 ? 1 : 2).replace(/\.?0+$/, '')} kg la próxima sesión.` };
   }
-  if (!allMin || avgRPE >= 9.5) return {type:'decrease',icon:'⚠️',msg:'RPE muy alto o no alcanzaste el rango mínimo. Baja carga o reduce volumen.'};
-  if (allMin) return {type:'maintain',icon:'→',msg:'Buen trabajo. Mantén la carga y busca más reps.'};
+  if (!allMin || avgRPE >= 9.5) return { type:'decrease', icon:'⚠️', msg:'RPE muy alto o no alcanzaste el rango mínimo. Baja 5% la carga o reduce 1 serie.' };
+  if (allMin) return { type:'maintain', icon:'→', msg:'Buen trabajo. Mantén la carga y busca completar más reps la próxima vez.' };
   return null;
 }
+function finishSession() { S.sessionDone = true; renderSession(); }
 
-function finishSession() { state.sessionDone = true; renderSession(); }
-
-// ── Profile ────────────────────────────────────────
-let currentTab = 1;
-function switchTab(n) {
-  document.getElementById('prof-tab-'+currentTab).style.display = 'none';
-  document.getElementById('tab-'+currentTab).classList.remove('active');
-  currentTab = n;
-  document.getElementById('prof-tab-'+n).style.display = n===1?'block':'flex';
-  document.getElementById('tab-'+n).classList.add('active');
-}
-function selectGoal(g) {
-  ['cut','recomp','bulk'].forEach(id => {
-    document.getElementById('goal-'+id).classList.remove('selected');
-    document.getElementById('check-'+id).style.display = 'none';
-  });
-  document.getElementById('goal-'+g).classList.add('selected');
-  document.getElementById('check-'+g).style.display = 'inline';
-  state.goal = g;
-}
-function selectLevel(btn) {
-  document.querySelectorAll('.level-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-}
-function toggleDay(btn) {
-  btn.classList.toggle('on');
-  const days = document.querySelectorAll('.day-toggle.on').length;
-  const card = btn.closest('.card');
-  if (card) { const info = card.querySelector('div:last-child'); if(info) info.textContent = days + ' días seleccionados'; }
-}
-function saveProfile() {
-  const btn = document.getElementById('save-btn');
-  btn.textContent = '✓ Guardado';
-  btn.style.background = 'rgba(0,255,135,.15)';
-  btn.style.color = 'var(--green)';
-  setTimeout(() => { btn.textContent='Guardar perfil'; btn.style.background=''; btn.style.color=''; }, 2500);
-}
-
-// ── Charts ─────────────────────────────────────────
-let chartsInit = false;
+// ══════════════════════════════════════════════════
+//  CHARTS
+// ══════════════════════════════════════════════════
+let chartsReady = false;
 function initCharts() {
-  if (chartsInit) return;
-  chartsInit = true;
-  MChart.line('chart-weight',
-    ['6/5','7/5','8/5','9/5','12/5','13/5','14/5','15/5','16/5','19/5','20/5','21/5','22/5','23/5'],
-    [90.1,89.8,89.5,89.3,89.6,89.0,88.7,88.9,88.5,88.4,88.2,88.0,88.4,87.9],
-    '#00FF87', 0.3);
-  MChart.bar('chart-protein', ['21 may','22 may','23 may'], [165,175,185], '#00FF87', 177);
-  MChart.line('chart-strength', ['15/4','29/4','13/5','22/5'], [75,77.5,80,80], '#FF6B35', 2);
+  if (chartsReady) return;
+  chartsReady = true;
+  const wLabels = ['6/5','7/5','8/5','9/5','12/5','13/5','14/5','15/5','16/5','19/5','20/5','21/5','22/5','23/5'];
+  const wData = S.todayWeight ? [...S.weightHistory, S.todayWeight] : S.weightHistory;
+  MChart.line('chart-weight', wLabels.slice(0, wData.length), wData, '#00FF87', 0.3);
+  MChart.bar('chart-protein', ['21 may','22 may','23 may'], [165, 175, 185], '#00FF87', S.targets?.protein || 177);
+  MChart.line('chart-strength', ['15 abr','29 abr','13 may','22 may'], [75, 77.5, 80, 80], '#FF6B35', 2);
 }
 
-// ── Init ───────────────────────────────────────────
-updateDashDate();
+// ══════════════════════════════════════════════════
+//  NAVIGATION SIDE EFFECTS
+// ══════════════════════════════════════════════════
+window.addEventListener('hashchange', () => {
+  const hash = location.hash;
+  const el = document.querySelector(hash);
+  if (el) el.scrollTop = 0;
+  if (hash === '#page-progress') { chartsReady = false; setTimeout(initCharts, 50); }
+  if (hash === '#page-session') { updateSessionDate(); renderSession(); }
+  if (hash === '#page-nutrition') paintNutritionTargets();
+  if (hash === '#page-dashboard') paintDashboard();
+});
+
+function updateSessionDate() {
+  $set('session-date-label', new Date().toLocaleDateString('es-CL', { weekday:'long', day:'numeric', month:'short' }));
+}
+
+// ══════════════════════════════════════════════════
+//  INIT
+// ══════════════════════════════════════════════════
+refreshAll();
 updateSessionDate();
-// Handle initial hash
 if (location.hash === '#page-progress') setTimeout(initCharts, 100);
-if (location.hash === '#page-session') setTimeout(renderSession, 50);
+if (location.hash === '#page-session') renderSession();
 </script>
 </body>
 </html>
