@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>Fit40 OS — Demo</title>
 <script>
-// Micro chart library — no dependencies
 const MChart = {
   _setup(id, W, H) {
     const canvas = document.getElementById(id);
@@ -27,20 +26,16 @@ const MChart = {
     const toX = i => x0 + (w / Math.max(data.length - 1, 1)) * i;
     const toXBar = i => x0 + (w / data.length) * i;
     const toY = v => y0 + h - ((v - yMin) / (yMax - yMin)) * h;
-
-    // grid
     ctx.strokeStyle = '#2A2A38'; ctx.lineWidth = 1;
     for (let i = 0; i <= 4; i++) {
       const y = y0 + (h / 4) * i;
       ctx.beginPath(); ctx.moveTo(x0, y); ctx.lineTo(x0 + w, y); ctx.stroke();
     }
-    // y labels
     ctx.fillStyle = '#4A4A5A'; ctx.textAlign = 'right'; ctx.font = '9px -apple-system,system-ui,sans-serif';
     for (let i = 0; i <= 4; i++) {
       const val = yMax - ((yMax - yMin) / 4) * i;
       ctx.fillText(val.toFixed(isBar?0:1), x0 - 4, y0 + (h / 4) * i + 3.5);
     }
-    // x labels
     ctx.textAlign = 'center';
     const xStep = Math.max(1, Math.ceil(labels.length / 5));
     labels.forEach((l, i) => {
@@ -49,7 +44,6 @@ const MChart = {
         ctx.fillText(l, xp, y0 + h + 14);
       }
     });
-
     if (isBar) {
       const bw = (w / data.length) * 0.6;
       data.forEach((v, i) => {
@@ -64,18 +58,15 @@ const MChart = {
         ctx.beginPath(); ctx.moveTo(x0, ry); ctx.lineTo(x0+w, ry); ctx.stroke(); ctx.restore();
       }
     } else {
-      // fill
       const grad = ctx.createLinearGradient(0, y0, 0, y0+h);
       grad.addColorStop(0, color+'22'); grad.addColorStop(1, color+'02');
       ctx.beginPath(); ctx.moveTo(toX(0), toY(data[0]));
       data.forEach((v,i) => { if(i>0){ const mx=(toX(i-1)+toX(i))/2; ctx.bezierCurveTo(mx,toY(data[i-1]),mx,toY(v),toX(i),toY(v)); }});
       ctx.lineTo(toX(data.length-1),y0+h); ctx.lineTo(toX(0),y0+h); ctx.closePath();
       ctx.fillStyle = grad; ctx.fill();
-      // line
       ctx.beginPath(); ctx.moveTo(toX(0), toY(data[0]));
       data.forEach((v,i) => { if(i>0){ const mx=(toX(i-1)+toX(i))/2; ctx.bezierCurveTo(mx,toY(data[i-1]),mx,toY(v),toX(i),toY(v)); }});
       ctx.strokeStyle = color; ctx.lineWidth = 2; ctx.stroke();
-      // dots
       data.forEach((v,i) => {
         ctx.beginPath(); ctx.arc(toX(i), toY(v), 3, 0, Math.PI*2);
         ctx.fillStyle = color; ctx.fill();
@@ -115,14 +106,49 @@ const MChart = {
   html,body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Inter',system-ui,sans-serif;height:100%;-webkit-font-smoothing:antialiased}
   body{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:16px}
 
-  /* Phone shell */
   .phone{width:390px;height:844px;background:var(--bg);border-radius:40px;overflow:hidden;position:relative;box-shadow:0 0 0 1px #2A2A38,0 32px 80px rgba(0,0,0,0.8),0 0 60px rgba(0,255,135,0.04);border:1px solid #2A2A38}
   @media(max-width:440px){body{padding:0}.phone{width:100%;height:100dvh;border-radius:0;box-shadow:none;border:none}}
 
-  /* Pages */
+  /* ── Page navigation via CSS :target ── */
   .page{display:none;flex-direction:column;height:100%;overflow-y:auto;overflow-x:hidden;scrollbar-width:none}
   .page::-webkit-scrollbar{display:none}
-  .page.active{display:flex}
+
+  /* Dashboard is the default page (no hash needed) */
+  #page-dashboard{display:flex}
+
+  /* Show whichever page is targeted */
+  .page:target{display:flex}
+
+  /* When any non-dashboard page is targeted, hide dashboard */
+  html:has(#page-login:target) #page-dashboard,
+  html:has(#page-register:target) #page-dashboard,
+  html:has(#page-training:target) #page-dashboard,
+  html:has(#page-session:target) #page-dashboard,
+  html:has(#page-nutrition:target) #page-dashboard,
+  html:has(#page-progress:target) #page-dashboard,
+  html:has(#page-profile:target) #page-dashboard{display:none}
+
+  /* Login pages */
+  .login-page{display:none;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:24px;background:var(--bg)}
+  .login-page:target{display:flex}
+
+  /* ── Nav active states via :has() ── */
+  /* Default (no hash) → dashboard nav active */
+  html:not(:has(.page:not(#page-dashboard):target)):not(:has(.login-page:target)) a.nav-item[href="#page-dashboard"],
+  html:has(#page-dashboard:target) a.nav-item[href="#page-dashboard"]{color:var(--green)}
+  html:not(:has(.page:not(#page-dashboard):target)):not(:has(.login-page:target)) a.nav-item[href="#page-dashboard"] svg,
+  html:has(#page-dashboard:target) a.nav-item[href="#page-dashboard"] svg{filter:drop-shadow(0 0 6px rgba(0,255,135,0.5))}
+
+  html:has(#page-training:target) a.nav-item[href="#page-training"],
+  html:has(#page-session:target) a.nav-item[href="#page-training"]{color:var(--green)}
+  html:has(#page-training:target) a.nav-item[href="#page-training"] svg,
+  html:has(#page-session:target) a.nav-item[href="#page-training"] svg{filter:drop-shadow(0 0 6px rgba(0,255,135,0.5))}
+
+  html:has(#page-nutrition:target) a.nav-item[href="#page-nutrition"]{color:var(--green)}
+  html:has(#page-nutrition:target) a.nav-item[href="#page-nutrition"] svg{filter:drop-shadow(0 0 6px rgba(0,255,135,0.5))}
+
+  html:has(#page-progress:target) a.nav-item[href="#page-progress"]{color:var(--green)}
+  html:has(#page-progress:target) a.nav-item[href="#page-progress"] svg{filter:drop-shadow(0 0 6px rgba(0,255,135,0.5))}
 
   /* Scrollable content area */
   .content{flex:1;padding:16px;display:flex;flex-direction:column;gap:12px;padding-bottom:88px}
@@ -132,16 +158,14 @@ const MChart = {
   .topbar h1{font-size:17px;font-weight:700;line-height:1.2}
   .topbar p{font-size:11px;color:var(--text2);margin-top:2px}
   .topbar-row{display:flex;align-items:center;justify-content:space-between}
-  .icon-btn{width:36px;height:36px;border-radius:10px;background:var(--elevated);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text2);font-size:15px;transition:all .15s}
+  .icon-btn{width:36px;height:36px;border-radius:10px;background:var(--elevated);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text2);font-size:15px;transition:all .15s;text-decoration:none}
   .icon-btn:hover{border-color:var(--border-bright);color:var(--text)}
 
   /* Bottom nav */
   .bottom-nav{position:sticky;bottom:0;left:0;right:0;background:rgba(17,17,24,0.96);backdrop-filter:blur(20px);border-top:1px solid var(--border);display:flex;z-index:50;flex-shrink:0}
-  .nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:10px 4px 14px;cursor:pointer;transition:all .15s;color:var(--text3)}
-  .nav-item.active{color:var(--green)}
+  .nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:10px 4px 14px;cursor:pointer;transition:all .15s;color:var(--text3);text-decoration:none}
   .nav-item svg{width:22px;height:22px}
   .nav-item span{font-size:10px;font-weight:600}
-  .nav-item.active svg{filter:drop-shadow(0 0 6px rgba(0,255,135,0.5))}
 
   /* Cards */
   .card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:16px}
@@ -172,7 +196,7 @@ const MChart = {
   .badge.neutral{background:var(--elevated);color:var(--text2);border-color:var(--border)}
 
   /* Buttons */
-  .btn{border:none;border-radius:12px;cursor:pointer;font-weight:600;font-family:inherit;transition:all .15s;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+  .btn{border:none;border-radius:12px;cursor:pointer;font-weight:600;font-family:inherit;transition:all .15s;display:inline-flex;align-items:center;justify-content:center;gap:8px;text-decoration:none}
   .btn:active{transform:scale(.97)}
   .btn.primary{background:var(--green);color:#0A0A0F;font-size:15px;height:48px;padding:0 20px;box-shadow:0 0 20px rgba(0,255,135,.25);width:100%}
   .btn.primary:hover{background:var(--green-dim)}
@@ -209,7 +233,6 @@ const MChart = {
   /* Weight logger */
   .weight-logger{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:14px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;transition:all .15s}
   .weight-logger:hover{border-color:var(--border-bright)}
-  .weight-logger.open{border-color:rgba(0,255,135,.25);box-shadow:0 0 24px rgba(0,255,135,.1)}
   .weight-icon-box{width:36px;height:36px;background:var(--elevated);border:1px solid var(--border);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
   .weight-input-row{display:flex;gap:8px;align-items:center;margin-top:12px}
   .weight-input-row input{flex:1;background:var(--elevated);border:1px solid var(--border);border-radius:12px;color:var(--text);font-family:inherit;font-size:22px;font-weight:800;padding:0 14px;height:48px;outline:none;font-variant-numeric:tabular-nums;text-align:center}
@@ -281,8 +304,8 @@ const MChart = {
   .ai-label{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.08em}
   .ai-text{font-size:13px;color:var(--text);line-height:1.6}
 
-  /* Workout summary card */
-  .workout-card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:14px;cursor:pointer;transition:all .15s}
+  /* Workout card */
+  .workout-card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:14px;cursor:pointer;transition:all .15s;display:block;color:inherit;text-decoration:none}
   .workout-card:hover{border-color:var(--border-bright)}
   .workout-card:active{transform:scale(.98)}
   .workout-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
@@ -340,9 +363,7 @@ const MChart = {
   @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
   .fade-in{animation:fadeUp .25s ease both}
 
-  /* Login page */
-  .login-page{display:none;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:24px;background:var(--bg)}
-  .login-page.active{display:flex}
+  /* Login styles */
   .login-logo{width:64px;height:64px;background:rgba(0,255,135,.1);border:1px solid rgba(0,255,135,.2);border-radius:20px;display:flex;align-items:center;justify-content:center;font-size:28px;margin-bottom:16px;box-shadow:0 0 30px rgba(0,255,135,.15)}
   .login-form{width:100%;display:flex;flex-direction:column;gap:14px;margin-top:24px}
   .login-link{color:var(--green);font-weight:600;cursor:pointer;text-decoration:none}
@@ -386,7 +407,7 @@ const MChart = {
 
 <div class="phone">
 
-  <!-- ═══ LOGIN PAGE ═══ -->
+  <!-- ═══ LOGIN ═══ -->
   <div class="login-page" id="page-login">
     <div class="login-logo">💪</div>
     <h1 style="font-size:26px;font-weight:800;text-align:center">Fit40 OS</h1>
@@ -394,16 +415,15 @@ const MChart = {
     <div class="login-form">
       <div class="field">
         <label>Email</label>
-        <input type="text" placeholder="nicolas@fit40.com" id="login-email">
+        <input type="text" placeholder="nicolas@fit40.com">
       </div>
       <div class="field">
         <label>Contraseña</label>
-        <input type="password" placeholder="••••••••" id="login-pass">
+        <input type="password" placeholder="••••••••">
       </div>
-      <div id="login-err" style="font-size:12px;color:var(--red);text-align:center;display:none"></div>
-      <button class="btn primary" type="button" onclick="showPage('dashboard')" style="margin-top:4px">Iniciar sesión</button>
+      <a class="btn primary" href="#page-dashboard" style="margin-top:4px">Iniciar sesión</a>
       <p style="text-align:center;font-size:13px;color:var(--text3)">
-        ¿No tienes cuenta? <span class="login-link" onclick="showPage('register')">Crear cuenta</span>
+        ¿No tienes cuenta? <a class="login-link" href="#page-register">Crear cuenta</a>
       </p>
     </div>
     <div class="demo-hint">
@@ -411,31 +431,31 @@ const MChart = {
     </div>
   </div>
 
-  <!-- ═══ REGISTER PAGE ═══ -->
+  <!-- ═══ REGISTER ═══ -->
   <div class="login-page" id="page-register">
     <div class="login-logo">🏋️</div>
     <h1 style="font-size:24px;font-weight:800;text-align:center">Crea tu cuenta</h1>
     <p style="color:var(--text2);font-size:13px;margin-top:6px;text-align:center">Empieza tu transformación hoy</p>
     <div class="login-form">
       <div class="field"><label>Nombre</label><input type="text" placeholder="Nicolás"></div>
-      <div class="field"><label>Email</label><input type="email" placeholder="tu@email.com"></div>
+      <div class="field"><label>Email</label><input type="text" placeholder="tu@email.com"></div>
       <div class="field"><label>Contraseña</label><input type="password" placeholder="Mínimo 8 caracteres"></div>
-      <button class="btn primary" onclick="showPage('dashboard')" style="margin-top:4px">Crear cuenta</button>
+      <a class="btn primary" href="#page-dashboard" style="margin-top:4px">Crear cuenta</a>
       <p style="text-align:center;font-size:13px;color:var(--text3)">
-        ¿Ya tienes cuenta? <span class="login-link" onclick="showPage('login')">Iniciar sesión</span>
+        ¿Ya tienes cuenta? <a class="login-link" href="#page-login">Iniciar sesión</a>
       </p>
     </div>
   </div>
 
   <!-- ═══ DASHBOARD ═══ -->
-  <div class="page active" id="page-dashboard">
+  <div class="page" id="page-dashboard">
     <div class="topbar">
       <div class="topbar-row">
         <div>
           <h1 id="dash-greeting">Buenos días, Nicolás 💪</h1>
           <p id="dash-date"></p>
         </div>
-        <div class="icon-btn" onclick="showPage('profile')" title="Perfil">⚙️</div>
+        <a class="icon-btn" href="#page-profile" title="Perfil">⚙️</a>
       </div>
     </div>
 
@@ -469,7 +489,7 @@ const MChart = {
         <div class="banner-icon">⚠️</div>
         <div>
           <div class="banner-title">Bajando muy rápido</div>
-          <div class="banner-sub">> 1% del peso por semana</div>
+          <div class="banner-sub">&gt; 1% del peso por semana</div>
           <div class="banner-rec">→ Sube 150–250 kcal para proteger músculo</div>
         </div>
       </div>
@@ -524,15 +544,13 @@ const MChart = {
       </div>
 
       <!-- Workout card -->
-      <div class="workout-card" onclick="showPage('training')">
+      <a class="workout-card" href="#page-training">
         <div class="workout-header">
           <div style="display:flex;align-items:center;gap:8px">
             <span style="color:var(--text2)">🏋️</span>
             <div class="section-label">Entrenamiento de hoy</div>
           </div>
-          <div style="display:flex;align-items:center;gap:8px">
-            <span style="color:var(--text3);font-size:18px">›</span>
-          </div>
+          <span style="color:var(--text3);font-size:18px">›</span>
         </div>
         <div class="workout-title">PPL Intermedio 4 días</div>
         <div style="margin-top:8px;display:flex;flex-direction:column;gap:5px">
@@ -541,7 +559,7 @@ const MChart = {
           <div style="font-size:12px;color:var(--text2)">3×8-10 Press Militar</div>
           <div style="font-size:12px;color:var(--text2)">3×8-12 Fondos en paralelas</div>
         </div>
-      </div>
+      </a>
 
       <!-- AI Recommendation -->
       <div class="ai-card">
@@ -553,24 +571,24 @@ const MChart = {
       </div>
     </div>
 
-    <div class="bottom-nav">
-      <div class="nav-item active" onclick="showPage('dashboard')">
+    <nav class="bottom-nav">
+      <a class="nav-item" href="#page-dashboard">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
         <span>Inicio</span>
-      </div>
-      <div class="nav-item" onclick="showPage('training')">
+      </a>
+      <a class="nav-item" href="#page-training">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 4v6a6 6 0 0 0 12 0V4"/><line x1="6" y1="7" x2="2" y2="7"/><line x1="22" y1="7" x2="18" y2="7"/></svg>
         <span>Training</span>
-      </div>
-      <div class="nav-item" onclick="showPage('nutrition')">
+      </a>
+      <a class="nav-item" href="#page-nutrition">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l19-9-9 19-2-8-8-2z"/></svg>
         <span>Nutrición</span>
-      </div>
-      <div class="nav-item" onclick="showPage('progress')">
+      </a>
+      <a class="nav-item" href="#page-progress">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
         <span>Progreso</span>
-      </div>
-    </div>
+      </a>
+    </nav>
   </div>
 
   <!-- ═══ TRAINING ═══ -->
@@ -578,7 +596,7 @@ const MChart = {
     <div class="topbar">
       <div class="topbar-row">
         <div><h1>Entrenamiento</h1><p>Día de entrenamiento</p></div>
-        <div class="icon-btn" onclick="showPage('dashboard')">←</div>
+        <a class="icon-btn" href="#page-dashboard">←</a>
       </div>
     </div>
     <div class="content fade-in">
@@ -616,7 +634,7 @@ const MChart = {
           <div><div class="exercise-sets">3 × 8–12</div><div class="exercise-sets-label">series × reps</div></div>
         </div>
       </div>
-      <button class="btn primary" onclick="showPage('session')" style="font-size:15px">▶ Iniciar sesión de hoy</button>
+      <a class="btn primary" href="#page-session" style="font-size:15px">▶ Iniciar sesión de hoy</a>
       <div class="section-label">Sesiones recientes</div>
       <div class="card" style="display:flex;align-items:center;justify-content:space-between">
         <div style="display:flex;align-items:center;gap:10px">
@@ -629,26 +647,120 @@ const MChart = {
         <span class="badge green">Completado</span>
       </div>
     </div>
-    <div class="bottom-nav">
-      <div class="nav-item" onclick="showPage('dashboard')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><span>Inicio</span></div>
-      <div class="nav-item active" onclick="showPage('training')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 4v6a6 6 0 0 0 12 0V4"/><line x1="6" y1="7" x2="2" y2="7"/><line x1="22" y1="7" x2="18" y2="7"/></svg><span>Training</span></div>
-      <div class="nav-item" onclick="showPage('nutrition')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l19-9-9 19-2-8-8-2z"/></svg><span>Nutrición</span></div>
-      <div class="nav-item" onclick="showPage('progress')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg><span>Progreso</span></div>
-    </div>
+    <nav class="bottom-nav">
+      <a class="nav-item" href="#page-dashboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><span>Inicio</span></a>
+      <a class="nav-item" href="#page-training"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 4v6a6 6 0 0 0 12 0V4"/><line x1="6" y1="7" x2="2" y2="7"/><line x1="22" y1="7" x2="18" y2="7"/></svg><span>Training</span></a>
+      <a class="nav-item" href="#page-nutrition"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l19-9-9 19-2-8-8-2z"/></svg><span>Nutrición</span></a>
+      <a class="nav-item" href="#page-progress"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg><span>Progreso</span></a>
+    </nav>
   </div>
 
-  <!-- ═══ SESSION (active workout) ═══ -->
+  <!-- ═══ SESSION ═══ -->
   <div class="page" id="page-session">
     <div class="topbar">
       <div class="topbar-row">
         <div><h1>Sesión activa</h1><p id="session-date-label"></p></div>
-        <div class="btn ghost" onclick="showPage('training')" style="font-size:13px;cursor:pointer">← Volver</div>
+        <a class="btn ghost" href="#page-training" style="font-size:13px">← Volver</a>
       </div>
     </div>
     <div class="content fade-in" id="session-content">
-      <!-- dynamically built -->
+      <!-- Pre-rendered session (enhanced by JS if available) -->
+      <div style="display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--text3);margin-bottom:4px">
+        <span id="session-progress-label">0 de 13 series registradas</span>
+        <span>PPL Intermedio 4 días</span>
+      </div>
+
+      <!-- Exercise 1: Press Banca (expanded) -->
+      <div class="session-ex">
+        <div class="session-ex-header" onclick="toggleEx(0)">
+          <div style="display:flex;align-items:center">
+            <div class="session-ex-num">1</div>
+            <div>
+              <div class="session-ex-name">Press Banca</div>
+              <div class="session-ex-info">Pecho · 4×6–8</div>
+            </div>
+          </div>
+          <span class="badge neutral" id="badge-ex0">0/4</span>
+        </div>
+        <div class="session-ex-body" id="body-ex0">
+          <div class="set-header"><span>#</span><span>Reps</span><span>Peso kg</span><span>RPE</span><span></span></div>
+          <div class="set-row">
+            <div class="set-num">1</div>
+            <input class="set-input" type="number" placeholder="6–8" min="1" max="50" onchange="updateReps(0,0,this.value)">
+            <input class="set-input" type="number" value="80" step="0.5" onchange="updateKg(0,0,this.value)">
+            <button class="rpe-btn" onclick="openRPE(0,0)">RPE</button>
+            <button class="del-btn" onclick="delSet(0,0)">✕</button>
+          </div>
+          <div class="set-row">
+            <div class="set-num">2</div>
+            <input class="set-input" type="number" placeholder="6–8" min="1" max="50" onchange="updateReps(0,1,this.value)">
+            <input class="set-input" type="number" value="80" step="0.5" onchange="updateKg(0,1,this.value)">
+            <button class="rpe-btn" onclick="openRPE(0,1)">RPE</button>
+            <button class="del-btn" onclick="delSet(0,1)">✕</button>
+          </div>
+          <div class="set-row">
+            <div class="set-num">3</div>
+            <input class="set-input" type="number" placeholder="6–8" min="1" max="50" onchange="updateReps(0,2,this.value)">
+            <input class="set-input" type="number" value="80" step="0.5" onchange="updateKg(0,2,this.value)">
+            <button class="rpe-btn" onclick="openRPE(0,2)">RPE</button>
+            <button class="del-btn" onclick="delSet(0,2)">✕</button>
+          </div>
+          <div class="set-row">
+            <div class="set-num">4</div>
+            <input class="set-input" type="number" placeholder="6–8" min="1" max="50" onchange="updateReps(0,3,this.value)">
+            <input class="set-input" type="number" value="80" step="0.5" onchange="updateKg(0,3,this.value)">
+            <button class="rpe-btn" onclick="openRPE(0,3)">RPE</button>
+            <button class="del-btn" onclick="delSet(0,3)">✕</button>
+          </div>
+          <button class="btn ghost sm" onclick="addSet(0)" style="margin-top:8px">+ Agregar serie</button>
+        </div>
+      </div>
+
+      <!-- Exercise 2: Press Inclinado -->
+      <div class="session-ex">
+        <div class="session-ex-header" onclick="toggleEx(1)">
+          <div style="display:flex;align-items:center">
+            <div class="session-ex-num">2</div>
+            <div>
+              <div class="session-ex-name">Press Inclinado</div>
+              <div class="session-ex-info">Pecho · 3×8–12</div>
+            </div>
+          </div>
+          <span class="badge neutral">0/3</span>
+        </div>
+      </div>
+
+      <!-- Exercise 3: Press Militar -->
+      <div class="session-ex">
+        <div class="session-ex-header" onclick="toggleEx(2)">
+          <div style="display:flex;align-items:center">
+            <div class="session-ex-num">3</div>
+            <div>
+              <div class="session-ex-name">Press Militar</div>
+              <div class="session-ex-info">Hombros · 3×8–10</div>
+            </div>
+          </div>
+          <span class="badge neutral">0/3</span>
+        </div>
+      </div>
+
+      <!-- Exercise 4: Fondos -->
+      <div class="session-ex">
+        <div class="session-ex-header" onclick="toggleEx(3)">
+          <div style="display:flex;align-items:center">
+            <div class="session-ex-num">4</div>
+            <div>
+              <div class="session-ex-name">Fondos en paralelas</div>
+              <div class="session-ex-info">Pecho · 3×8–12</div>
+            </div>
+          </div>
+          <span class="badge neutral">0/3</span>
+        </div>
+      </div>
+
+      <button class="btn primary" onclick="finishSession()" style="margin-top:4px">✓ Finalizar sesión</button>
+      <div style="height:8px"></div>
     </div>
-    <!-- no bottom nav on session page -->
   </div>
 
   <!-- ═══ NUTRITION ═══ -->
@@ -656,11 +768,10 @@ const MChart = {
     <div class="topbar">
       <div class="topbar-row">
         <div><h1>Nutrición</h1><p id="nutrition-date"></p></div>
-        <div class="icon-btn" onclick="showPage('dashboard')">⚙️</div>
+        <a class="icon-btn" href="#page-dashboard">⚙️</a>
       </div>
     </div>
     <div class="content fade-in">
-      <!-- Targets -->
       <div class="card">
         <div class="section-label" style="margin-bottom:10px">Objetivos de hoy</div>
         <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px">
@@ -689,7 +800,6 @@ const MChart = {
         </div>
       </div>
 
-      <!-- Food logger -->
       <div class="card">
         <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
           <span>🍽️</span>
@@ -705,7 +815,6 @@ const MChart = {
         </div>
       </div>
 
-      <!-- AI result -->
       <div id="nutrition-result" style="display:none" class="card glow-green fade-in">
         <div class="section-label" style="margin-bottom:10px">Estimación de macros</div>
         <div class="macro-result-grid">
@@ -717,7 +826,6 @@ const MChart = {
         <div id="res-notes" style="background:var(--elevated);border-radius:10px;padding:10px;font-size:12px;color:var(--text2);line-height:1.5;display:none"></div>
       </div>
 
-      <!-- Recent days -->
       <div class="section-label">Días anteriores</div>
       <div class="recent-day">
         <div class="recent-day-header"><span style="font-size:12px;font-weight:600;color:var(--text2)">vie, 23 may</span><span style="font-size:13px;font-weight:800;font-variant-numeric:tabular-nums">1.985 kcal</span></div>
@@ -732,12 +840,12 @@ const MChart = {
         <div class="recent-day-macros"><span><strong class="green-text">165g</strong> prot</span><span><strong class="blue-text">140g</strong> carbs</span><span><strong class="orange-text">52g</strong> grasas</span></div>
       </div>
     </div>
-    <div class="bottom-nav">
-      <div class="nav-item" onclick="showPage('dashboard')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><span>Inicio</span></div>
-      <div class="nav-item" onclick="showPage('training')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 4v6a6 6 0 0 0 12 0V4"/><line x1="6" y1="7" x2="2" y2="7"/><line x1="22" y1="7" x2="18" y2="7"/></svg><span>Training</span></div>
-      <div class="nav-item active" onclick="showPage('nutrition')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l19-9-9 19-2-8-8-2z"/></svg><span>Nutrición</span></div>
-      <div class="nav-item" onclick="showPage('progress')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg><span>Progreso</span></div>
-    </div>
+    <nav class="bottom-nav">
+      <a class="nav-item" href="#page-dashboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><span>Inicio</span></a>
+      <a class="nav-item" href="#page-training"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 4v6a6 6 0 0 0 12 0V4"/><line x1="6" y1="7" x2="2" y2="7"/><line x1="22" y1="7" x2="18" y2="7"/></svg><span>Training</span></a>
+      <a class="nav-item" href="#page-nutrition"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l19-9-9 19-2-8-8-2z"/></svg><span>Nutrición</span></a>
+      <a class="nav-item" href="#page-progress"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg><span>Progreso</span></a>
+    </nav>
   </div>
 
   <!-- ═══ PROGRESS ═══ -->
@@ -745,7 +853,7 @@ const MChart = {
     <div class="topbar">
       <div class="topbar-row">
         <div><h1>Progreso</h1><p>Tu evolución en el tiempo</p></div>
-        <div class="icon-btn" onclick="showPage('dashboard')">⚙️</div>
+        <a class="icon-btn" href="#page-dashboard">←</a>
       </div>
     </div>
     <div class="content fade-in">
@@ -786,12 +894,12 @@ const MChart = {
         </div>
       </div>
     </div>
-    <div class="bottom-nav">
-      <div class="nav-item" onclick="showPage('dashboard')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><span>Inicio</span></div>
-      <div class="nav-item" onclick="showPage('training')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 4v6a6 6 0 0 0 12 0V4"/><line x1="6" y1="7" x2="2" y2="7"/><line x1="22" y1="7" x2="18" y2="7"/></svg><span>Training</span></div>
-      <div class="nav-item" onclick="showPage('nutrition')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l19-9-9 19-2-8-8-2z"/></svg><span>Nutrición</span></div>
-      <div class="nav-item active" onclick="showPage('progress')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg><span>Progreso</span></div>
-    </div>
+    <nav class="bottom-nav">
+      <a class="nav-item" href="#page-dashboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><span>Inicio</span></a>
+      <a class="nav-item" href="#page-training"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 4v6a6 6 0 0 0 12 0V4"/><line x1="6" y1="7" x2="2" y2="7"/><line x1="22" y1="7" x2="18" y2="7"/></svg><span>Training</span></a>
+      <a class="nav-item" href="#page-nutrition"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l19-9-9 19-2-8-8-2z"/></svg><span>Nutrición</span></a>
+      <a class="nav-item" href="#page-progress"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg><span>Progreso</span></a>
+    </nav>
   </div>
 
   <!-- ═══ PROFILE ═══ -->
@@ -799,7 +907,7 @@ const MChart = {
     <div class="topbar">
       <div class="topbar-row">
         <div><h1>Perfil físico</h1><p>Tu información y objetivos</p></div>
-        <div class="icon-btn" onclick="showPage('dashboard')">←</div>
+        <a class="icon-btn" href="#page-dashboard">←</a>
       </div>
     </div>
     <div class="content fade-in">
@@ -877,7 +985,6 @@ const MChart = {
           </div>
           <div style="margin-top:10px;font-size:12px;color:var(--text2)">4 días seleccionados</div>
         </div>
-
         <div class="card glow-green">
           <div class="section-label" style="margin-bottom:10px">Tus objetivos calculados</div>
           <div class="targets-grid">
@@ -887,19 +994,18 @@ const MChart = {
             <div class="target-box"><div class="target-label">Carbos</div><div class="target-value">211g</div><div class="target-sub">Objetivo diario</div></div>
           </div>
         </div>
-
         <div style="display:flex;gap:8px">
           <button class="btn secondary" onclick="switchTab(2)" style="flex:1">← Atrás</button>
           <button class="btn primary" onclick="saveProfile()" id="save-btn" style="flex:1">Guardar perfil</button>
         </div>
       </div>
     </div>
-    <div class="bottom-nav">
-      <div class="nav-item" onclick="showPage('dashboard')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><span>Inicio</span></div>
-      <div class="nav-item" onclick="showPage('training')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 4v6a6 6 0 0 0 12 0V4"/><line x1="6" y1="7" x2="2" y2="7"/><line x1="22" y1="7" x2="18" y2="7"/></svg><span>Training</span></div>
-      <div class="nav-item" onclick="showPage('nutrition')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l19-9-9 19-2-8-8-2z"/></svg><span>Nutrición</span></div>
-      <div class="nav-item" onclick="showPage('progress')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg><span>Progreso</span></div>
-    </div>
+    <nav class="bottom-nav">
+      <a class="nav-item" href="#page-dashboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><span>Inicio</span></a>
+      <a class="nav-item" href="#page-training"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 4v6a6 6 0 0 0 12 0V4"/><line x1="6" y1="7" x2="2" y2="7"/><line x1="22" y1="7" x2="18" y2="7"/></svg><span>Training</span></a>
+      <a class="nav-item" href="#page-nutrition"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l19-9-9 19-2-8-8-2z"/></svg><span>Nutrición</span></a>
+      <a class="nav-item" href="#page-progress"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg><span>Progreso</span></a>
+    </nav>
   </div>
 
 </div><!-- /phone -->
@@ -907,72 +1013,66 @@ const MChart = {
 <script>
 // ── State ──────────────────────────────────────────
 const state = {
-  currentPage: 'login',
   savedWeight: null,
   sessionExercises: [
     { id:'e1', name:'Press Banca', group:'Pecho', sets:4, repMin:6, repMax:8, expanded:true,
-      rows:[
-        {id:'s1',num:1,reps:'',kg:'80',rpe:0},{id:'s2',num:2,reps:'',kg:'80',rpe:0},
-        {id:'s3',num:3,reps:'',kg:'80',rpe:0},{id:'s4',num:4,reps:'',kg:'80',rpe:0}
-      ]},
+      rows:[{num:1,reps:'',kg:'80',rpe:0},{num:2,reps:'',kg:'80',rpe:0},{num:3,reps:'',kg:'80',rpe:0},{num:4,reps:'',kg:'80',rpe:0}]},
     { id:'e2', name:'Press Inclinado', group:'Pecho', sets:3, repMin:8, repMax:12, expanded:false,
-      rows:[
-        {id:'s5',num:1,reps:'',kg:'60',rpe:0},{id:'s6',num:2,reps:'',kg:'60',rpe:0},{id:'s7',num:3,reps:'',kg:'60',rpe:0}
-      ]},
+      rows:[{num:1,reps:'',kg:'60',rpe:0},{num:2,reps:'',kg:'60',rpe:0},{num:3,reps:'',kg:'60',rpe:0}]},
     { id:'e3', name:'Press Militar', group:'Hombros', sets:3, repMin:8, repMax:10, expanded:false,
-      rows:[
-        {id:'s8',num:1,reps:'',kg:'50',rpe:0},{id:'s9',num:2,reps:'',kg:'50',rpe:0},{id:'s10',num:3,reps:'',kg:'50',rpe:0}
-      ]},
+      rows:[{num:1,reps:'',kg:'50',rpe:0},{num:2,reps:'',kg:'50',rpe:0},{num:3,reps:'',kg:'50',rpe:0}]},
     { id:'e4', name:'Fondos en paralelas', group:'Pecho', sets:3, repMin:8, repMax:12, expanded:false,
-      rows:[
-        {id:'s11',num:1,reps:'',kg:'0',rpe:0},{id:'s12',num:2,reps:'',kg:'0',rpe:0},{id:'s13',num:3,reps:'',kg:'0',rpe:0}
-      ]},
+      rows:[{num:1,reps:'',kg:'0',rpe:0},{num:2,reps:'',kg:'0',rpe:0},{num:3,reps:'',kg:'0',rpe:0}]},
   ],
   sessionDone: false,
   activeRPESet: null,
   goal: 'cut',
-  level: 'intermediate',
-  charts: {}
 };
 
-// ── Navigation ──────────────────────────────────────
+// ── Hash-based navigation helpers ─────────────────
 function showPage(name) {
-  document.querySelectorAll('.page, .login-page').forEach(p => {
-    p.classList.remove('active');
-    if (p.id === 'page-' + name) p.classList.add('active');
-  });
-  state.currentPage = name;
-  if (name === 'progress') initCharts();
-  if (name === 'session') buildSession();
-  if (name === 'dashboard') updateDashDate();
-  if (name === 'nutrition') updateNutritionDate();
-  if (name === 'session') updateSessionDate();
-  // scroll to top
-  const el = document.getElementById('page-' + name);
-  if (el) el.scrollTop = 0;
+  location.hash = 'page-' + name;
 }
 
+window.addEventListener('hashchange', function() {
+  const hash = location.hash;
+  // Scroll active page to top
+  const el = document.querySelector(hash);
+  if (el) el.scrollTop = 0;
+  // Side effects
+  if (hash === '#page-progress') initCharts();
+  if (hash === '#page-session') {
+    updateSessionDate();
+    renderSession();
+  }
+  if (hash === '#page-nutrition') updateNutritionDate();
+  if (hash === '#page-dashboard') updateDashDate();
+});
+
+// ── Date helpers ───────────────────────────────────
 function updateDashDate() {
   const now = new Date();
   const h = now.getHours();
   const g = h < 12 ? 'Buenos días' : h < 19 ? 'Buenas tardes' : 'Buenas noches';
-  document.getElementById('dash-greeting').textContent = g + ', Nicolás 💪';
-  document.getElementById('dash-date').textContent = now.toLocaleDateString('es-CL', {weekday:'long',day:'numeric',month:'long'});
+  const el1 = document.getElementById('dash-greeting');
+  const el2 = document.getElementById('dash-date');
+  if (el1) el1.textContent = g + ', Nicolás 💪';
+  if (el2) el2.textContent = now.toLocaleDateString('es-CL', {weekday:'long',day:'numeric',month:'long'});
 }
-
 function updateNutritionDate() {
-  document.getElementById('nutrition-date').textContent = new Date().toLocaleDateString('es-CL', {weekday:'long',day:'numeric',month:'long'});
+  const el = document.getElementById('nutrition-date');
+  if (el) el.textContent = new Date().toLocaleDateString('es-CL', {weekday:'long',day:'numeric',month:'long'});
 }
-
 function updateSessionDate() {
-  document.getElementById('session-date-label').textContent = new Date().toLocaleDateString('es-CL', {weekday:'long',day:'numeric',month:'short'});
+  const el = document.getElementById('session-date-label');
+  if (el) el.textContent = new Date().toLocaleDateString('es-CL', {weekday:'long',day:'numeric',month:'short'});
 }
 
-// ── Weight Logger ────────────────────────────────────
+// ── Weight Logger ──────────────────────────────────
 function openWeightLogger() {
   document.getElementById('weight-closed').style.display = 'none';
   document.getElementById('weight-open').style.display = 'block';
-  document.getElementById('weight-input').focus();
+  setTimeout(() => document.getElementById('weight-input').focus(), 50);
 }
 function closeWeightLogger() {
   document.getElementById('weight-open').style.display = 'none';
@@ -991,22 +1091,7 @@ function saveWeight() {
   document.getElementById('current-weight-display').textContent = v.toFixed(1) + ' kg ↓';
 }
 
-// ── Login ────────────────────────────────────────────
-function doLogin() {
-  const email = document.getElementById('login-email').value;
-  const pass = document.getElementById('login-pass').value;
-  const err = document.getElementById('login-err');
-  if (!email || !pass) { err.style.display='block'; err.textContent='Completa todos los campos'; return; }
-  err.style.display = 'none';
-  showPage('dashboard');
-}
-
-// ── Nutrition AI (mock) ──────────────────────────────
-const FOOD_MOCK = {
-  protein_g: 182, carbs_g: 205, fat_g: 48, calories: 1990,
-  notes: 'Buena ingesta proteica. Considera agregar más verduras verdes para fibra y micronutrientes.'
-};
-
+// ── Nutrition AI (mock) ────────────────────────────
 async function analyzeFood() {
   const text = document.getElementById('food-text').value.trim();
   if (text.length < 10) return;
@@ -1019,33 +1104,31 @@ async function analyzeFood() {
   document.getElementById('analyzing-status').style.display = 'none';
   document.getElementById('analyze-btn').style.display = 'flex';
 
-  const r = FOOD_MOCK;
-  document.getElementById('res-prot').textContent = Math.round(r.protein_g) + 'g';
-  document.getElementById('res-carbs').textContent = Math.round(r.carbs_g) + 'g';
-  document.getElementById('res-fat').textContent = Math.round(r.fat_g) + 'g';
-  document.getElementById('res-kcal').textContent = Math.round(r.calories) + ' kcal';
-  if (r.notes) {
-    const notesEl = document.getElementById('res-notes');
-    notesEl.textContent = r.notes;
-    notesEl.style.display = 'block';
-  }
+  const r = { protein_g: 182, carbs_g: 205, fat_g: 48, calories: 1990,
+    notes: 'Buena ingesta proteica. Considera agregar más verduras verdes para fibra y micronutrientes.' };
+
+  document.getElementById('res-prot').textContent = r.protein_g + 'g';
+  document.getElementById('res-carbs').textContent = r.carbs_g + 'g';
+  document.getElementById('res-fat').textContent = r.fat_g + 'g';
+  document.getElementById('res-kcal').textContent = r.calories + ' kcal';
+  const notesEl = document.getElementById('res-notes');
+  notesEl.textContent = r.notes; notesEl.style.display = 'block';
   document.getElementById('nutrition-result').style.display = 'block';
 
-  // update bars
   document.getElementById('macro-bars').style.display = 'flex';
-  const targets = {prot:177, carbs:211, fat:57, kcal:2063};
-  document.getElementById('bar-prot').style.width = Math.min(100,(r.protein_g/targets.prot)*100) + '%';
-  document.getElementById('bar-carbs').style.width = Math.min(100,(r.carbs_g/targets.carbs)*100) + '%';
-  document.getElementById('bar-fat').style.width = Math.min(100,(r.fat_g/targets.fat)*100) + '%';
-  document.getElementById('bar-kcal').style.width = Math.min(100,(r.calories/targets.kcal)*100) + '%';
-  document.getElementById('bar-prot-val').textContent = Math.round(r.protein_g) + 'g / 177g';
-  document.getElementById('bar-carbs-val').textContent = Math.round(r.carbs_g) + 'g / 211g';
-  document.getElementById('bar-fat-val').textContent = Math.round(r.fat_g) + 'g / 57g';
-  document.getElementById('bar-kcal-val').textContent = Math.round(r.calories) + ' / 2063 kcal';
+  const t = {prot:177, carbs:211, fat:57, kcal:2063};
+  document.getElementById('bar-prot').style.width = Math.min(100,(r.protein_g/t.prot)*100) + '%';
+  document.getElementById('bar-carbs').style.width = Math.min(100,(r.carbs_g/t.carbs)*100) + '%';
+  document.getElementById('bar-fat').style.width = Math.min(100,(r.fat_g/t.fat)*100) + '%';
+  document.getElementById('bar-kcal').style.width = Math.min(100,(r.calories/t.kcal)*100) + '%';
+  document.getElementById('bar-prot-val').textContent = r.protein_g + 'g / 177g';
+  document.getElementById('bar-carbs-val').textContent = r.carbs_g + 'g / 211g';
+  document.getElementById('bar-fat-val').textContent = r.fat_g + 'g / 57g';
+  document.getElementById('bar-kcal-val').textContent = r.calories + ' / 2063 kcal';
 }
 
-// ── Session Builder ──────────────────────────────────
-function buildSession() {
+// ── Session ────────────────────────────────────────
+function renderSession() {
   if (state.sessionDone) {
     document.getElementById('session-content').innerHTML = `
       <div class="session-done fade-in">
@@ -1056,14 +1139,11 @@ function buildSession() {
           <div class="prog-alert increase"><div class="prog-alert-icon">📈</div><p>Press Banca: Completaste 8 reps en todas las series. Sube a 82.5 kg la próxima sesión.</p></div>
           <div class="prog-alert maintain"><div class="prog-alert-icon">→</div><p>Press Inclinado: Buen trabajo. Mantén la misma carga y busca completar más reps.</p></div>
         </div>
-        <button class="btn secondary" onclick="showPage('training')" style="margin-top:16px">← Volver al entrenamiento</button>
+        <a class="btn secondary" href="#page-training" style="margin-top:16px;display:inline-flex">← Volver al entrenamiento</a>
       </div>`;
     return;
   }
-  renderSession();
-}
 
-function renderSession() {
   const exs = state.sessionExercises;
   const totalLogged = exs.reduce((s,e) => s + e.rows.filter(r=>r.reps!=='').length, 0);
   const totalSets = exs.reduce((s,e) => s + e.rows.length, 0);
@@ -1090,9 +1170,7 @@ function renderSession() {
 
     if (ex.expanded) {
       html += `<div class="session-ex-body">
-        <div class="set-header">
-          <span>#</span><span>Reps</span><span>Peso kg</span><span>RPE</span><span></span>
-        </div>`;
+        <div class="set-header"><span>#</span><span>Reps</span><span>Peso kg</span><span>RPE</span><span></span></div>`;
       ex.rows.forEach((row,ri) => {
         const rpeCls = row.rpe===0?'':row.rpe<=4?'low':row.rpe<=7?'mid':'high';
         const repCls = row.reps===''?'':'color:'+( parseInt(row.reps)>=ex.repMax?'var(--green)':parseInt(row.reps)>=ex.repMin?'var(--blue)':'var(--orange)');
@@ -1106,8 +1184,7 @@ function renderSession() {
           <button class="del-btn" onclick="delSet(${ei},${ri})">✕</button>
         </div>`;
         if (state.activeRPESet && state.activeRPESet[0]===ei && state.activeRPESet[1]===ri) {
-          html += `<div style="background:var(--elevated);border-radius:10px;padding:10px;margin-bottom:5px">
-            <div class="rpe-grid">`;
+          html += `<div style="background:var(--elevated);border-radius:10px;padding:10px;margin-bottom:5px"><div class="rpe-grid">`;
           for (let n=1;n<=10;n++) {
             const cls = row.rpe===n?(n<=4?'selected low':n<=7?'selected mid':'selected high'):'';
             html += `<button class="rpe-pip ${cls}" onclick="setRPE(${ei},${ri},${n})">${n}</button>`;
@@ -1115,13 +1192,9 @@ function renderSession() {
           html += `</div><div style="font-size:11px;color:var(--text3);margin-top:6px">${row.rpe?'RPE '+row.rpe+' — '+rpeLabel(row.rpe):''}</div></div>`;
         }
       });
-
-      // progression alert
       const prog = calcProgression(ex);
       if (prog) html += `<div class="prog-alert ${prog.type}"><div class="prog-alert-icon">${prog.icon}</div><p>${prog.msg}</p></div>`;
-
-      html += `<button class="btn ghost sm" onclick="addSet(${ei})" style="margin-top:8px">+ Agregar serie</button>
-      </div>`;
+      html += `<button class="btn ghost sm" onclick="addSet(${ei})" style="margin-top:8px">+ Agregar serie</button></div>`;
     }
     html += `</div>`;
   });
@@ -1130,27 +1203,19 @@ function renderSession() {
   document.getElementById('session-content').innerHTML = html;
 }
 
-function toggleEx(i) {
-  state.sessionExercises[i].expanded = !state.sessionExercises[i].expanded;
-  state.activeRPESet = null;
-  renderSession();
-}
+function toggleEx(i) { state.sessionExercises[i].expanded = !state.sessionExercises[i].expanded; state.activeRPESet = null; renderSession(); }
 function updateReps(ei,ri,v) { state.sessionExercises[ei].rows[ri].reps = v; renderSession(); }
 function updateKg(ei,ri,v) { state.sessionExercises[ei].rows[ri].kg = v; }
 function delSet(ei,ri) { state.sessionExercises[ei].rows.splice(ri,1); state.sessionExercises[ei].rows.forEach((r,i)=>r.num=i+1); renderSession(); }
 function addSet(ei) {
   const ex = state.sessionExercises[ei];
   const last = ex.rows[ex.rows.length-1];
-  ex.rows.push({id:'ns'+Date.now(),num:ex.rows.length+1,reps:'',kg:last?.kg||'0',rpe:0});
+  ex.rows.push({num:ex.rows.length+1,reps:'',kg:last?.kg||'0',rpe:0});
   renderSession();
 }
 function openRPE(ei,ri) {
-  if (state.activeRPESet && state.activeRPESet[0]===ei && state.activeRPESet[1]===ri) {
-    state.activeRPESet = null;
-  } else {
-    state.activeRPESet = [ei,ri];
-    state.sessionExercises[ei].expanded = true;
-  }
+  state.activeRPESet = (state.activeRPESet && state.activeRPESet[0]===ei && state.activeRPESet[1]===ri) ? null : [ei,ri];
+  if (state.activeRPESet) state.sessionExercises[ei].expanded = true;
   renderSession();
 }
 function setRPE(ei,ri,v) { state.sessionExercises[ei].rows[ri].rpe=v; state.activeRPESet=null; renderSession(); }
@@ -1158,7 +1223,6 @@ function rpeLabel(n) { return ['','Muy fácil','Fácil','Moderado','Algo difíci
 
 function calcProgression(ex) {
   const logged = ex.rows.filter(r => r.reps !== '' && parseInt(r.reps) > 0);
-  if (logged.length === 0) return null;
   if (logged.length < ex.rows.length) return null;
   const allMax = logged.every(r => parseInt(r.reps) >= ex.repMax);
   const allMin = logged.every(r => parseInt(r.reps) >= ex.repMin);
@@ -1173,22 +1237,17 @@ function calcProgression(ex) {
   return null;
 }
 
-function finishSession() {
-  state.sessionDone = true;
-  buildSession();
-}
+function finishSession() { state.sessionDone = true; renderSession(); }
 
-// ── Profile ──────────────────────────────────────────
+// ── Profile ────────────────────────────────────────
 let currentTab = 1;
 function switchTab(n) {
   document.getElementById('prof-tab-'+currentTab).style.display = 'none';
   document.getElementById('tab-'+currentTab).classList.remove('active');
   currentTab = n;
-  const el = document.getElementById('prof-tab-'+n);
-  el.style.display = n===1?'block':'flex';
+  document.getElementById('prof-tab-'+n).style.display = n===1?'block':'flex';
   document.getElementById('tab-'+n).classList.add('active');
 }
-
 function selectGoal(g) {
   ['cut','recomp','bulk'].forEach(id => {
     document.getElementById('goal-'+id).classList.remove('selected');
@@ -1198,18 +1257,16 @@ function selectGoal(g) {
   document.getElementById('check-'+g).style.display = 'inline';
   state.goal = g;
 }
-
 function selectLevel(btn) {
   document.querySelectorAll('.level-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
 }
-
 function toggleDay(btn) {
   btn.classList.toggle('on');
   const days = document.querySelectorAll('.day-toggle.on').length;
-  btn.closest('.card').querySelector('div:last-child').textContent = days + ' días seleccionados';
+  const card = btn.closest('.card');
+  if (card) { const info = card.querySelector('div:last-child'); if(info) info.textContent = days + ' días seleccionados'; }
 }
-
 function saveProfile() {
   const btn = document.getElementById('save-btn');
   btn.textContent = '✓ Guardado';
@@ -1218,27 +1275,25 @@ function saveProfile() {
   setTimeout(() => { btn.textContent='Guardar perfil'; btn.style.background=''; btn.style.color=''; }, 2500);
 }
 
-// ── Charts ───────────────────────────────────────────
+// ── Charts ─────────────────────────────────────────
 let chartsInit = false;
 function initCharts() {
   if (chartsInit) return;
   chartsInit = true;
-
-  const weightLabels = ['6/5','7/5','8/5','9/5','12/5','13/5','14/5','15/5','16/5','19/5','20/5','21/5','22/5','23/5'];
-  const weightData   = [90.1,89.8,89.5,89.3,89.6,89.0,88.7,88.9,88.5,88.4,88.2,88.0,88.4,87.9];
-  MChart.line('chart-weight', weightLabels, weightData, '#00FF87', 0.3);
-
-  const protLabels = ['21 may','22 may','23 may'];
-  const protData   = [165,175,185];
-  MChart.bar('chart-protein', protLabels, protData, '#00FF87', 177);
-
-  const strLabels = ['15/4','29/4','13/5','22/5'];
-  const strData   = [75, 77.5, 80, 80];
-  MChart.line('chart-strength', strLabels, strData, '#FF6B35', 2);
+  MChart.line('chart-weight',
+    ['6/5','7/5','8/5','9/5','12/5','13/5','14/5','15/5','16/5','19/5','20/5','21/5','22/5','23/5'],
+    [90.1,89.8,89.5,89.3,89.6,89.0,88.7,88.9,88.5,88.4,88.2,88.0,88.4,87.9],
+    '#00FF87', 0.3);
+  MChart.bar('chart-protein', ['21 may','22 may','23 may'], [165,175,185], '#00FF87', 177);
+  MChart.line('chart-strength', ['15/4','29/4','13/5','22/5'], [75,77.5,80,80], '#FF6B35', 2);
 }
 
-// ── Init ────────────────────────────────────────────
+// ── Init ───────────────────────────────────────────
 updateDashDate();
+updateSessionDate();
+// Handle initial hash
+if (location.hash === '#page-progress') setTimeout(initCharts, 100);
+if (location.hash === '#page-session') setTimeout(renderSession, 50);
 </script>
 </body>
 </html>
